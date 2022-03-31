@@ -10,12 +10,18 @@ namespace Ticket.Data
 {
     public class Context : DbContext
     {
+        public Context(DbContextOptions<Context> options) : base(options)
+        {
+
+        }
+
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Film> Films { get; set; }
         public DbSet<Customer> Customers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Admin>().Property(a => a.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Admin>().Property(a => a.Name)
                                            .IsRequired()
                                            .HasMaxLength(50);
@@ -23,6 +29,7 @@ namespace Ticket.Data
                                            .IsRequired()
                                            .HasMaxLength(50);
 
+            modelBuilder.Entity<Customer>().Property(c => c.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Customer>().Property(c => c.Name)
                                            .IsRequired()
                                            .HasMaxLength(50);
@@ -30,6 +37,7 @@ namespace Ticket.Data
                                            .IsRequired()
                                            .HasMaxLength(50);
 
+            modelBuilder.Entity<Film>().Property(f => f.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Film>().Property(f => f.Name)
                                        .IsRequired()
                                        .HasMaxLength(50);
