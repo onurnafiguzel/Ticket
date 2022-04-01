@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Ticket.Business.Abstract;
+using Ticket.Business.Concrete;
 using Ticket.Data;
+using Ticket.Data.Abstract;
+using Ticket.Data.Concrete.EntityFramework;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +16,10 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("db");
 builder.Services.AddDbContext<Context>(opt => opt.UseMySql(connectionString,
     new MySqlServerVersion(new Version(8, 0, 11))));
+
+builder.Services.AddTransient<IAdminService, AdminManager>();
+builder.Services.AddTransient<IAdminRepository, EfAdminRepository>();
+builder.Services.AddTransient<DbContext, Context>();
 
 var app = builder.Build();
 
