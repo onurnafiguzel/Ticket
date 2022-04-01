@@ -26,8 +26,4 @@
     <ProjectReference Include="..\Ticket.Domain\Ticket.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Concrete\" />
-  </ItemGroup>
-
 </Project>
