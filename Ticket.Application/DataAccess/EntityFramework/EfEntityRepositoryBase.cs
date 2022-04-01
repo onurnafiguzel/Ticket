@@ -28,6 +28,7 @@ namespace Ticket.Application.DataAccess.EntityFramework
         public async Task DeleteAsync(TEntity entity)
         {
             await Task.Run(() => { _context.Set<TEntity>().Remove(entity); });
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IList<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null)
