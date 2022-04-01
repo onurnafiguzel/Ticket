@@ -8,7 +8,7 @@ using Ticket.Domain.Entities.Abstract;
 
 namespace Ticket.Application.DataAccess
 {
-    internal interface IEntityRepository<T> where T : class, IEntity, new()
+    public interface IEntityRepository<T> where T : class, IEntity, new()
     {
         Task<IList<T>> GetAllAsync(Expression<Func<T, bool>> filter = null);
         Task<T> GetAsync(Expression<Func<T, bool>> filter);
