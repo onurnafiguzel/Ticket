@@ -1,11 +1,17 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Ticket.Business.Abstract;
 using Ticket.Business.Concrete;
+using Ticket.Business.DependencyResolvers.Autofac;
 using Ticket.Data;
 using Ticket.Data.Abstract;
 using Ticket.Data.Concrete.EntityFramework;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+builder.Host.ConfigureContainer<ContainerBuilder>(builder => builder.RegisterModule(new AutofacBusinessModule()));
 
 // Add services to the container.
 
@@ -16,14 +22,6 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("db");
 builder.Services.AddDbContext<Context>(opt => opt.UseMySql(connectionString,
     new MySqlServerVersion(new Version(8, 0, 11))));
-
-builder.Services.AddScoped<IAdminService, AdminManager>();
-builder.Services.AddScoped<IAdminRepository, EfAdminRepository>();
-builder.Services.AddScoped<ICustomerService, CustomerManager>();
-builder.Services.AddScoped<ICustomerRepository, EfCustomerRepository>();
-builder.Services.AddScoped<IFilmService, FilmManager>();
-builder.Services.AddScoped<IFilmRepository, EfFilmRepository>();
-builder.Services.AddScoped<DbContext, Context>();
 
 var app = builder.Build();
 
