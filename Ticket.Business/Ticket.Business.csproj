@@ -18,8 +18,4 @@
     <ProjectReference Include="..\Ticket.Domain\Ticket.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ValidationRules\FluentValidation\" />
-  </ItemGroup>
-
 </Project>
