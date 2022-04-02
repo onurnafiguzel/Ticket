@@ -1,6 +1,8 @@
-﻿using Ticket.Application.Utilities.Results;
+﻿using Ticket.Application.Aspects.Autofac.Validation;
+using Ticket.Application.Utilities.Results;
 using Ticket.Business.Abstract;
 using Ticket.Business.Constants;
+using Ticket.Business.ValidationRules.FluentValidation;
 using Ticket.Data.Abstract;
 using Ticket.Domain.Entities.Concrete;
 
@@ -15,6 +17,7 @@ namespace Ticket.Business.Concrete
             _repository = repository;
         }
 
+        [ValidationAspect(typeof(FilmValidator))]
         public async Task<IResult> Add(Film film)
         {
             await _repository.AddAsync(film);
@@ -48,6 +51,7 @@ namespace Ticket.Business.Concrete
             return new SuccessDataResult<IList<Film>>(entities);
         }
 
+        [ValidationAspect(typeof(FilmValidator))]
         public async Task<IResult> Update(Film film)
         {
             var entity = await _repository.GetAsync(f => f.Id == film.Id);
