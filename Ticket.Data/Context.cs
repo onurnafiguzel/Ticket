@@ -16,6 +16,7 @@ namespace Ticket.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Admin>().HasKey(a => a.Id);
             modelBuilder.Entity<Admin>().Property(a => a.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Admin>().Property(a => a.Name)
                                            .IsRequired()

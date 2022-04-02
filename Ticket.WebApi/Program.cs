@@ -17,9 +17,9 @@ var connectionString = builder.Configuration.GetConnectionString("db");
 builder.Services.AddDbContext<Context>(opt => opt.UseMySql(connectionString,
     new MySqlServerVersion(new Version(8, 0, 11))));
 
-builder.Services.AddTransient<IAdminService, AdminManager>();
-builder.Services.AddTransient<IAdminRepository, EfAdminRepository>();
-builder.Services.AddTransient<DbContext, Context>();
+builder.Services.AddScoped<IAdminService, AdminManager>();
+builder.Services.AddScoped<IAdminRepository, EfAdminRepository>();
+builder.Services.AddScoped<DbContext, Context>();
 
 var app = builder.Build();
 
