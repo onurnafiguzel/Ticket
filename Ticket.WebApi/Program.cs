@@ -19,6 +19,8 @@ builder.Services.AddDbContext<Context>(opt => opt.UseMySql(connectionString,
 
 builder.Services.AddScoped<IAdminService, AdminManager>();
 builder.Services.AddScoped<IAdminRepository, EfAdminRepository>();
+builder.Services.AddScoped<ICustomerService, CustomerManager>();
+builder.Services.AddScoped<ICustomerRepository, EfCustomerRepository>();
 builder.Services.AddScoped<DbContext, Context>();
 
 var app = builder.Build();
