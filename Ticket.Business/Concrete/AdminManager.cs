@@ -1,6 +1,8 @@
-﻿using Ticket.Application.Utilities.Results;
+﻿using Ticket.Application.Aspects.Autofac.Validation;
+using Ticket.Application.Utilities.Results;
 using Ticket.Business.Abstract;
 using Ticket.Business.Constants;
+using Ticket.Business.ValidationRules.FluentValidation;
 using Ticket.Data.Abstract;
 using Ticket.Domain.Entities.Concrete;
 
@@ -15,6 +17,7 @@ namespace Ticket.Business.Concrete
             _repository = repository;
         }
 
+        [ValidationAspect(typeof(AdminValidator))]
         public async Task<IResult> Add(Admin admin)
         {
             await _repository.AddAsync(admin);
