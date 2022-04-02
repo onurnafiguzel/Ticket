@@ -48,6 +48,7 @@ namespace Ticket.Business.Concrete
             return new SuccessDataResult<IList<Admin>>(entities);
         }
 
+        [ValidationAspect(typeof(AdminValidator))]
         public async Task<IResult> Update(Admin admin)
         {
             var entity = await _repository.GetAsync(a => a.Id == admin.Id);
