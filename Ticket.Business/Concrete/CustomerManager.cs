@@ -1,6 +1,8 @@
-﻿using Ticket.Application.Utilities.Results;
+﻿using Ticket.Application.Aspects.Autofac.Validation;
+using Ticket.Application.Utilities.Results;
 using Ticket.Business.Abstract;
 using Ticket.Business.Constants;
+using Ticket.Business.ValidationRules.FluentValidation;
 using Ticket.Data.Abstract;
 using Ticket.Domain.Entities.Concrete;
 
@@ -15,6 +17,7 @@ namespace Ticket.Business.Concrete
             _repository = repository;
         }
 
+        [ValidationAspect(typeof(CustomerValidator))]
         public async Task<IResult> Add(Customer customer)
         {
             await _repository.AddAsync(customer);
@@ -52,6 +55,7 @@ namespace Ticket.Business.Concrete
             return new ErrorDataResult<IList<Customer>>(Messages.CustomerNotFound);
         }
 
+        [ValidationAspect(typeof(CustomerValidator))]
         public async Task<IResult> Update(Customer customer)
         {
             var entity = await _repository.GetAsync(c => c.Id == customer.Id);
