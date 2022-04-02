@@ -13,7 +13,7 @@ namespace Ticket.Business.ValidationRules.FluentValidation
         public AdminValidator()
         {
             RuleFor(a => a.Name).NotEmpty().WithMessage("İsim alanı boş bırakılamaz.");
-            RuleFor(a => a.Email).EmailAddress().WithMessage("Email adresi boş bırakılamaz.");
+            RuleFor(a => a.Email).EmailAddress().WithMessage("Düzgün bir email adresi girilmelidir.");
         }
     }
 }
