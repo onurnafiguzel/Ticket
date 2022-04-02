@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.3.0" />
+    <PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Ticket.Application\Ticket.Application.csproj" />
     <ProjectReference Include="..\Ticket.Data\Ticket.Data.csproj" />
     <ProjectReference Include="..\Ticket.Domain\Ticket.Domain.csproj" />
