@@ -1,4 +1,5 @@
-﻿using Ticket.Domain.Entities.Abstract;
+﻿using Ticket.Application.Entities.Concrete;
+using Ticket.Domain.Entities.Abstract;
 
 namespace Ticket.Domain.Entities.Concrete
 {
@@ -7,5 +8,10 @@ namespace Ticket.Domain.Entities.Concrete
         public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
+        public byte[] PasswordSalt { get; set; }
+        public byte[] PasswordHash { get; set; }
+        public bool Status { get; set; }
+
+        public ICollection<CustomerOperationClaim> OperationClaims { get; set; } = new HashSet<CustomerOperationClaim>();
     }
 }
