@@ -1,4 +1,5 @@
-﻿using Ticket.Application.Utilities.Results;
+﻿using Ticket.Application.Entities.Concrete;
+using Ticket.Application.Utilities.Results;
 using Ticket.Domain.Entities.Concrete;
 
 namespace Ticket.Business.Abstract
@@ -10,5 +11,7 @@ namespace Ticket.Business.Abstract
         Task<IResult> Add(Customer customer);
         Task<IResult> Update(Customer customer);
         Task<IResult> Delete(int customerId);
+        Task<List<OperationClaim>> GetClaims(Customer customer);
+        Task<Customer> GetByMail(string email);
     }
 }

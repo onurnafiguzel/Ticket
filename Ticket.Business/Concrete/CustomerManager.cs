@@ -1,4 +1,5 @@
 ﻿using Ticket.Application.Aspects.Autofac.Validation;
+using Ticket.Application.Entities.Concrete;
 using Ticket.Application.Utilities.Results;
 using Ticket.Business.Abstract;
 using Ticket.Business.Constants;
@@ -53,6 +54,16 @@ namespace Ticket.Business.Concrete
                 return new SuccessDataResult<IList<Customer>>(entities);
             }
             return new ErrorDataResult<IList<Customer>>(Messages.CustomerNotFound);
+        }
+
+        public async Task<Customer> GetByMail(string email)
+        {
+            return await _repository.GetAsync(c => c.Email == email);
+        }
+
+        public async Task<List<OperationClaim>> GetClaims(Customer customer)
+        {
+            return await _repository.GetClaims(customer);
         }
 
         [ValidationAspect(typeof(CustomerValidator))]
