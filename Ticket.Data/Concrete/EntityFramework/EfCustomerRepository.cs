@@ -2,7 +2,6 @@
 using Ticket.Application.DataAccess.EntityFramework;
 using Ticket.Application.Entities.Concrete;
 using Ticket.Data.Abstract;
-using Ticket.Domain.Entities.Concrete;
 
 namespace Ticket.Data.Concrete.EntityFramework
 {

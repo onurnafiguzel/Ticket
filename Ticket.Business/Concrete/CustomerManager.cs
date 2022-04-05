@@ -5,7 +5,6 @@ using Ticket.Business.Abstract;
 using Ticket.Business.Constants;
 using Ticket.Business.ValidationRules.FluentValidation;
 using Ticket.Data.Abstract;
-using Ticket.Domain.Entities.Concrete;
 
 namespace Ticket.Business.Concrete
 {

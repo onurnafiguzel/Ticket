@@ -1,5 +1,4 @@
 ﻿using Ticket.Domain.Entities.Abstract;
-using Ticket.Domain.Entities.Concrete;
 
 namespace Ticket.Application.Entities.Concrete
 {

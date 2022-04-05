@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Ticket.Application.Entities.Concrete;
 using Ticket.Business.Abstract;
-using Ticket.Domain.Entities.Concrete;
 
 namespace Ticket.WebApi.Controllers
 {

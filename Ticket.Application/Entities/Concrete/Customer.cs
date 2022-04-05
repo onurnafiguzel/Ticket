@@ -1,7 +1,6 @@
-﻿using Ticket.Application.Entities.Concrete;
-using Ticket.Domain.Entities.Abstract;
+﻿using Ticket.Domain.Entities.Abstract;
 
-namespace Ticket.Domain.Entities.Concrete
+namespace Ticket.Application.Entities.Concrete
 {
     public class Customer : IEntity
     {
