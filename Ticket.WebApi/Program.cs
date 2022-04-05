@@ -20,7 +20,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("db");
-builder.Services.AddDbContext<Context>(opt => opt.UseMySql(connectionString,
+builder.Services.AddDbContext<TicketContext>(opt => opt.UseMySql(connectionString,
     new MySqlServerVersion(new Version(8, 0, 11))));
 
 var app = builder.Build();

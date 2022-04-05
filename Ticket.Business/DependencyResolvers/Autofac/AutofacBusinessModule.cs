@@ -26,7 +26,7 @@ namespace Ticket.Business.DependencyResolvers.Autofac
             builder.RegisterType<EfCustomerRepository>().As<ICustomerRepository>().SingleInstance();
             builder.RegisterType<FilmManager>().As<IFilmService>().SingleInstance();
             builder.RegisterType<EfFilmRepository>().As<IFilmRepository>().SingleInstance();
-            builder.RegisterType<Context>().As<DbContext>().SingleInstance();
+            builder.RegisterType<TicketContext>().As<DbContext>().SingleInstance();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

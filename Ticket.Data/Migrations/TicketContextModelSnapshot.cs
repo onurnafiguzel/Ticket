@@ -9,8 +9,8 @@ using Ticket.Data;
 
 namespace Ticket.Data.Migrations
 {
-    [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(TicketContext))]
+    partial class TicketContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

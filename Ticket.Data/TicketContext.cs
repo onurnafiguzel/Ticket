@@ -4,9 +4,9 @@ using Ticket.Domain.Entities.Concrete;
 
 namespace Ticket.Data
 {
-    public class Context : DbContext
+    public class TicketContext : DbContext
     {
-        public Context(DbContextOptions<Context> options) : base(options)
+        public TicketContext(DbContextOptions<TicketContext> options) : base(options)
         {
 
         }
@@ -48,7 +48,8 @@ namespace Ticket.Data
             modelBuilder.Entity<OperationClaim>().HasKey(o => o.Id);
             modelBuilder.Entity<OperationClaim>().Property(o => o.Id).ValueGeneratedOnAdd();
 
-            modelBuilder.Entity<CustomerOperationClaim>().Property(co => co.Id).ValueGeneratedOnAdd();
+            //modelBuilder.Entity<CustomerOperationClaim>().Property(co => co.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<CustomerOperationClaim>().HasKey(co => co.Id);
 
             modelBuilder.Entity<CustomerOperationClaim>().HasKey("CustomerId", "OperationClaimId");
 

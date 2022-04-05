@@ -10,8 +10,8 @@ using Ticket.Data;
 
 namespace Ticket.Data.Migrations
 {
-    [DbContext(typeof(Context))]
-    [Migration("20220404135056_initial")]
+    [DbContext(typeof(TicketContext))]
+    [Migration("20220405141621_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
