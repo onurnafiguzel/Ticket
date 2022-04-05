@@ -18,4 +18,10 @@
     <ProjectReference Include="..\Ticket.Domain\Ticket.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Utilities\Security\Hashing\" />
+    <Folder Include="Utilities\Security\Encryption\" />
+    <Folder Include="Utilities\Security\JWT\" />
+  </ItemGroup>
+
 </Project>
