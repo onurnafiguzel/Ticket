@@ -23,5 +23,7 @@
         public static string UserExist = "Kullanıcı mevcut.";
         public static string UserRegistered = "Kullanıcı kaydedildi.";
         public static string AccessTokenCreated = "AccessToken oluşturuldu.";
+
+        public static string AuthorizationDenied = "Yetkiniz yok.";
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Ticket.Application.Aspects.Autofac.Validation;
 using Ticket.Application.Utilities.Results;
 using Ticket.Business.Abstract;
+using Ticket.Business.BusinessAspects.Autofac;
 using Ticket.Business.Constants;
 using Ticket.Business.ValidationRules.FluentValidation;
 using Ticket.Data.Abstract;
@@ -17,6 +18,7 @@ namespace Ticket.Business.Concrete
             _repository = repository;
         }
 
+        [SecuredOperation("admin")]
         [ValidationAspect(typeof(FilmValidator))]
         public async Task<IResult> Add(Film film)
         {

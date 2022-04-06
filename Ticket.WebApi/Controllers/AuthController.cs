@@ -33,7 +33,7 @@ namespace Ticket.WebApi.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost]
+        [HttpPost("Register")]
         public async Task<IActionResult> Register(CustomerForRegisterDto customerForRegisterDto)
         {
             var userExists = await authService.UserExists(customerForRegisterDto.Email);
