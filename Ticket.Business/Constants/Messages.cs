@@ -11,6 +11,7 @@
         public static string CustomerDeleted = "Müşteri silindi.";
         public static string CustomerNotFound = "Müşteri bulunamadı.";
         public static string CustomerUpdated = "Müşteri güncellendi.";
+        public static string CustomerAlreadyExists = "Kullanıcı zaten mevcut.";
 
         public static string FilmAdded = "Film eklendi.";
         public static string FilmDeleted = "Film silindi.";

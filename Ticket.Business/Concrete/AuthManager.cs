@@ -69,7 +69,7 @@ namespace Ticket.Business.Concrete
         {
             if (await _customerService.GetByMail(email) != null)
             {
-                return new ErrorResult(Messages.PasswordError);
+                return new ErrorResult(Messages.CustomerAlreadyExists);
             }
             return new SuccessResult(Messages.UserExist);
         }
