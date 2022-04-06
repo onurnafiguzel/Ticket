@@ -7,14 +7,16 @@ namespace Ticket.Data.Concrete.EntityFramework
 {
     public class EfCustomerRepository : EfEntityRepositoryBase<Customer>, ICustomerRepository
     {
+        private TicketContext context;
 
         public EfCustomerRepository(DbContext context) : base(context)
         {
+            this.context = (TicketContext?)context;
         }
 
         public async Task<List<OperationClaim>> GetClaims(Customer customer)
         {
-            using (var context = new TicketContext())
+            using (context)
             {
                 var result = from operationClaim in context.OperationClaims
                              join userOperationClaim in context.CustomerOperationClaims

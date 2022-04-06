@@ -6,10 +6,6 @@ namespace Ticket.Data
 {
     public class TicketContext : DbContext
     {
-        public TicketContext()
-        {
-        }
-
         public TicketContext(DbContextOptions<TicketContext> options) : base(options)
         {
 
