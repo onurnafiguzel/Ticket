@@ -13,6 +13,8 @@ using Ticket.Data.Abstract;
 using Ticket.Data.Concrete.EntityFramework;
 using Castle.DynamicProxy;
 using Ticket.Application.Utilities.Interceptors;
+using Ticket.Application.Utilities.Security.JWT;
+using Microsoft.AspNetCore.Http;
 
 namespace Ticket.Business.DependencyResolvers.Autofac
 {
@@ -27,6 +29,11 @@ namespace Ticket.Business.DependencyResolvers.Autofac
             builder.RegisterType<FilmManager>().As<IFilmService>().SingleInstance();
             builder.RegisterType<EfFilmRepository>().As<IFilmRepository>().SingleInstance();
             builder.RegisterType<TicketContext>().As<DbContext>().SingleInstance();
+
+            builder.RegisterType<AuthManager>().As<IAuthService>();
+            builder.RegisterType<JwtHelper>().As<ITokenHelper>();
+
+            builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
