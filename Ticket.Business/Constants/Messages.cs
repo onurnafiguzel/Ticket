@@ -17,5 +17,10 @@
         public static string FilmNotFound = "Film bulunamadı.";
         public static string FilmUpdated = "Film güncellendi.";
 
+        public static string PasswordError = "Parola hatalı.";
+        public static string SuccesfullLogin = "Giriş başarılı.";
+        public static string UserExist = "Kullanıcı mevcut.";
+        public static string UserRegistered = "Kullanıcı kaydedildi.";
+        public static string AccessTokenCreated = "AccessToken oluşturuldu.";
     }
 }
