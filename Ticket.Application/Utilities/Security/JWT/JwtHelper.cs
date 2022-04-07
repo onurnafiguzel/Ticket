@@ -15,14 +15,25 @@ namespace Ticket.Application.Utilities.Security.JWT
 {
     public class JwtHelper : ITokenHelper
     {
-        public IConfiguration _configuration { get; }
         private TokenOptions _tokenOptions;
         private DateTime _accessTokenExpiration;
 
-        public JwtHelper(IConfiguration configuration)
+        public JwtHelper()
         {
-            _configuration = configuration;
-            _tokenOptions = _configuration.GetSection("TokenOptions") as TokenOptions;
+            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: false);
+            IConfiguration _configuration = builder.Build();
+            string issuer = _configuration.GetValue<string>("TokenOptions:Issuer");
+            string audience = _configuration.GetValue<string>("TokenOptions:Audience");
+            int accessTokenExpiration = _configuration.GetValue<int>("TokenOptions:AccessTokenExpiration");
+            string securityKey = _configuration.GetValue<string>("TokenOptions:SecurityKey");
+
+            _tokenOptions = new TokenOptions
+            {
+                AccessTokenExpiration = accessTokenExpiration,
+                Issuer = issuer,
+                SecurityKey = securityKey,
+                Audience = audience
+            };
         }
 
         public AccessToken CreateToken(Customer customer, List<OperationClaim> operationClaims)
