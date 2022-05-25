@@ -1,4 +1,5 @@
-﻿using Ticket.Application.Aspects.Autofac.Validation;
+﻿using Ticket.Application.Aspects.Autofac.Caching;
+using Ticket.Application.Aspects.Autofac.Validation;
 using Ticket.Application.Utilities.Results;
 using Ticket.Business.Abstract;
 using Ticket.Business.BusinessAspects.Autofac;
@@ -18,8 +19,10 @@ namespace Ticket.Business.Concrete
             _repository = repository;
         }
 
-        [SecuredOperation("admin")]
+        //TODO ÖNCELİKLİ : Aşşası çalışınca context hatası veriyor
+        [SecuredOperation("admin,editor")]
         [ValidationAspect(typeof(FilmValidator))]
+        [CacheRemoveAspect("IFilmService.Get")]
         public async Task<IResult> Add(Film film)
         {
             await _repository.AddAsync(film);
@@ -37,6 +40,7 @@ namespace Ticket.Business.Concrete
             return new ErrorResult(Messages.FilmNotFound);
         }
 
+        [CacheAspect]
         public async Task<IDataResult<Film>> Get(int filmId)
         {
             var entity = await _repository.GetAsync(f => f.Id == filmId);
@@ -47,6 +51,7 @@ namespace Ticket.Business.Concrete
             return new ErrorDataResult<Film>(Messages.FilmNotFound);
         }
 
+        [CacheAspect] //key,value
         public async Task<IDataResult<IList<Film>>> GetAll()
         {
             var entities = await _repository.GetAllAsync();
@@ -54,6 +59,7 @@ namespace Ticket.Business.Concrete
         }
 
         [ValidationAspect(typeof(FilmValidator))]
+        [CacheRemoveAspect("IFilmService.Get")]
         public async Task<IResult> Update(Film film)
         {
             var entity = await _repository.GetAsync(f => f.Id == film.Id);

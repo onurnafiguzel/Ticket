@@ -12,7 +12,7 @@ namespace Ticket.Application.Aspects.Autofac.Caching
         private int _duration;
         private ICacheManager _cacheManager;
 
-        public CacheAspect(int duration = 60)
+        public CacheAspect(int duration = 60) //Dakika cinsinden
         {
             _duration = duration;
             _cacheManager = ServiceTool.ServiceProvider.GetService<ICacheManager>();

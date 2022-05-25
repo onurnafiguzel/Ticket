@@ -1,59 +1,66 @@
-﻿using System;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Caching;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using Ticket.Application.Utilities.IoC;
 
 namespace Ticket.Application.CrossCuttingConcerns.Caching.Microsoft
 {
     public class MemoryCacheManager : ICacheManager
     {
-        protected ObjectCache Cache => MemoryCache.Default;
+        //Adapter Pattern
+        IMemoryCache _memoryCache;
 
-        public void Add(string key, object data, int cacheTime = 60)
+        public MemoryCacheManager()
         {
-            if (data == null)
-            {
-                return;
-            }
-
-            var policy = new CacheItemPolicy { AbsoluteExpiration = DateTime.Now + TimeSpan.FromMinutes(cacheTime) };
-            Cache.Add(new CacheItem(key, data), policy);
+            _memoryCache = ServiceTool.ServiceProvider.GetService<IMemoryCache>();
         }
 
-        public void Clear()
+        public void Add(string key, object value, int duration)
         {
-            foreach (var item in Cache)
-            {
-                Remove(item.Key);
-            }
+            _memoryCache.Set(key, value, TimeSpan.FromMinutes(duration));
         }
 
         public T Get<T>(string key)
         {
-            return (T)Cache[key]; //.toString() kabul etmiyor.
+            return _memoryCache.Get<T>(key);
+        }
+
+        public object Get(string key)
+        {
+            return _memoryCache.Get(key);
         }
 
         public bool IsAdd(string key)
         {
-            return Cache.Contains(key);
+            return _memoryCache.TryGetValue(key, out _);
         }
 
         public void Remove(string key)
         {
-            Cache.Remove(key);
+            _memoryCache.Remove(key);
         }
 
         public void RemoveByPattern(string pattern)
         {
+            var cacheEntriesCollectionDefinition = typeof(MemoryCache).GetProperty("EntriesCollection", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var cacheEntriesCollection = cacheEntriesCollectionDefinition.GetValue(_memoryCache) as dynamic;
+            List<ICacheEntry> cacheCollectionValues = new List<ICacheEntry>();
+
+            foreach (var cacheItem in cacheEntriesCollection)
+            {
+                ICacheEntry cacheItemValue = cacheItem.GetType().GetProperty("Value").GetValue(cacheItem, null);
+                cacheCollectionValues.Add(cacheItemValue);
+            }
+
             var regex = new Regex(pattern, RegexOptions.Singleline | RegexOptions.Compiled | RegexOptions.IgnoreCase);
-            var keysToRemove = Cache.Where(d => regex.IsMatch(d.Key)).Select(d => d.Key).ToList();
+            var keysToRemove = cacheCollectionValues.Where(d => regex.IsMatch(d.Key.ToString())).Select(d => d.Key).ToList();
 
             foreach (var key in keysToRemove)
             {
-                Remove(key);
+                _memoryCache.Remove(key);
             }
         }
     }
