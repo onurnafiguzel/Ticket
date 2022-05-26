@@ -24,7 +24,8 @@ builder.Services.AddCors(options =>
                       policy =>
                       {
                           policy.WithOrigins("http://localhost:3000/",
-                                              "https://ticket.solak.dev/");
+                                              "https://ticket.solak.dev/")
+                          .AllowAnyMethod().AllowAnyHeader();
                       });
 });
 
@@ -65,7 +66,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(builder => builder.WithOrigins().AllowAnyHeader());
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseHttpsRedirection();
 
