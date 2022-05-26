@@ -23,9 +23,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:3000/",
-                                              "https://ticket.solak.dev/")
-                          .AllowAnyMethod().AllowAnyHeader();
+                          policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                          //policy.WithOrigins("http://localhost:3000/",
+                          //                    "https://ticket.solak.dev/")
+                          //.AllowAnyMethod().AllowAnyHeader();
                       });
 });
 
