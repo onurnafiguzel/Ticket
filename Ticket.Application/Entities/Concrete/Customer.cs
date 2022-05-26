@@ -1,4 +1,5 @@
 ﻿using Ticket.Domain.Entities.Abstract;
+using Ticket.Domain.Entities.Concrete;
 
 namespace Ticket.Application.Entities.Concrete
 {
@@ -12,5 +13,6 @@ namespace Ticket.Application.Entities.Concrete
         public bool Status { get; set; }
 
         public ICollection<CustomerOperationClaim> OperationClaims { get; set; } = new HashSet<CustomerOperationClaim>();
+        public ICollection<MovieTheatherSeat> MovieTheatherSeats { get; set; } = new HashSet<MovieTheatherSeat>();
     }
 }

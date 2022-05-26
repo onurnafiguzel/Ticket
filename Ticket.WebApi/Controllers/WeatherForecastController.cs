@@ -29,9 +29,5 @@ namespace Ticket.WebApi.Controllers
             })
             .ToArray();
         }
-    }
-
-    //TODO 1: OPERATIONSCLAIMS OTOMATÝK ARTAN YAPILACAK ->  modelBuilder.Entity<Customer>().Property(c => c.Id).ValueGeneratedOnAdd();
-    //TODO 3:ENGÝN'ÝN JWT.ÝO ÖRNEÐÝNE BAK
-    //todo 4: JWT KONTROL ET
+    }  
 }

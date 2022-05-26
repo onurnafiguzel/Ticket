@@ -26,13 +26,12 @@ namespace Ticket.Business.DependencyResolvers.Autofac
             builder.RegisterType<EfAdminRepository>().As<IAdminRepository>().SingleInstance();
             builder.RegisterType<CustomerManager>().As<ICustomerService>().SingleInstance();
             builder.RegisterType<EfCustomerRepository>().As<ICustomerRepository>().SingleInstance();
-            builder.RegisterType<FilmManager>().As<IFilmService>().SingleInstance();
-            builder.RegisterType<EfFilmRepository>().As<IFilmRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<MovieManager>().As<IMovieService>().SingleInstance();
+            builder.RegisterType<EfMovieRepository>().As<IFilmRepository>().InstancePerLifetimeScope();
             builder.RegisterType<TicketContext>().As<DbContext>().InstancePerDependency();
 
-            builder.RegisterType<AuthManager>().As<IAuthService>();
-            builder.RegisterType<JwtHelper>().As<ITokenHelper>();
-
+            builder.RegisterType<AuthManager>().As<IAuthService>().InstancePerDependency();
+            builder.RegisterType<JwtHelper>().As<ITokenHelper>().InstancePerDependency();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

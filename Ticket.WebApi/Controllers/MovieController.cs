@@ -7,11 +7,11 @@ namespace Ticket.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FilmController : ControllerBase
+    public class MovieController : ControllerBase
     {
-        private readonly IFilmService filmService;
+        private readonly IMovieService filmService;
 
-        public FilmController(IFilmService filmService)
+        public MovieController(IMovieService filmService)
         {
             this.filmService = filmService;
         }
@@ -40,7 +40,7 @@ namespace Ticket.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Film film)
+        public async Task<IActionResult> Add(Movie film)
         {
             var result = await filmService.Add(film);
             if (result.Success)
@@ -51,7 +51,7 @@ namespace Ticket.WebApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(Film film)
+        public async Task<IActionResult> Update(Movie film)
         {
             var result = await filmService.Update(film);
             if (result.Success)

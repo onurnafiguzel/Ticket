@@ -12,13 +12,23 @@ namespace Ticket.Data
         }
 
         public DbSet<Admin> Admins { get; set; }
-        public DbSet<Film> Films { get; set; }
+        public DbSet<Movie> Movies { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<CustomerOperationClaim> CustomerOperationClaims { get; set; }
+        public DbSet<Actor> Actors { get; set; }
+        public DbSet<Cast> Casts { get; set; }
+        public DbSet<Genre> Genres { get; set; }
+        public DbSet<MovieGenre> MovieGenres { get; set; }
+        public DbSet<MovieSession> MovieSessions { get; set; }
+        public DbSet<Theather> Theathers { get; set; }
+        public DbSet<TheatherSeat> TheatherSeats { get; set; }
+        public DbSet<MovieTheatherSeat> MovieTheatherSeats { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            // Özellikler
             modelBuilder.Entity<Admin>().HasKey(a => a.Id);
             modelBuilder.Entity<Admin>().Property(a => a.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Admin>().Property(a => a.Name)
@@ -38,20 +48,37 @@ namespace Ticket.Data
             modelBuilder.Entity<Customer>().Property(c => c.PasswordHash).IsRequired(false);
             modelBuilder.Entity<Customer>().Property(c => c.PasswordSalt).IsRequired(false);
 
-            modelBuilder.Entity<Film>().Property(f => f.Id).ValueGeneratedOnAdd();
-            modelBuilder.Entity<Film>().Property(f => f.Name)
+            modelBuilder.Entity<Movie>().Property(f => f.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Movie>().Property(f => f.Title)
                                        .IsRequired()
-                                       .HasMaxLength(50);
-            modelBuilder.Entity<Film>().Property(f => f.Description)
                                        .HasMaxLength(200);
+            modelBuilder.Entity<Movie>().Property(f => f.OriginalTitle)
+                                      .IsRequired()
+                                      .HasMaxLength(200);
+            modelBuilder.Entity<Movie>().Property(f => f.Description)
+                                       .HasMaxLength(500);
+            modelBuilder.Entity<Movie>().Property(f => f.PosterPath)
+                                       .HasMaxLength(100);
+            modelBuilder.Entity<Movie>().Property(f => f.BackdropPath)
+                                       .HasMaxLength(100);
+            modelBuilder.Entity<Movie>().Property(f => f.OriginalLanguage)
+                                       .HasMaxLength(50);
+            modelBuilder.Entity<Movie>().Property(f => f.Status)
+                                       .HasMaxLength(50);
+            modelBuilder.Entity<Movie>().Property(f => f.TrailerUrl)
+                                       .HasMaxLength(50);
+            modelBuilder.Entity<Movie>().Property(f => f.Director)
+                                       .HasMaxLength(100);
 
             modelBuilder.Entity<OperationClaim>().HasKey(o => o.Id);
             modelBuilder.Entity<OperationClaim>().Property(o => o.Id).ValueGeneratedOnAdd();
 
-            //modelBuilder.Entity<CustomerOperationClaim>().Property(co => co.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<CustomerOperationClaim>().HasKey(co => co.Id);
+            modelBuilder.Entity<CustomerOperationClaim>().Property(co => co.Id).ValueGeneratedOnAdd();
+            //modelBuilder.Entity<CustomerOperationClaim>().HasKey("CustomerId", "OperationClaimId");
 
-            modelBuilder.Entity<CustomerOperationClaim>().HasKey("CustomerId", "OperationClaimId");
+            // İlişkiler
+
 
             //Customer(M) - OperationClaim(M)
             modelBuilder.Entity<Customer>().HasMany(o => o.OperationClaims)
@@ -64,6 +91,34 @@ namespace Ticket.Data
                                                  .HasForeignKey(c => c.OperationClaimId)
                                                  .OnDelete(DeleteBehavior.NoAction);
 
+            // Cast(M) - Actor(1)
+            modelBuilder.Entity<Actor>().HasMany(c => c.Casts)
+                                        .WithOne(o => o.Actor)
+                                        .HasForeignKey(o => o.ActorId)
+                                        .OnDelete(DeleteBehavior.NoAction);
+
+            // Movie(M) - Genre(M)
+            modelBuilder.Entity<Movie>().HasMany(c => c.Genres)
+                                        .WithOne(g1 => g1.Movie)
+                                        .HasForeignKey(o => o.MovieId)
+                                        .OnDelete(DeleteBehavior.NoAction);
+
+            // Movie(M) - MovieSession(1)
+            modelBuilder.Entity<Movie>().HasMany(m => m.MovieSessions)
+                                        .WithOne(m1 => m1.Movie)
+                                        .HasForeignKey(m1 => m1.MovieId)
+                                        .OnDelete(DeleteBehavior.NoAction);
+
+            // Theater(M) - MovieSession(1)
+            modelBuilder.Entity<Theather>().HasMany(m => m.MovieSessions)
+                                        .WithOne(m1 => m1.Theather)
+                                        .HasForeignKey(m1 => m1.TheatherId)
+                                        .OnDelete(DeleteBehavior.NoAction);
+
+            // User(M) -  MovieTheaherSeat(1)
+          
+
+            // İlk veriler
             modelBuilder.Entity<Admin>().HasData
                 (
                     new Admin { Id = 1, Name = "Enes Solak", Email = "enessolak.dev" },
@@ -76,10 +131,10 @@ namespace Ticket.Data
                     new Customer { Id = 2, Name = "Orhan İnaç", Email = "inac.orhan@outlook.com" }
                 );
 
-            modelBuilder.Entity<Film>().HasData
+            modelBuilder.Entity<Movie>().HasData
                 (
-                    new Film { Id = 1, Name = "Inception", Description = "A drea film.", Director = "Cristopher Nolan", Duration = 148, Rating = 8.8 },
-                    new Film { Id = 2, Name = "Ahlat Ağacı", Description = "Turkish philosophy movie", Director = "Nuri Bilge Ceylan", Duration = 188, Rating = 8.1 }
+                    new Movie { Id = 1, Title = "Inception", Description = "A drea film.", Director = "Cristopher Nolan", Duration = 148, Rating = 8.8,OriginalLanguage="English" ,OriginalTitle="123"},
+                    new Movie { Id = 2, Title = "Ahlat Ağacı", Description = "Turkish philosophy movie", Director = "Nuri Bilge Ceylan", Duration = 188, Rating = 8.1,OriginalLanguage="Turkish", OriginalTitle = "123" }
                 );
 
             modelBuilder.Entity<OperationClaim>().HasData
@@ -90,7 +145,12 @@ namespace Ticket.Data
                 (
                     new CustomerOperationClaim { Id = 1, CustomerId = 1, OperationClaimId = 1 }
                 );
-        }
 
+            modelBuilder.Entity<Actor>().HasData
+                (
+                    new Actor { Id = 1, Name = "Feyyaz Yiğit", Gender = 1, TmdbId = 5, ProfilePath = "abc" }
+                );
+        }
+        //TODO: JWT'DEKİ LİNK NE OLUYOR
     }
 }

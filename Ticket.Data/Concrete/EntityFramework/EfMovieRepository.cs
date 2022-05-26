@@ -5,9 +5,9 @@ using Ticket.Domain.Entities.Concrete;
 
 namespace Ticket.Data.Concrete.EntityFramework
 {
-    public class EfFilmRepository : EfEntityRepositoryBase<Film>, IFilmRepository
+    public class EfMovieRepository : EfEntityRepositoryBase<Movie>, IFilmRepository
     {
-        public EfFilmRepository(DbContext context) : base(context)
+        public EfMovieRepository(DbContext context) : base(context)
         {
         }
     }

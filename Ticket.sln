@@ -11,15 +11,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructure", "infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "presentation", "presentation", "{2D78636F-1DF5-40C1-B0F6-F2E4DE2A4761}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ticket.Application", "Ticket.Application\Ticket.Application.csproj", "{48B5BD70-4FC2-4987-9381-3D39C2D57BE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticket.Application", "Ticket.Application\Ticket.Application.csproj", "{48B5BD70-4FC2-4987-9381-3D39C2D57BE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ticket.Domain", "Ticket.Domain\Ticket.Domain.csproj", "{B0E948C9-C5B2-4AB7-988E-F6240532476A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticket.Domain", "Ticket.Domain\Ticket.Domain.csproj", "{B0E948C9-C5B2-4AB7-988E-F6240532476A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ticket.Business", "Ticket.Business\Ticket.Business.csproj", "{54640C7E-A623-4BD8-99B0-AC7BCC95F125}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticket.Business", "Ticket.Business\Ticket.Business.csproj", "{54640C7E-A623-4BD8-99B0-AC7BCC95F125}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ticket.WebApi", "Ticket.WebApi\Ticket.WebApi.csproj", "{AAA62D11-036D-4BBD-91B1-1D815622E147}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticket.WebApi", "Ticket.WebApi\Ticket.WebApi.csproj", "{AAA62D11-036D-4BBD-91B1-1D815622E147}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ticket.Data", "Ticket.Data\Ticket.Data.csproj", "{6AE8DF9F-E8BC-4BED-A63D-3717CAFFB186}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ticket.Data", "Ticket.Data\Ticket.Data.csproj", "{6AE8DF9F-E8BC-4BED-A63D-3717CAFFB186}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

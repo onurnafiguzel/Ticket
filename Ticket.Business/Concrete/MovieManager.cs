@@ -10,20 +10,20 @@ using Ticket.Domain.Entities.Concrete;
 
 namespace Ticket.Business.Concrete
 {
-    public class FilmManager : IFilmService
+    public class MovieManager : IMovieService
     {
         private readonly IFilmRepository _repository;
 
-        public FilmManager(IFilmRepository repository)
+        public MovieManager(IFilmRepository repository)
         {
             _repository = repository;
         }
 
-        //TODO ÖNCELİKLİ : Aşşası çalışınca context hatası veriyor
+        //TODO ÖNCELİKLİ : Hatalar için bir middleware yazılacak.
         [SecuredOperation("admin,editor")]
         [ValidationAspect(typeof(FilmValidator))]
         [CacheRemoveAspect("IFilmService.Get")]
-        public async Task<IResult> Add(Film film)
+        public async Task<IResult> Add(Movie film)
         {
             await _repository.AddAsync(film);
             return new SuccessResult(Messages.FilmAdded);
@@ -41,26 +41,26 @@ namespace Ticket.Business.Concrete
         }
 
         [CacheAspect]
-        public async Task<IDataResult<Film>> Get(int filmId)
+        public async Task<IDataResult<Movie>> Get(int filmId)
         {
             var entity = await _repository.GetAsync(f => f.Id == filmId);
             if (entity != null)
             {
-                return new SuccessDataResult<Film>(entity);
+                return new SuccessDataResult<Movie>(entity);
             }
-            return new ErrorDataResult<Film>(Messages.FilmNotFound);
+            return new ErrorDataResult<Movie>(Messages.FilmNotFound);
         }
 
         [CacheAspect] //key,value
-        public async Task<IDataResult<IList<Film>>> GetAll()
+        public async Task<IDataResult<IList<Movie>>> GetAll()
         {
             var entities = await _repository.GetAllAsync();
-            return new SuccessDataResult<IList<Film>>(entities);
+            return new SuccessDataResult<IList<Movie>>(entities);
         }
 
         [ValidationAspect(typeof(FilmValidator))]
         [CacheRemoveAspect("IFilmService.Get")]
-        public async Task<IResult> Update(Film film)
+        public async Task<IResult> Update(Movie film)
         {
             var entity = await _repository.GetAsync(f => f.Id == film.Id);
             if (entity != null)
