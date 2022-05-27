@@ -22,12 +22,12 @@ namespace Ticket.Business.DependencyResolvers.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<AdminManager>().As<IAdminService>().SingleInstance();
-            builder.RegisterType<EfAdminRepository>().As<IAdminRepository>().SingleInstance();
-            builder.RegisterType<CustomerManager>().As<ICustomerService>().SingleInstance();
-            builder.RegisterType<EfCustomerRepository>().As<ICustomerRepository>().SingleInstance();
-            builder.RegisterType<MovieManager>().As<IMovieService>().SingleInstance();
-            builder.RegisterType<EfMovieRepository>().As<IFilmRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<AdminManager>().As<IAdminService>().InstancePerDependency();
+            builder.RegisterType<EfAdminRepository>().As<IAdminRepository>().InstancePerDependency();
+            builder.RegisterType<CustomerManager>().As<ICustomerService>().InstancePerDependency();
+            builder.RegisterType<EfCustomerRepository>().As<ICustomerRepository>().InstancePerDependency();
+            builder.RegisterType<MovieManager>().As<IMovieService>().InstancePerDependency();
+            builder.RegisterType<EfMovieRepository>().As<IFilmRepository>().InstancePerDependency();
             builder.RegisterType<TicketContext>().As<DbContext>().InstancePerDependency();
 
             builder.RegisterType<AuthManager>().As<IAuthService>().InstancePerDependency();
@@ -39,7 +39,7 @@ namespace Ticket.Business.DependencyResolvers.Autofac
                 .EnableInterfaceInterceptors(new ProxyGenerationOptions()
                 {
                     Selector = new AspectInterceptorSelector()
-                }).SingleInstance();
+                }).InstancePerDependency();
         }
     }
 }
