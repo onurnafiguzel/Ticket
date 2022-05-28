@@ -11,7 +11,7 @@ using Ticket.Data;
 namespace Ticket.Data.Migrations
 {
     [DbContext(typeof(TicketContext))]
-    [Migration("20220526223904_initial")]
+    [Migration("20220528072420_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -131,11 +131,13 @@ namespace Ticket.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("ProfilePath")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<int>("TmdbId")
                         .HasColumnType("int");
@@ -201,7 +203,8 @@ namespace Ticket.Data.Migrations
 
                     b.Property<string>("Character")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<int>("MovieId")
                         .HasColumnType("int");
@@ -221,7 +224,8 @@ namespace Ticket.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<int>("TmdbId")
                         .HasColumnType("int");
@@ -238,13 +242,13 @@ namespace Ticket.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("BackdropPath")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("varchar(500)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Director")
                         .IsRequired()
@@ -254,10 +258,12 @@ namespace Ticket.Data.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ImdbId")
-                        .HasColumnType("int");
+                    b.Property<string>("ImdbId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
-                    b.Property<bool?>("NowPlaying")
+                    b.Property<bool>("NowPlaying")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("OriginalLanguage")
@@ -271,6 +277,7 @@ namespace Ticket.Data.Migrations
                         .HasColumnType("varchar(200)");
 
                     b.Property<string>("PosterPath")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
@@ -281,6 +288,7 @@ namespace Ticket.Data.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Status")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
@@ -301,25 +309,35 @@ namespace Ticket.Data.Migrations
                         new
                         {
                             Id = 1,
+                            BackdropPath = "backdroppath",
                             Description = "A drea film.",
                             Director = "Cristopher Nolan",
                             Duration = 148,
+                            ImdbId = "imdbId",
+                            NowPlaying = false,
                             OriginalLanguage = "English",
                             OriginalTitle = "123",
+                            PosterPath = "posterpath",
                             Rating = 8.8000000000000007,
                             ReleaseDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "status",
                             Title = "Inception"
                         },
                         new
                         {
                             Id = 2,
+                            BackdropPath = "backdroppath",
                             Description = "Turkish philosophy movie",
                             Director = "Nuri Bilge Ceylan",
                             Duration = 188,
+                            ImdbId = "imdbId",
+                            NowPlaying = false,
                             OriginalLanguage = "Turkish",
                             OriginalTitle = "123",
+                            PosterPath = "posterpath",
                             Rating = 8.0999999999999996,
                             ReleaseDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "status",
                             Title = "Ahlat Ağacı"
                         });
                 });
@@ -361,7 +379,8 @@ namespace Ticket.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<int?>("TheatherId")
                         .IsRequired()
@@ -412,7 +431,8 @@ namespace Ticket.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.HasKey("Id");
 
@@ -427,7 +447,8 @@ namespace Ticket.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<int>("TheatherId")
                         .HasColumnType("int");

@@ -20,10 +20,10 @@ namespace Ticket.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     TmdbId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Gender = table.Column<int>(type: "int", nullable: false),
-                    ProfilePath = table.Column<string>(type: "longtext", nullable: false)
+                    ProfilePath = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -76,7 +76,7 @@ namespace Ticket.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     TmdbId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -95,20 +95,21 @@ namespace Ticket.Data.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     OriginalTitle = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Description = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false)
+                    Description = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Duration = table.Column<int>(type: "int", nullable: false),
-                    PosterPath = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                    PosterPath = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    BackdropPath = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                    BackdropPath = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ReleaseDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     OriginalLanguage = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ImdbId = table.Column<int>(type: "int", nullable: true),
-                    Status = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
+                    ImdbId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    NowPlaying = table.Column<bool>(type: "tinyint(1)", nullable: true),
+                    Status = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    NowPlaying = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     TrailerUrl = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Rating = table.Column<double>(type: "double", nullable: false),
@@ -142,7 +143,7 @@ namespace Ticket.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -158,7 +159,7 @@ namespace Ticket.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     TheatherId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -175,7 +176,7 @@ namespace Ticket.Data.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     ActorId = table.Column<int>(type: "int", nullable: false),
                     MovieId = table.Column<int>(type: "int", nullable: false),
-                    Character = table.Column<string>(type: "longtext", nullable: false)
+                    Character = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -270,7 +271,7 @@ namespace Ticket.Data.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     MovieId = table.Column<int>(type: "int", nullable: false),
                     TheatherId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Date = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
@@ -318,8 +319,8 @@ namespace Ticket.Data.Migrations
                 columns: new[] { "Id", "BackdropPath", "Description", "Director", "Duration", "ImdbId", "NowPlaying", "OriginalLanguage", "OriginalTitle", "PosterPath", "Rating", "ReleaseDate", "Status", "Title", "TrailerUrl" },
                 values: new object[,]
                 {
-                    { 1, null, "A drea film.", "Cristopher Nolan", 148, null, null, "English", "123", null, 8.8000000000000007, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Inception", null },
-                    { 2, null, "Turkish philosophy movie", "Nuri Bilge Ceylan", 188, null, null, "Turkish", "123", null, 8.0999999999999996, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Ahlat Ağacı", null }
+                    { 1, "backdroppath", "A drea film.", "Cristopher Nolan", 148, "imdbId", false, "English", "123", "posterpath", 8.8000000000000007, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "status", "Inception", null },
+                    { 2, "backdroppath", "Turkish philosophy movie", "Nuri Bilge Ceylan", 188, "imdbId", false, "Turkish", "123", "posterpath", 8.0999999999999996, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "status", "Ahlat Ağacı", null }
                 });
 
             migrationBuilder.InsertData(

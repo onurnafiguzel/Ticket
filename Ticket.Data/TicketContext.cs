@@ -55,8 +55,8 @@ namespace Ticket.Data
             modelBuilder.Entity<Movie>().Property(f => f.OriginalTitle)
                                       .IsRequired()
                                       .HasMaxLength(200);
-            modelBuilder.Entity<Movie>().Property(f => f.Description)
-                                       .HasMaxLength(500);
+            //modelBuilder.Entity<Movie>().Property(f => f.Description)
+            //                           .HasMaxLength(500);
             modelBuilder.Entity<Movie>().Property(f => f.PosterPath)
                                        .HasMaxLength(100);
             modelBuilder.Entity<Movie>().Property(f => f.BackdropPath)
@@ -69,6 +69,8 @@ namespace Ticket.Data
                                        .HasMaxLength(50);
             modelBuilder.Entity<Movie>().Property(f => f.Director)
                                        .HasMaxLength(100);
+            modelBuilder.Entity<Movie>().Property(f => f.ImdbId)
+                                       .HasMaxLength(50);
 
             modelBuilder.Entity<OperationClaim>().HasKey(o => o.Id);
             modelBuilder.Entity<OperationClaim>().Property(o => o.Id).ValueGeneratedOnAdd();
@@ -77,8 +79,45 @@ namespace Ticket.Data
             modelBuilder.Entity<CustomerOperationClaim>().Property(co => co.Id).ValueGeneratedOnAdd();
             //modelBuilder.Entity<CustomerOperationClaim>().HasKey("CustomerId", "OperationClaimId");
 
-            // İlişkiler
+            modelBuilder.Entity<Actor>().HasKey(a => a.Id);
+            modelBuilder.Entity<Actor>().Property(a => a.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Actor>().Property(a => a.Name)
+                                        .HasMaxLength(200);
+            modelBuilder.Entity<Actor>().Property(a => a.ProfilePath)
+                                        .HasMaxLength(200);
 
+            modelBuilder.Entity<Cast>().HasKey(a => a.Id);
+            modelBuilder.Entity<Cast>().Property(a => a.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Cast>().Property(c => c.Character)
+                                       .HasMaxLength(200);
+
+            modelBuilder.Entity<Genre>().HasKey(a => a.Id);
+            modelBuilder.Entity<Genre>().Property(a => a.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Genre>().Property(c => c.Name)
+                                     .HasMaxLength(200);
+
+            modelBuilder.Entity<MovieGenre>().HasKey(a => a.Id);
+            modelBuilder.Entity<MovieGenre>().Property(a => a.Id).ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<MovieSession>().HasKey(a => a.Id);
+            modelBuilder.Entity<MovieSession>().Property(a => a.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<MovieSession>().Property(c => c.Name)
+                                    .HasMaxLength(200);
+
+            modelBuilder.Entity<Theather>().HasKey(a => a.Id);
+            modelBuilder.Entity<Theather>().Property(a => a.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Theather>().Property(c => c.Name)
+                                    .HasMaxLength(200);
+
+            modelBuilder.Entity<MovieTheatherSeat>().HasKey(a => a.Id);
+            modelBuilder.Entity<MovieTheatherSeat>().Property(a => a.Id).ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<TheatherSeat>().HasKey(a => a.Id);
+            modelBuilder.Entity<TheatherSeat>().Property(a => a.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<TheatherSeat>().Property(c => c.Name)
+                                    .HasMaxLength(200);
+
+            // İlişkiler
 
             //Customer(M) - OperationClaim(M)
             modelBuilder.Entity<Customer>().HasMany(o => o.OperationClaims)
@@ -116,7 +155,7 @@ namespace Ticket.Data
                                         .OnDelete(DeleteBehavior.NoAction);
 
             // User(M) -  MovieTheaherSeat(1)
-          
+
 
             // İlk veriler
             modelBuilder.Entity<Admin>().HasData
@@ -133,8 +172,8 @@ namespace Ticket.Data
 
             modelBuilder.Entity<Movie>().HasData
                 (
-                    new Movie { Id = 1, Title = "Inception", Description = "A drea film.", Director = "Cristopher Nolan", Duration = 148, Rating = 8.8,OriginalLanguage="English" ,OriginalTitle="123"},
-                    new Movie { Id = 2, Title = "Ahlat Ağacı", Description = "Turkish philosophy movie", Director = "Nuri Bilge Ceylan", Duration = 188, Rating = 8.1,OriginalLanguage="Turkish", OriginalTitle = "123" }
+                    new Movie { Id = 1, Title = "Inception", Description = "A drea film.", Director = "Cristopher Nolan", Duration = 148, Rating = 8.8, OriginalLanguage = "English", OriginalTitle = "123", PosterPath = "posterpath", BackdropPath = "backdroppath", ImdbId = "imdbId", Status = "status", NowPlaying = false },
+                    new Movie { Id = 2, Title = "Ahlat Ağacı", Description = "Turkish philosophy movie", Director = "Nuri Bilge Ceylan", Duration = 188, Rating = 8.1, OriginalLanguage = "Turkish", OriginalTitle = "123", PosterPath = "posterpath", BackdropPath = "backdroppath", ImdbId = "imdbId", Status = "status", NowPlaying = false }
                 );
 
             modelBuilder.Entity<OperationClaim>().HasData
