@@ -13,6 +13,6 @@ namespace Ticket.Domain.Entities.Concrete
         public int TmdbId { get; set; }
         public string Name { get; set; }
 
-        public ICollection<MovieGenre> Movies = new HashSet<MovieGenre>();
+        public ICollection<MovieGenre> Movies { get; set; } = new HashSet<MovieGenre>();
     }
 }

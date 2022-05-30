@@ -16,7 +16,6 @@ namespace Ticket.WebApi.Controllers
             this.filmService = filmService;
         }
 
-
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

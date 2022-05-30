@@ -10,6 +10,6 @@ namespace Ticket.Data.Abstract
 {
     public interface ICastRepository : IEntityRepository<Cast>
     {
-        public Task<IList<Cast>> GetCastByMovie(Movie movie);
+      
     }
 }

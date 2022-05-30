@@ -2,8 +2,7 @@
 using Ticket.Domain.Entities.Abstract;
 
 namespace Ticket.Domain.Entities.Concrete
-{
-   // [Index(nameof(Slug), IsUnique = true)]
+{   
     public class Movie : IEntity
     {
         public int Id { get; set; }
@@ -22,11 +21,10 @@ namespace Ticket.Domain.Entities.Concrete
 
         public double Rating { get; set; }
         public string Director { get; set; }
-
-        //[RegularExpression("^[a-zA-Z0-9]*$", ErrorMessage = "Only Alphabets and Numbers allowed.")]
+               
         public string? Slug { get; set; }
 
-        public ICollection<MovieGenre> Genres = new HashSet<MovieGenre>();
-        public ICollection<MovieSession> MovieSessions = new HashSet<MovieSession>();
+        public ICollection<MovieGenre> Genres { get; set; } = new HashSet<MovieGenre>();
+        public ICollection<MovieSession> MovieSessions { get; set; } = new HashSet<MovieSession>();
     }
 }

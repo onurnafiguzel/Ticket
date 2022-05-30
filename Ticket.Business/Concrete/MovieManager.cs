@@ -14,12 +14,10 @@ namespace Ticket.Business.Concrete
     public class MovieManager : IMovieService
     {
         private readonly IFilmRepository _repository;
-        private readonly ICastRepository _castRepository;
 
-        public MovieManager(IFilmRepository repository, ICastRepository castRepository)
+        public MovieManager(IFilmRepository repository)
         {
             _repository = repository;
-            _castRepository = castRepository;
         }
 
         //TODO ÖNCELİKLİ : Hatalar için bir middleware yazılacak.
@@ -50,6 +48,7 @@ namespace Ticket.Business.Concrete
             var entity = await _repository.GetAsync(f => f.Id == filmId);
             if (entity != null)
             {
+                entity.Genres = await _repository.GetGenreByMovie(entity);
                 return new SuccessDataResult<Movie>(entity);
             }
             return new ErrorDataResult<Movie>(Messages.FilmNotFound);
@@ -60,6 +59,7 @@ namespace Ticket.Business.Concrete
             var entity = await _repository.GetAsync(f => f.Slug == slug);
             if (entity != null)
             {
+                entity.Genres = await _repository.GetGenreByMovie(entity);
                 return new SuccessDataResult<Movie>(entity);
             }
             return new ErrorDataResult<Movie>(Messages.FilmNotFound);
@@ -98,12 +98,12 @@ namespace Ticket.Business.Concrete
         public async Task<IDataResult<IList<Cast>>> GetCastsByMovie(string slug)
         {
             var film = await _repository.GetAsync(f => f.Slug == slug);
-            var charactersAndActors = await _castRepository.GetCastByMovie(film);
+            var charactersAndActors = await _repository.GetCastByMovie(film);
             if (charactersAndActors != null)
             {
-                return new SuccessDataResult<IList<Cast>>(charactersAndActors, "asd");
+                return new SuccessDataResult<IList<Cast>>(charactersAndActors, Messages.CastsShowed);
             }
-            return new ErrorDataResult<IList<Cast>>("ASDA");
+            return new ErrorDataResult<IList<Cast>>(Messages.CastsNotFound);
         }
     }
 }

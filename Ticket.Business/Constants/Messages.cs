@@ -1,4 +1,6 @@
-﻿namespace Ticket.Business.Constants
+﻿using Ticket.Domain.Entities.Concrete;
+
+namespace Ticket.Business.Constants
 {
     public static class Messages
     {
@@ -25,5 +27,7 @@
         public static string AccessTokenCreated = "AccessToken oluşturuldu.";
 
         public static string AuthorizationDenied = "Yetkiniz yok.";
+        public static string CastsShowed = "Castlar gösterildi.";
+        public static string CastsNotFound = "Cast bulunamadı.";
     }
 }
