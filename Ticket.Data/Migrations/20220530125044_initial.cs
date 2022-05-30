@@ -114,6 +114,8 @@ namespace Ticket.Data.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Rating = table.Column<double>(type: "double", nullable: false),
                     Director = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Slug = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -316,11 +318,11 @@ namespace Ticket.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Movies",
-                columns: new[] { "Id", "BackdropPath", "Description", "Director", "Duration", "ImdbId", "NowPlaying", "OriginalLanguage", "OriginalTitle", "PosterPath", "Rating", "ReleaseDate", "Status", "Title", "TrailerUrl" },
+                columns: new[] { "Id", "BackdropPath", "Description", "Director", "Duration", "ImdbId", "NowPlaying", "OriginalLanguage", "OriginalTitle", "PosterPath", "Rating", "ReleaseDate", "Slug", "Status", "Title", "TrailerUrl" },
                 values: new object[,]
                 {
-                    { 1, "backdroppath", "A drea film.", "Cristopher Nolan", 148, "imdbId", false, "English", "123", "posterpath", 8.8000000000000007, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "status", "Inception", null },
-                    { 2, "backdroppath", "Turkish philosophy movie", "Nuri Bilge Ceylan", 188, "imdbId", false, "Turkish", "123", "posterpath", 8.0999999999999996, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "status", "Ahlat Ağacı", null }
+                    { 1, "backdroppath", "A drea film.", "Cristopher Nolan", 148, "imdbId", false, "English", "123", "posterpath", 8.8000000000000007, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "status", "Inception", null },
+                    { 2, "backdroppath", "Turkish philosophy movie", "Nuri Bilge Ceylan", 188, "imdbId", false, "Turkish", "123", "posterpath", 8.0999999999999996, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "status", "Ahlat Ağacı", null }
                 });
 
             migrationBuilder.InsertData(

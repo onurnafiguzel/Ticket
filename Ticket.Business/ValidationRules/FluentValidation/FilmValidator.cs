@@ -17,6 +17,8 @@ namespace Ticket.Business.ValidationRules.FluentValidation
             RuleFor(f => f.Rating).NotEmpty().WithMessage("Rating boş geçilemez.");
             RuleFor(f => f.Duration).NotEmpty().WithMessage("Süre boş geçilemez.");
             RuleFor(f => f.Description).NotEmpty().WithMessage("Açıklama boş geçilemez.");
+
+            //RuleFor(f => f.Surname).Matches("some regex here");
         }
     }
 }

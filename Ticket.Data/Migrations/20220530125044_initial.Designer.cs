@@ -11,7 +11,7 @@ using Ticket.Data;
 namespace Ticket.Data.Migrations
 {
     [DbContext(typeof(TicketContext))]
-    [Migration("20220528072420_initial")]
+    [Migration("20220530125044_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -286,6 +286,9 @@ namespace Ticket.Data.Migrations
 
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Slug")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Status")
                         .IsRequired()

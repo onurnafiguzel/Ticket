@@ -23,7 +23,8 @@ namespace Ticket.Domain.Entities.Concrete
         public double Rating { get; set; }
         public string Director { get; set; }
 
-        //public string Slug { get; set; }
+        //[RegularExpression("^[a-zA-Z0-9]*$", ErrorMessage = "Only Alphabets and Numbers allowed.")]
+        public string? Slug { get; set; }
 
         public ICollection<MovieGenre> Genres = new HashSet<MovieGenre>();
         public ICollection<MovieSession> MovieSessions = new HashSet<MovieSession>();

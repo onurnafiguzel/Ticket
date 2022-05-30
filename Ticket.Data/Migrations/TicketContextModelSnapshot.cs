@@ -285,6 +285,9 @@ namespace Ticket.Data.Migrations
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("Slug")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(50)

@@ -4,6 +4,7 @@ using Ticket.Application.Utilities.Results;
 using Ticket.Business.Abstract;
 using Ticket.Business.BusinessAspects.Autofac;
 using Ticket.Business.Constants;
+using Ticket.Business.Helpers;
 using Ticket.Business.ValidationRules.FluentValidation;
 using Ticket.Data.Abstract;
 using Ticket.Domain.Entities.Concrete;
@@ -25,6 +26,7 @@ namespace Ticket.Business.Concrete
         [CacheRemoveAspect("IFilmService.Get")]
         public async Task<IResult> Add(Movie film)
         {
+            film.Slug = UrlExtension.FriendlyUrl(film.Title);
             await _repository.AddAsync(film);
             return new SuccessResult(Messages.FilmAdded);
         }

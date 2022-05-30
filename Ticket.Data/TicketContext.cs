@@ -190,6 +190,5 @@ namespace Ticket.Data
                     new Actor { Id = 1, Name = "Feyyaz Yiğit", Gender = 1, TmdbId = 5, ProfilePath = "abc" }
                 );
         }
-        //TODO: JWT'DEKİ LİNK NE OLUYOR
     }
 }
