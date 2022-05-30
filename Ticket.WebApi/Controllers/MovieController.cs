@@ -28,10 +28,22 @@ namespace Ticket.WebApi.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("{filmId}")]
+       // [HttpGet("{int:filmId}")]
+        [HttpGet("{filmId:int}")]
         public async Task<IActionResult> Get(int filmId)
         {
             var result = await filmService.Get(filmId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("{slug}")]
+        public async Task<IActionResult> GetMovieBySlug(string slug)
+        {
+            var result = await filmService.GetBySlug(slug);
             if (result.Success)
             {
                 return Ok(result);

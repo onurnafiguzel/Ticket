@@ -53,6 +53,17 @@ namespace Ticket.Business.Concrete
             return new ErrorDataResult<Movie>(Messages.FilmNotFound);
         }
 
+        [CacheAspect]
+        public async Task<IDataResult<Movie>> GetBySlug(string slug)
+        {
+            var entity = await _repository.GetAsync(f => f.Slug == slug);
+            if (entity != null)
+            {
+                return new SuccessDataResult<Movie>(entity);
+            }
+            return new ErrorDataResult<Movie>(Messages.FilmNotFound);
+        }
+
         [CacheAspect] //key,value
         public async Task<IDataResult<IList<Movie>>> GetAll()
         {
