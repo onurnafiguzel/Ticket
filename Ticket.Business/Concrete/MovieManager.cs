@@ -14,10 +14,12 @@ namespace Ticket.Business.Concrete
     public class MovieManager : IMovieService
     {
         private readonly IFilmRepository _repository;
+        private readonly ICastRepository _castRepository;
 
-        public MovieManager(IFilmRepository repository)
+        public MovieManager(IFilmRepository repository, ICastRepository castRepository)
         {
             _repository = repository;
+            _castRepository = castRepository;
         }
 
         //TODO ÖNCELİKLİ : Hatalar için bir middleware yazılacak.
@@ -53,8 +55,17 @@ namespace Ticket.Business.Concrete
             return new ErrorDataResult<Movie>(Messages.FilmNotFound);
         }
 
-        [CacheAspect]
         public async Task<IDataResult<Movie>> GetBySlug(string slug)
+        {
+            var entity = await _repository.GetAsync(f => f.Slug == slug);
+            if (entity != null)
+            {
+                return new SuccessDataResult<Movie>(entity);
+            }
+            return new ErrorDataResult<Movie>(Messages.FilmNotFound);
+        }
+
+        public async Task<IDataResult<Movie>> GetCastBySlug(string slug)
         {
             var entity = await _repository.GetAsync(f => f.Slug == slug);
             if (entity != null)
@@ -82,6 +93,17 @@ namespace Ticket.Business.Concrete
                 return new SuccessResult(Messages.FilmUpdated);
             }
             return new ErrorResult(Messages.FilmNotFound);
+        }
+
+        public async Task<IDataResult<IList<Cast>>> GetCastsByMovie(string slug)
+        {
+            var film = await _repository.GetAsync(f => f.Slug == slug);
+            var charactersAndActors = await _castRepository.GetCastByMovie(film);
+            if (charactersAndActors != null)
+            {
+                return new SuccessDataResult<IList<Cast>>(charactersAndActors, "asd");
+            }
+            return new ErrorDataResult<IList<Cast>>("ASDA");
         }
     }
 }

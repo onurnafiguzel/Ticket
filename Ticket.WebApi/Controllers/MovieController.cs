@@ -28,7 +28,7 @@ namespace Ticket.WebApi.Controllers
             return BadRequest(result);
         }
 
-       // [HttpGet("{int:filmId}")]
+        // [HttpGet("{int:filmId}")]
         [HttpGet("{filmId:int}")]
         public async Task<IActionResult> Get(int filmId)
         {
@@ -44,6 +44,17 @@ namespace Ticket.WebApi.Controllers
         public async Task<IActionResult> GetMovieBySlug(string slug)
         {
             var result = await filmService.GetBySlug(slug);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("{slug}/cast")]
+        public async Task<IActionResult> GetCastsByMovie(string slug)
+        {
+            var result = await filmService.GetCastsByMovie(slug);
             if (result.Success)
             {
                 return Ok(result);
