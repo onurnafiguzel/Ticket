@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Ticket.Business.Abstract;
+using Ticket.Domain.Dtos;
 using Ticket.Domain.Entities.Concrete;
 
 namespace Ticket.WebApi.Controllers
@@ -42,12 +43,30 @@ namespace Ticket.WebApi.Controllers
         [HttpGet("{slug}")]
         public async Task<IActionResult> GetMovieBySlug(string slug)
         {
+            //TODO CONTEXT DISPOSE HATASI, TEK METOT ÇALIŞIYOR
             var result = await filmService.GetBySlug(slug);
+            if (result.Success)
+            {
+                // MovieWithSimiliars movieWithSimiliars = new MovieWithSimiliars();
+                //movieWithSimiliars.Movie = result.Data;
+                //var similiarMovies = await filmService.GetSimiliarMovies();
+                //movieWithSimiliars.SimiliarMovies = similiarMovies.Data;
+                //return Ok(movieWithSimiliars);
+
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("slug/[action]")]
+        public async Task<IActionResult> GetSimiliarFilms(string slug)
+        {
+            var result = await filmService.GetSimiliarMovies();
             if (result.Success)
             {
                 return Ok(result);
             }
-            return BadRequest(result);
+            return BadRequest();
         }
 
         [HttpGet("{slug}/cast")]

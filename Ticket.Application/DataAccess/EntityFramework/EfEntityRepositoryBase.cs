@@ -42,6 +42,20 @@ namespace Ticket.Application.DataAccess.EntityFramework
             return await query.ToListAsync();
         }
 
+        public async Task<IList<TEntity>> GetAllRandomAsync(Expression<Func<TEntity, bool>> filter = null)
+        {
+            Random rand = new Random();
+            int toSkip = rand.Next(1, GetAllAsync().Result.Count);
+
+            IQueryable<TEntity> query = _context.Set<TEntity>().AsNoTracking().Skip(toSkip).Take(6);
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+            return await query.ToListAsync();
+        }
+
         public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter)
         {
             return await _context.Set<TEntity>().AsNoTracking().SingleOrDefaultAsync(filter);

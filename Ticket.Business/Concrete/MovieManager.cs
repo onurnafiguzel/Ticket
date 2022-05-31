@@ -105,5 +105,15 @@ namespace Ticket.Business.Concrete
             }
             return new ErrorDataResult<IList<Cast>>(Messages.CastsNotFound);
         }
+
+        public async Task<IDataResult<IList<Movie>>> GetSimiliarMovies()
+        {
+            var result = await _repository.GetAllRandomAsync();
+            if (result != null)
+            {
+                return new SuccessDataResult<IList<Movie>>(result);
+            }
+            return new ErrorDataResult<IList<Movie>>();
+        }
     }
 }

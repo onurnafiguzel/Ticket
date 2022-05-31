@@ -12,5 +12,6 @@ namespace Ticket.Business.Abstract
         Task<IResult> Update(Movie film);
         Task<IResult> Delete(int filmId);
         Task<IDataResult<IList<Cast>>> GetCastsByMovie(string slug);
+        Task<IDataResult<IList<Movie>>> GetSimiliarMovies();
     }
 }
