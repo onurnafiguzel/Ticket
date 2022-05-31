@@ -115,5 +115,15 @@ namespace Ticket.Business.Concrete
             }
             return new ErrorDataResult<IList<Movie>>();
         }
+
+        public async Task<IDataResult<IList<Movie>>> GetMoviesBySearch(string search)
+        {
+            var result = await _repository.GetAllAsync(m => m.Description.Contains(search) || m.Title.Contains(search) || m.OriginalTitle.Contains(search) || m.ImdbId.Contains(search));
+            if (result != null)
+            {
+                return new SuccessDataResult<IList<Movie>>(result);
+            }
+            return new ErrorDataResult<IList<Movie>>("Bu search için veri blulnamadı");
+        }
     }
 }
