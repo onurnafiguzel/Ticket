@@ -78,7 +78,18 @@ namespace Ticket.WebApi.Controllers
                 return Ok(result);
             }
             return BadRequest(result);
-        }        
+        }
+
+        [HttpGet("{slug}/sessions")]
+        public async Task<IActionResult> GetMovieSessions(string slug)
+        {
+            var result = await filmService.GetMovieSessions(slug);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
 
         [HttpPost]
         public async Task<IActionResult> Add(Movie film)

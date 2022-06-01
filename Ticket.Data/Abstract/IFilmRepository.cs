@@ -7,5 +7,6 @@ namespace Ticket.Data.Abstract
     {
         public Task<IList<Cast>> GetCastByMovie(Movie movie);
         public Task<IList<MovieGenre>> GetGenreByMovie(Movie movie);
+        public Task<IList<MovieSession>> GetSessionsByMovie(Movie movie);
     }
 }

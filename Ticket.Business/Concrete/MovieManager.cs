@@ -125,5 +125,20 @@ namespace Ticket.Business.Concrete
             }
             return new ErrorDataResult<IList<Movie>>("Bu search için veri blulnamadı");
         }
+
+        public async Task<IDataResult<IList<MovieSession>>> GetMovieSessions(string slug)
+        {
+            var film = await _repository.GetAsync(f => f.Slug == slug);
+            if (film != null)
+            {
+                var sessions = await _repository.GetSessionsByMovie(film);
+                if (sessions.Count>0)
+                {
+                    return new SuccessDataResult<IList<MovieSession>>(sessions);
+                }
+                return new ErrorDataResult<IList<MovieSession>>("Bu filme ait session bulunamadı");
+            }
+            return new ErrorDataResult<IList<MovieSession>>("Böyle bir film bulunamadı");
+        }
     }
 }

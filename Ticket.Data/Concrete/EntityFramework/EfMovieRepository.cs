@@ -41,5 +41,18 @@ namespace Ticket.Data.Concrete.EntityFramework
                 return await result.ToListAsync();
             }
         }
+
+        public async Task<IList<MovieSession>> GetSessionsByMovie(Movie movie)
+        {
+            using (context)
+            {
+                var result = from movieSession in context.MovieSessions
+                             join theather in context.Theathers
+                             on movieSession.MovieId equals movie.Id
+                             where movieSession.MovieId == movie.Id
+                             select new MovieSession { Id = movieSession.Id, Date = movieSession.Date, Movie = movie, MovieId = movie.Id, Name = movieSession.Name, TheatherId = theather.Id, Theather = theather };
+                return await result.ToListAsync();
+            }
+        }
     }
 }
