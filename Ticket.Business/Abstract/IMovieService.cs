@@ -1,4 +1,5 @@
 ﻿using Ticket.Application.Utilities.Results;
+using Ticket.Domain.Dtos;
 using Ticket.Domain.Entities.Concrete;
 
 namespace Ticket.Business.Abstract
@@ -14,6 +15,6 @@ namespace Ticket.Business.Abstract
         Task<IDataResult<IList<Cast>>> GetCastsByMovie(string slug);
         Task<IDataResult<IList<Movie>>> GetSimiliarMovies();
         Task<IDataResult<IList<Movie>>> GetMoviesBySearch(string search);
-        Task<IDataResult<IList<MovieSession>>> GetMovieSessions(string slug);
+        Task<IDataResult<IList<MovieSessionDto>>> GetMovieSessions(string slug);
     }
 }

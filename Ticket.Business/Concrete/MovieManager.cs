@@ -7,6 +7,7 @@ using Ticket.Business.Constants;
 using Ticket.Business.Helpers;
 using Ticket.Business.ValidationRules.FluentValidation;
 using Ticket.Data.Abstract;
+using Ticket.Domain.Dtos;
 using Ticket.Domain.Entities.Concrete;
 
 namespace Ticket.Business.Concrete
@@ -126,19 +127,19 @@ namespace Ticket.Business.Concrete
             return new ErrorDataResult<IList<Movie>>("Bu search için veri blulnamadı");
         }
 
-        public async Task<IDataResult<IList<MovieSession>>> GetMovieSessions(string slug)
+        public async Task<IDataResult<IList<MovieSessionDto>>> GetMovieSessions(string slug)
         {
             var film = await _repository.GetAsync(f => f.Slug == slug);
             if (film != null)
             {
                 var sessions = await _repository.GetSessionsByMovie(film);
-                if (sessions.Count>0)
+                if (sessions.Count > 0)
                 {
-                    return new SuccessDataResult<IList<MovieSession>>(sessions);
+                    return new SuccessDataResult<IList<MovieSessionDto>>(sessions);
                 }
-                return new ErrorDataResult<IList<MovieSession>>("Bu filme ait session bulunamadı");
+                return new ErrorDataResult<IList<MovieSessionDto>>("Bu filme ait session bulunamadı");
             }
-            return new ErrorDataResult<IList<MovieSession>>("Böyle bir film bulunamadı");
+            return new ErrorDataResult<IList<MovieSessionDto>>("Böyle bir film bulunamadı");
         }
     }
 }

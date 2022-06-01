@@ -1,4 +1,5 @@
 ﻿using Ticket.Application.DataAccess;
+using Ticket.Domain.Dtos;
 using Ticket.Domain.Entities.Concrete;
 
 namespace Ticket.Data.Abstract
@@ -7,6 +8,6 @@ namespace Ticket.Data.Abstract
     {
         public Task<IList<Cast>> GetCastByMovie(Movie movie);
         public Task<IList<MovieGenre>> GetGenreByMovie(Movie movie);
-        public Task<IList<MovieSession>> GetSessionsByMovie(Movie movie);
+        public Task<IList<MovieSessionDto>> GetSessionsByMovie(Movie movie);
     }
 }

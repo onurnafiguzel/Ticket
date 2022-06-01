@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Ticket.Application.DataAccess.EntityFramework;
 using Ticket.Data.Abstract;
+using Ticket.Domain.Dtos;
 using Ticket.Domain.Entities.Concrete;
 
 namespace Ticket.Data.Concrete.EntityFramework
@@ -42,7 +43,7 @@ namespace Ticket.Data.Concrete.EntityFramework
             }
         }
 
-        public async Task<IList<MovieSession>> GetSessionsByMovie(Movie movie)
+        public async Task<IList<MovieSessionDto>> GetSessionsByMovie(Movie movie)
         {
             using (context)
             {
@@ -50,7 +51,7 @@ namespace Ticket.Data.Concrete.EntityFramework
                              join theather in context.Theathers
                              on movieSession.MovieId equals movie.Id
                              where movieSession.MovieId == movie.Id
-                             select new MovieSession { Id = movieSession.Id, Date = movieSession.Date, MovieId = movie.Id, Name = movieSession.Name, TheatherId = theather.Id, Theather = theather };
+                             select new MovieSessionDto { Id = movieSession.Id, Date = movieSession.Date, Name = movieSession.Name, Theather = theather };
                 return await result.ToListAsync();
             }
         }
