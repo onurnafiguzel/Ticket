@@ -50,7 +50,7 @@ namespace Ticket.Data.Concrete.EntityFramework
                              join theather in context.Theathers
                              on movieSession.MovieId equals movie.Id
                              where movieSession.MovieId == movie.Id
-                             select new MovieSession { Id = movieSession.Id, Date = movieSession.Date, Movie = movie, MovieId = movie.Id, Name = movieSession.Name, TheatherId = theather.Id, Theather = theather };
+                             select new MovieSession { Id = movieSession.Id, Date = movieSession.Date, MovieId = movie.Id, Name = movieSession.Name, TheatherId = theather.Id, Theather = theather };
                 return await result.ToListAsync();
             }
         }
