@@ -1,12 +1,13 @@
 ﻿using Ticket.Application.Entities.Concrete;
 using Ticket.Application.Utilities.Results;
+using Ticket.Domain.Dtos;
 
 namespace Ticket.Business.Abstract
 {
     public interface ICustomerService
     {
         Task<IDataResult<IList<Customer>>> GetAll();
-        Task<IDataResult<Customer>> Get(int customerId);
+        Task<IDataResult<UserDto>> Get(int customerId);
         Task<IResult> Add(Customer customer);
         Task<IResult> Update(Customer customer);
         Task<IResult> Delete(int customerId);

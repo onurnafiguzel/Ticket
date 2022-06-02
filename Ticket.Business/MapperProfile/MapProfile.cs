@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ticket.Application.Entities.Concrete;
 using Ticket.Domain.Dtos;
 using Ticket.Domain.Entities.Concrete;
 
@@ -14,6 +15,7 @@ namespace Ticket.Business.MapperProfile
         public MapProfile()
         {
             CreateMap<Movie, MovieDto>().ReverseMap();
+            CreateMap<Customer, UserDto>().ReverseMap();
         }
     }
 }

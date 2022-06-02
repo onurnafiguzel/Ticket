@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Ticket.Application.Utilities.IoC;
 using Ticket.Business.Abstract;
 using Ticket.Domain.Dtos;
 
@@ -10,10 +14,27 @@ namespace Ticket.WebApi.Controllers
     public class AuthController : ControllerBase
     {
         private IAuthService authService;
+        private ICustomerService customerService;
+        private IHttpContextAccessor _httpContextAccessor;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, ICustomerService customerService)
         {
             this.authService = authService;
+            _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
+            this.customerService = customerService;
+        }
+
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> Me()
+        {
+            var id = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var result = await customerService.Get(Convert.ToInt32(id));
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
 
         [HttpPost]

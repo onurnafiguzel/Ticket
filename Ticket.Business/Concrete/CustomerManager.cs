@@ -1,20 +1,24 @@
-﻿using Ticket.Application.Aspects.Autofac.Validation;
+﻿using AutoMapper;
+using Ticket.Application.Aspects.Autofac.Validation;
 using Ticket.Application.Entities.Concrete;
 using Ticket.Application.Utilities.Results;
 using Ticket.Business.Abstract;
 using Ticket.Business.Constants;
 using Ticket.Business.ValidationRules.FluentValidation;
 using Ticket.Data.Abstract;
+using Ticket.Domain.Dtos;
 
 namespace Ticket.Business.Concrete
 {
     public class CustomerManager : ICustomerService
     {
         private readonly ICustomerRepository _repository;
+        private IMapper mapper;
 
-        public CustomerManager(ICustomerRepository repository)
+        public CustomerManager(ICustomerRepository repository, IMapper mapper)
         {
             _repository = repository;
+            this.mapper = mapper;
         }
 
         [ValidationAspect(typeof(CustomerValidator))]
@@ -35,14 +39,16 @@ namespace Ticket.Business.Concrete
             return new ErrorResult(Messages.CustomerNotFound);
         }
 
-        public async Task<IDataResult<Customer>> Get(int customerId)
+        public async Task<IDataResult<UserDto>> Get(int customerId)
         {
             var entity = await _repository.GetAsync(c => c.Id == customerId);
             if (entity != null)
-            {
-                return new SuccessDataResult<Customer>(entity);
+            {                
+                var entityDto = mapper.Map<UserDto>(entity);
+                entityDto.Roles = await _repository.GetRoles(entity);
+                return new SuccessDataResult<UserDto>(entityDto);
             }
-            return new ErrorDataResult<Customer>(Messages.CustomerNotFound);
+            return new ErrorDataResult<UserDto>(Messages.CustomerNotFound);
         }
 
         public async Task<IDataResult<IList<Customer>>> GetAll()
