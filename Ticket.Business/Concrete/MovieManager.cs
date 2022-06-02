@@ -1,4 +1,5 @@
-﻿using Ticket.Application.Aspects.Autofac.Caching;
+﻿using AutoMapper;
+using Ticket.Application.Aspects.Autofac.Caching;
 using Ticket.Application.Aspects.Autofac.Validation;
 using Ticket.Application.Utilities.Results;
 using Ticket.Business.Abstract;
@@ -15,10 +16,12 @@ namespace Ticket.Business.Concrete
     public class MovieManager : IMovieService
     {
         private readonly IFilmRepository _repository;
+        private IMapper mapper;
 
-        public MovieManager(IFilmRepository repository)
+        public MovieManager(IFilmRepository repository, IMapper mapper)
         {
             _repository = repository;
+            this.mapper = mapper;
         }
 
         //TODO ÖNCELİKLİ : Hatalar için bir middleware yazılacak.
@@ -49,21 +52,22 @@ namespace Ticket.Business.Concrete
             var entity = await _repository.GetAsync(f => f.Id == filmId);
             if (entity != null)
             {
-                entity.Genres = await _repository.GetGenreByMovie(entity);
+                //entity.Genres = await _repository.GetGenreByMovie(entity);
                 return new SuccessDataResult<Movie>(entity);
             }
             return new ErrorDataResult<Movie>(Messages.FilmNotFound);
         }
 
-        public async Task<IDataResult<Movie>> GetBySlug(string slug)
+        public async Task<IDataResult<MovieDto>> GetBySlug(string slug)
         {
             var entity = await _repository.GetAsync(f => f.Slug == slug);
             if (entity != null)
             {
-                entity.Genres = await _repository.GetGenreByMovie(entity);
-                return new SuccessDataResult<Movie>(entity);
+                var entityDto = mapper.Map<MovieDto>(entity);
+                entityDto.Genres = await _repository.GetGenreByMovie(entity);
+                return new SuccessDataResult<MovieDto>(entityDto);
             }
-            return new ErrorDataResult<Movie>(Messages.FilmNotFound);
+            return new ErrorDataResult<MovieDto>(Messages.FilmNotFound);
         }
 
         public async Task<IDataResult<Movie>> GetCastBySlug(string slug)

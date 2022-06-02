@@ -8,7 +8,7 @@ namespace Ticket.Business.Abstract
     {
         Task<IDataResult<IList<Movie>>> GetAll();
         Task<IDataResult<Movie>> Get(int filmId);
-        Task<IDataResult<Movie>> GetBySlug(string slug);
+        Task<IDataResult<MovieDto>> GetBySlug(string slug);
         Task<IResult> Add(Movie film);
         Task<IResult> Update(Movie film);
         Task<IResult> Delete(int filmId);

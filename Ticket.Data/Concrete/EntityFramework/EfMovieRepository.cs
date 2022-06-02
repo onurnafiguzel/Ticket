@@ -30,7 +30,7 @@ namespace Ticket.Data.Concrete.EntityFramework
             }
         }
 
-        public async Task<IList<MovieGenre>> GetGenreByMovie(Movie movie)
+        public async Task<IList<GenreDto>> GetGenreByMovie(Movie movie)
         {
             using (context)
             {
@@ -38,7 +38,7 @@ namespace Ticket.Data.Concrete.EntityFramework
                              join movieGenre in context.MovieGenres
                              on genre.Id equals movieGenre.GenreId
                              where movieGenre.MovieId == movie.Id
-                             select new MovieGenre { Id = movieGenre.Id, Genre = genre, GenreId = genre.Id, MovieId = movie.Id };
+                             select new GenreDto { Id = genre.Id, Name = genre.Name };
                 return await result.ToListAsync();
             }
         }

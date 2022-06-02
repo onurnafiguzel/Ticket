@@ -10,11 +10,13 @@ using Ticket.Application.Utilities.Security.JWT;
 using Ticket.Business.DependencyResolvers.Autofac;
 using Ticket.Data;
 using Ticket.Application.Utilities.IoC;
+using Ticket.Business.MapperProfile;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(builder => builder.RegisterModule(new AutofacBusinessModule()));
+builder.Services.AddAutoMapper(typeof(MapProfile));
 
 // Add services to the container.
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
