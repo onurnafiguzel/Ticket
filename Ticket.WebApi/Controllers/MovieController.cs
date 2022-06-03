@@ -58,7 +58,7 @@ namespace Ticket.WebApi.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("{slug}/similiar_movies")]
+        [HttpGet("{slug}/similar_movies")]
         public async Task<IActionResult> GetSimiliarFilms(string slug)
         {
             var result = await filmService.GetSimiliarMovies();
