@@ -49,7 +49,7 @@ namespace Ticket.Data.Concrete.EntityFramework
             {
                 var result = from movieSession in context.MovieSessions
                              join theather in context.Theathers
-                             on movieSession.MovieId equals movie.Id
+                             on movieSession.TheatherId equals theather.Id
                              where movieSession.MovieId == movie.Id
                              select new MovieSessionDto { Id = movieSession.Id, Date = movieSession.Date, Name = movieSession.Name, Theather = theather };
                 return await result.ToListAsync();
