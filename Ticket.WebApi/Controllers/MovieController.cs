@@ -25,7 +25,7 @@ namespace Ticket.WebApi.Controllers
             {
                 return Ok(result);
             }
-            return BadRequest(result);
+            return NotFound(result);
         }
 
         // [HttpGet("{int:filmId}")]
@@ -37,7 +37,7 @@ namespace Ticket.WebApi.Controllers
             {
                 return Ok(result);
             }
-            return BadRequest(result);
+            return NotFound(result);
         }
 
         [HttpGet("{slug}")]
@@ -55,7 +55,7 @@ namespace Ticket.WebApi.Controllers
 
                 return Ok(result);
             }
-            return BadRequest(result);
+            return NotFound(result);
         }
 
         [HttpGet("{slug}/similar_movies")]
@@ -66,7 +66,7 @@ namespace Ticket.WebApi.Controllers
             {
                 return Ok(result);
             }
-            return BadRequest();
+            return NotFound();
         }
 
         [HttpGet("{slug}/cast")]
@@ -77,7 +77,7 @@ namespace Ticket.WebApi.Controllers
             {
                 return Ok(result);
             }
-            return BadRequest(result);
+            return NotFound(result);
         }
 
         [HttpGet("{slug}/sessions")]
@@ -88,7 +88,7 @@ namespace Ticket.WebApi.Controllers
             {
                 return Ok(result);
             }
-            return BadRequest(result);
+            return NotFound(result);
         }
 
         [HttpPost]
