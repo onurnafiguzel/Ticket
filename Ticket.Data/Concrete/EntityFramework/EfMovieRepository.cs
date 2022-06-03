@@ -51,6 +51,7 @@ namespace Ticket.Data.Concrete.EntityFramework
                              join theather in context.Theathers
                              on movieSession.TheatherId equals theather.Id
                              where movieSession.MovieId == movie.Id
+                             orderby movieSession.Date ascending
                              select new MovieSessionDto { Id = movieSession.Id, Date = movieSession.Date, Name = movieSession.Name, Theather = theather };
                 return await result.ToListAsync();
             }
