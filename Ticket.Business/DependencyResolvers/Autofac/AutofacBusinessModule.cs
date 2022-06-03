@@ -30,6 +30,8 @@ namespace Ticket.Business.DependencyResolvers.Autofac
             builder.RegisterType<EfMovieRepository>().As<IFilmRepository>().InstancePerDependency();
             builder.RegisterType<TicketContext>().As<DbContext>().InstancePerDependency();
             builder.RegisterType<EfCastRepository>().As<ICastRepository>().InstancePerDependency();
+            builder.RegisterType<SessionManager>().As<ISessionService>().InstancePerDependency();
+            builder.RegisterType<EfSessionRepository>().As<ISessionRepository>().InstancePerDependency();
 
             builder.RegisterType<AuthManager>().As<IAuthService>().InstancePerDependency();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().InstancePerDependency();
