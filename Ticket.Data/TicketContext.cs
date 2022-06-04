@@ -23,7 +23,9 @@ namespace Ticket.Data
         public DbSet<MovieSession> MovieSessions { get; set; }
         public DbSet<Theather> Theathers { get; set; }
         public DbSet<TheatherSeat> TheatherSeats { get; set; }
-        public DbSet<MovieTheatherSeat> MovieTheatherSeats { get; set; }
+        public DbSet<MovieSessionSeat> MovieSessionSeats { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<Place> Places { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -109,13 +111,19 @@ namespace Ticket.Data
             modelBuilder.Entity<Theather>().Property(c => c.Name)
                                     .HasMaxLength(200);
 
-            modelBuilder.Entity<MovieTheatherSeat>().HasKey(a => a.Id);
-            modelBuilder.Entity<MovieTheatherSeat>().Property(a => a.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<MovieSessionSeat>().HasKey(a => a.Id);
+            modelBuilder.Entity<MovieSessionSeat>().Property(a => a.Id).ValueGeneratedOnAdd();
 
             modelBuilder.Entity<TheatherSeat>().HasKey(a => a.Id);
             modelBuilder.Entity<TheatherSeat>().Property(a => a.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<TheatherSeat>().Property(c => c.Name)
                                     .HasMaxLength(200);
+
+            modelBuilder.Entity<City>().HasKey(a => a.Id);
+            modelBuilder.Entity<City>().Property(c => c.Id).ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Place>().HasKey(p => p.Id);
+            modelBuilder.Entity<Place>().Property(p => p.Id).ValueGeneratedOnAdd();
 
             // İlişkiler
 
@@ -154,8 +162,17 @@ namespace Ticket.Data
                                         .HasForeignKey(m1 => m1.TheatherId)
                                         .OnDelete(DeleteBehavior.NoAction);
 
-            // User(M) -  MovieTheaherSeat(1)
+            // MovieSession(1) - MovieSessionSeat(M)
+            modelBuilder.Entity<MovieSession>().HasMany(m => m.MovieSessionSeats)
+                                               .WithOne(m1 => m1.MovieSession)
+                                               .HasForeignKey(m1 => m1.SessionId)
+                                               .OnDelete(DeleteBehavior.NoAction);
 
+            // TheatherSeat(1) - MovieSessionSeat(M)
+            modelBuilder.Entity<TheatherSeat>().HasMany(m => m.MovieSessionSeats)
+                                               .WithOne(m1 => m1.TheatherSeat)
+                                               .HasForeignKey(m1 => m1.SeatId)
+                                               .OnDelete(DeleteBehavior.NoAction);            
 
             // İlk veriler
             modelBuilder.Entity<Admin>().HasData

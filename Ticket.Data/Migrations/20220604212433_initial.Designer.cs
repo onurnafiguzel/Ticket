@@ -11,7 +11,7 @@ using Ticket.Data;
 namespace Ticket.Data.Migrations
 {
     [DbContext(typeof(TicketContext))]
-    [Migration("20220530125044_initial")]
+    [Migration("20220604212433_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -216,6 +216,21 @@ namespace Ticket.Data.Migrations
                     b.ToTable("Casts");
                 });
 
+            modelBuilder.Entity("Ticket.Domain.Entities.Concrete.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cities");
+                });
+
             modelBuilder.Entity("Ticket.Domain.Entities.Concrete.Genre", b =>
                 {
                     b.Property<int>("Id")
@@ -398,7 +413,7 @@ namespace Ticket.Data.Migrations
                     b.ToTable("MovieSessions");
                 });
 
-            modelBuilder.Entity("Ticket.Domain.Entities.Concrete.MovieTheatherSeat", b =>
+            modelBuilder.Entity("Ticket.Domain.Entities.Concrete.MovieSessionSeat", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -407,23 +422,42 @@ namespace Ticket.Data.Migrations
                     b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MovieId")
+                    b.Property<int>("SeatId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SeatId")
+                    b.Property<int>("SessionId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TheatherId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("MovieTheatherSeats");
+                    b.HasIndex("SeatId");
+
+                    b.HasIndex("SessionId");
+
+                    b.ToTable("MovieSessionSeats");
+                });
+
+            modelBuilder.Entity("Ticket.Domain.Entities.Concrete.Place", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Places");
                 });
 
             modelBuilder.Entity("Ticket.Domain.Entities.Concrete.Theather", b =>
@@ -436,6 +470,13 @@ namespace Ticket.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("varchar(200)");
+
+                    b.Property<int>("PlaceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SeatPlan")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -494,7 +535,7 @@ namespace Ticket.Data.Migrations
             modelBuilder.Entity("Ticket.Domain.Entities.Concrete.MovieGenre", b =>
                 {
                     b.HasOne("Ticket.Domain.Entities.Concrete.Genre", "Genre")
-                        .WithMany()
+                        .WithMany("Movies")
                         .HasForeignKey("GenreId");
 
                     b.HasOne("Ticket.Domain.Entities.Concrete.Movie", "Movie")
@@ -527,16 +568,32 @@ namespace Ticket.Data.Migrations
                     b.Navigation("Theather");
                 });
 
-            modelBuilder.Entity("Ticket.Domain.Entities.Concrete.MovieTheatherSeat", b =>
+            modelBuilder.Entity("Ticket.Domain.Entities.Concrete.MovieSessionSeat", b =>
                 {
                     b.HasOne("Ticket.Application.Entities.Concrete.Customer", null)
-                        .WithMany("MovieTheatherSeats")
+                        .WithMany("MovieSessionSeats")
                         .HasForeignKey("CustomerId");
+
+                    b.HasOne("Ticket.Domain.Entities.Concrete.TheatherSeat", "TheatherSeat")
+                        .WithMany("MovieSessionSeats")
+                        .HasForeignKey("SeatId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Ticket.Domain.Entities.Concrete.MovieSession", "MovieSession")
+                        .WithMany("MovieSessionSeats")
+                        .HasForeignKey("SessionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("MovieSession");
+
+                    b.Navigation("TheatherSeat");
                 });
 
             modelBuilder.Entity("Ticket.Application.Entities.Concrete.Customer", b =>
                 {
-                    b.Navigation("MovieTheatherSeats");
+                    b.Navigation("MovieSessionSeats");
 
                     b.Navigation("OperationClaims");
                 });
@@ -551,6 +608,11 @@ namespace Ticket.Data.Migrations
                     b.Navigation("Casts");
                 });
 
+            modelBuilder.Entity("Ticket.Domain.Entities.Concrete.Genre", b =>
+                {
+                    b.Navigation("Movies");
+                });
+
             modelBuilder.Entity("Ticket.Domain.Entities.Concrete.Movie", b =>
                 {
                     b.Navigation("Genres");
@@ -558,9 +620,19 @@ namespace Ticket.Data.Migrations
                     b.Navigation("MovieSessions");
                 });
 
+            modelBuilder.Entity("Ticket.Domain.Entities.Concrete.MovieSession", b =>
+                {
+                    b.Navigation("MovieSessionSeats");
+                });
+
             modelBuilder.Entity("Ticket.Domain.Entities.Concrete.Theather", b =>
                 {
                     b.Navigation("MovieSessions");
+                });
+
+            modelBuilder.Entity("Ticket.Domain.Entities.Concrete.TheatherSeat", b =>
+                {
+                    b.Navigation("MovieSessionSeats");
                 });
 #pragma warning restore 612, 618
         }

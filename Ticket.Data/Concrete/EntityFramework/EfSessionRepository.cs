@@ -61,7 +61,7 @@ namespace Ticket.Data.Concrete.EntityFramework
                                   {
                                       Id = theatherSeats.Id,
                                       Name = theatherSeats.Name,
-                                      Available = (from movieTheatherSeats in context.MovieTheatherSeats where movieTheatherSeats.SeatId == theatherSeats.Id select true).Single() ? false : true
+                                      Available = (from movieTheatherSeats in context.MovieSessionSeats where movieTheatherSeats.SeatId == theatherSeats.Id select true).Single() ? false : true
                                   };
 
                     IList<SeatDto> seatDtos = await result2.ToListAsync();
@@ -84,7 +84,7 @@ namespace Ticket.Data.Concrete.EntityFramework
                              {
                                  Id = theatherSeats.Id,
                                  Name = theatherSeats.Name,
-                                 Available = (from movieTheatherSeats in context.MovieTheatherSeats where movieTheatherSeats.SeatId == theatherSeats.Id select true).Single() ? false : true
+                                 Available = (from movieTheatherSeats in context.MovieSessionSeats where movieTheatherSeats.SeatId == theatherSeats.Id select true).Single() ? false : true
                              };
 
                 return await result.ToListAsync();

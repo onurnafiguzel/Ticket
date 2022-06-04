@@ -12,7 +12,8 @@ namespace Ticket.Domain.Entities.Concrete
         public int Id { get; set; }
         public string Name { get; set; }
         public string SeatPlan { get; set; }
+        public int PlaceId { get; set; }
 
-        public ICollection<MovieSession> MovieSessions = new HashSet<MovieSession>();
+        public ICollection<MovieSession> MovieSessions { get; set; }  = new HashSet<MovieSession>();
     }
 }

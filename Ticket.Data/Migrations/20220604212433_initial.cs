@@ -50,6 +50,21 @@ namespace Ticket.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Cities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cities", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Customers",
                 columns: table => new
                 {
@@ -140,13 +155,32 @@ namespace Ticket.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Places",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CityId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Places", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Theathers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(type: "varchar(200)", maxLength: 200, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    SeatPlan = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PlaceId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -188,29 +222,6 @@ namespace Ticket.Data.Migrations
                         name: "FK_Casts_Actors_ActorId",
                         column: x => x.ActorId,
                         principalTable: "Actors",
-                        principalColumn: "Id");
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "MovieTheatherSeats",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    SeatId = table.Column<int>(type: "int", nullable: true),
-                    TheatherId = table.Column<int>(type: "int", nullable: true),
-                    MovieId = table.Column<int>(type: "int", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: true),
-                    CustomerId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MovieTheatherSeats", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_MovieTheatherSeats_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
                         principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -293,6 +304,38 @@ namespace Ticket.Data.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "MovieSessionSeats",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    SessionId = table.Column<int>(type: "int", nullable: false),
+                    SeatId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MovieSessionSeats", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MovieSessionSeats_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_MovieSessionSeats_MovieSessions_SessionId",
+                        column: x => x.SessionId,
+                        principalTable: "MovieSessions",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_MovieSessionSeats_TheatherSeats_SeatId",
+                        column: x => x.SeatId,
+                        principalTable: "TheatherSeats",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.InsertData(
                 table: "Actors",
                 columns: new[] { "Id", "Gender", "Name", "ProfilePath", "TmdbId" },
@@ -371,9 +414,19 @@ namespace Ticket.Data.Migrations
                 column: "TheatherId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MovieTheatherSeats_CustomerId",
-                table: "MovieTheatherSeats",
+                name: "IX_MovieSessionSeats_CustomerId",
+                table: "MovieSessionSeats",
                 column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MovieSessionSeats_SeatId",
+                table: "MovieSessionSeats",
+                column: "SeatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MovieSessionSeats_SessionId",
+                table: "MovieSessionSeats",
+                column: "SessionId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -385,19 +438,19 @@ namespace Ticket.Data.Migrations
                 name: "Casts");
 
             migrationBuilder.DropTable(
+                name: "Cities");
+
+            migrationBuilder.DropTable(
                 name: "CustomerOperationClaims");
 
             migrationBuilder.DropTable(
                 name: "MovieGenres");
 
             migrationBuilder.DropTable(
-                name: "MovieSessions");
+                name: "MovieSessionSeats");
 
             migrationBuilder.DropTable(
-                name: "MovieTheatherSeats");
-
-            migrationBuilder.DropTable(
-                name: "TheatherSeats");
+                name: "Places");
 
             migrationBuilder.DropTable(
                 name: "Actors");
@@ -409,13 +462,19 @@ namespace Ticket.Data.Migrations
                 name: "Genres");
 
             migrationBuilder.DropTable(
+                name: "Customers");
+
+            migrationBuilder.DropTable(
+                name: "MovieSessions");
+
+            migrationBuilder.DropTable(
+                name: "TheatherSeats");
+
+            migrationBuilder.DropTable(
                 name: "Movies");
 
             migrationBuilder.DropTable(
                 name: "Theathers");
-
-            migrationBuilder.DropTable(
-                name: "Customers");
         }
     }
 }

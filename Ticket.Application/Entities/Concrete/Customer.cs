@@ -13,6 +13,6 @@ namespace Ticket.Application.Entities.Concrete
         public bool Status { get; set; }
 
         public ICollection<CustomerOperationClaim> OperationClaims { get; set; } = new HashSet<CustomerOperationClaim>();
-        public ICollection<MovieTheatherSeat> MovieTheatherSeats { get; set; } = new HashSet<MovieTheatherSeat>();
+        public ICollection<MovieSessionSeat> MovieSessionSeats { get; set; } = new HashSet<MovieSessionSeat>();
     }
 }
