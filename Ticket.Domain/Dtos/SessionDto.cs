@@ -12,6 +12,7 @@ namespace Ticket.Domain.Dtos
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public MovieSimpleDto Movie { get; set; }
         public Theather Theather { get; set; }
         public ICollection<SeatDto> Seats { get; set; }
     }

@@ -26,12 +26,21 @@ namespace Ticket.Data.Concrete.EntityFramework
                 var result = from movieSession in context.MovieSessions
                              join theather in context.Theathers
                              on movieSession.TheatherId equals theather.Id
+                             join movie in context.Movies
+                             on movieSession.MovieId equals movie.Id
                              where movieSession.Id == id
 
                              select new SessionDto
                              {
                                  Id = movieSession.Id,
                                  Name = movieSession.Name,
+                                 Movie = new MovieSimpleDto
+                                 {
+                                     Id = movie.Id,
+                                     Title = movie.Title,
+                                     PosterPath = movie.PosterPath,
+                                     Slug = movie.Slug
+                                 },
                                  Theather = theather
                              };
 
