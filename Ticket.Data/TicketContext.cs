@@ -174,38 +174,24 @@ namespace Ticket.Data
                                                .HasForeignKey(m1 => m1.SeatId)
                                                .OnDelete(DeleteBehavior.NoAction);            
 
-            // İlk veriler
-            modelBuilder.Entity<Admin>().HasData
-                (
-                    new Admin { Id = 1, Name = "Enes Solak", Email = "enessolak.dev" },
-                    new Admin { Id = 2, Name = "Onur Güzel", Email = "ongguzel@gmail.com" }
-                );
+            // İlk veriler          
 
             modelBuilder.Entity<Customer>().HasData
                 (
                     new Customer { Id = 1, Name = "İbrahim Ertan Yılmaz", Email = "ibrahim@gmail.com" },
                     new Customer { Id = 2, Name = "Orhan İnaç", Email = "inac.orhan@outlook.com" }
-                );
-
-            modelBuilder.Entity<Movie>().HasData
-                (
-                    new Movie { Id = 1, Title = "Inception", Description = "A drea film.", Director = "Cristopher Nolan", Duration = 148, Rating = 8.8, OriginalLanguage = "English", OriginalTitle = "123", PosterPath = "posterpath", BackdropPath = "backdroppath", ImdbId = "imdbId", Status = "status", NowPlaying = false },
-                    new Movie { Id = 2, Title = "Ahlat Ağacı", Description = "Turkish philosophy movie", Director = "Nuri Bilge Ceylan", Duration = 188, Rating = 8.1, OriginalLanguage = "Turkish", OriginalTitle = "123", PosterPath = "posterpath", BackdropPath = "backdroppath", ImdbId = "imdbId", Status = "status", NowPlaying = false }
-                );
+                );           
 
             modelBuilder.Entity<OperationClaim>().HasData
                 (
-                new OperationClaim { Id = 1, Name = "admin" }
+                new OperationClaim { Id = 1, Name = "admin" },
+                new OperationClaim { Id = 2, Name = "user" }
                 );
+
             modelBuilder.Entity<CustomerOperationClaim>().HasData
                 (
                     new CustomerOperationClaim { Id = 1, CustomerId = 1, OperationClaimId = 1 }
-                );
-
-            modelBuilder.Entity<Actor>().HasData
-                (
-                    new Actor { Id = 1, Name = "Feyyaz Yiğit", Gender = 1, TmdbId = 5, ProfilePath = "abc" }
-                );
+                );         
         }
     }
 }
