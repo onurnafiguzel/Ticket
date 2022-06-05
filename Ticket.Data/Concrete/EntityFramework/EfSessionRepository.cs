@@ -27,6 +27,8 @@ namespace Ticket.Data.Concrete.EntityFramework
                 var session = from movieSession in context.MovieSessions
                              join theather in context.Theathers
                              on movieSession.TheatherId equals theather.Id
+                             join place in context.Places
+                             on theather.PlaceId equals place.Id
                              join movie in context.Movies
                              on movieSession.MovieId equals movie.Id
                              where movieSession.Id == id
@@ -47,7 +49,13 @@ namespace Ticket.Data.Concrete.EntityFramework
                                  {
                                      Id = theather.Id,
                                      Name = theather.Name,
-                                     SeatPlan = theather.SeatPlan
+                                     SeatPlan = theather.SeatPlan,
+                                     Place = new PlaceDto
+                                     {
+                                         Id = place.Id,
+                                         Name = place.Name,
+                                         CityId = place.CityId,
+                                     }
                                  }
                              };
 
