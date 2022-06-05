@@ -131,12 +131,12 @@ namespace Ticket.Business.Concrete
             return new ErrorDataResult<IList<Movie>>("Bu search için veri blulnamadı");
         }
 
-        public async Task<IDataResult<IList<MovieSessionDto>>> GetMovieSessions(string slug, int cityId)
+        public async Task<IDataResult<IList<MovieSessionDto>>> GetMovieSessions(string slug, int cityId, DateTime dateTime)
         {
             var film = await _repository.GetAsync(f => f.Slug == slug);
             if (film != null)
             {
-                var sessions = await _repository.GetSessionsByMovie(film, cityId);
+                var sessions = await _repository.GetSessionsByMovie(film, cityId,dateTime);
                 if (sessions.Count > 0)
                 {
                     return new SuccessDataResult<IList<MovieSessionDto>>(sessions);

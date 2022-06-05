@@ -81,9 +81,9 @@ namespace Ticket.WebApi.Controllers
         }
 
         [HttpGet("{slug}/sessions")]
-        public async Task<IActionResult> GetMovieSessions(string slug, [FromQuery] int cityId)
+        public async Task<IActionResult> GetMovieSessions(string slug, [FromQuery] int cityId, DateTime dateTime)
         {
-            var result = await filmService.GetMovieSessions(slug,cityId);
+            var result = await filmService.GetMovieSessions(slug,cityId,dateTime);
             if (result.Success)
             {
                 return Ok(result);

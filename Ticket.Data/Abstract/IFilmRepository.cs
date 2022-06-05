@@ -8,6 +8,6 @@ namespace Ticket.Data.Abstract
     {
         public Task<IList<Cast>> GetCastByMovie(Movie movie);
         public Task<IList<GenreDto>> GetGenreByMovie(Movie movie);
-        public Task<IList<MovieSessionDto>> GetSessionsByMovie(Movie movie, int cityId);
+        public Task<IList<MovieSessionDto>> GetSessionsByMovie(Movie movie, int cityId, DateTime dateTime);
     }
 }

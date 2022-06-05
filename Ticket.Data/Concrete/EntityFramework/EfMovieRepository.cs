@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using Ticket.Application.DataAccess.EntityFramework;
 using Ticket.Data.Abstract;
 using Ticket.Domain.Dtos;
@@ -43,22 +44,22 @@ namespace Ticket.Data.Concrete.EntityFramework
             }
         }
 
-        public async Task<IList<MovieSessionDto>> GetSessionsByMovie(Movie movie, int cityId)
+        public async Task<IList<MovieSessionDto>> GetSessionsByMovie(Movie movie, int cityId, DateTime dateTime)
         {
             using (context)
             {
                 var result = from movieSession in context.MovieSessions
                              join theather in context.Theathers
                              on movieSession.TheatherId equals theather.Id
-                            
+
                              join places in context.Places
                              on theather.PlaceId equals places.Id
                              where places.CityId == cityId
-                             
+
                              where movieSession.MovieId == movie.Id
                              orderby movieSession.Date ascending
                              select new MovieSessionDto { Id = movieSession.Id, Date = movieSession.Date, Name = movieSession.Name, Theather = theather };
-                return await result.ToListAsync();
+                return await result.Where(m => m.Date.Year == dateTime.Year && m.Date.Month == dateTime.Month && m.Date.Day == dateTime.Day).ToListAsync();
             }
         }
     }
