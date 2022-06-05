@@ -34,6 +34,7 @@ namespace Ticket.Data.Concrete.EntityFramework
                              {
                                  Id = movieSession.Id,
                                  Name = movieSession.Name,
+                                 Date = movieSession.Date,
                                  Movie = new MovieSimpleDto
                                  {
                                      Id = movie.Id,
