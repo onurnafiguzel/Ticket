@@ -43,13 +43,18 @@ namespace Ticket.Data.Concrete.EntityFramework
             }
         }
 
-        public async Task<IList<MovieSessionDto>> GetSessionsByMovie(Movie movie)
+        public async Task<IList<MovieSessionDto>> GetSessionsByMovie(Movie movie, int cityId)
         {
             using (context)
             {
                 var result = from movieSession in context.MovieSessions
                              join theather in context.Theathers
                              on movieSession.TheatherId equals theather.Id
+                            
+                             join places in context.Places
+                             on theather.PlaceId equals places.Id
+                             where places.CityId == cityId
+                             
                              where movieSession.MovieId == movie.Id
                              orderby movieSession.Date ascending
                              select new MovieSessionDto { Id = movieSession.Id, Date = movieSession.Date, Name = movieSession.Name, Theather = theather };
