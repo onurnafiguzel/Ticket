@@ -15,6 +15,6 @@ namespace Ticket.Business.Abstract
         Task<IDataResult<IList<Cast>>> GetCastsByMovie(string slug);
         Task<IDataResult<IList<Movie>>> GetSimiliarMovies();
         Task<IDataResult<IList<Movie>>> GetMoviesBySearch(string search);
-        Task<IDataResult<IList<MovieSessionDto>>> GetMovieSessions(string slug, int cityId, DateTime dateTime);
+        Task<IDataResult<IList<SessionPlaceDto>>> GetMovieSessions(string slug, int cityId, DateTime dateTime);
     }
 }

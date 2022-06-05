@@ -44,37 +44,77 @@ namespace Ticket.Data.Concrete.EntityFramework
             }
         }
 
-        public async Task<IList<MovieSessionDto>> GetSessionsByMovie(Movie movie, int cityId, DateTime dateTime)
+        public async Task<IList<SessionPlaceDto>> GetSessionsByMovie(Movie movie, int cityId, DateTime dateTime)
         {
             using (context)
             {
-                var result = from movieSession in context.MovieSessions
+                var placesResult = from movieSession in context.MovieSessions
                              join theather in context.Theathers
                              on movieSession.TheatherId equals theather.Id
 
-                             join places in context.Places
-                             on theather.PlaceId equals places.Id
-                             where places.CityId == cityId
+                             join place in context.Places
+                             on theather.PlaceId equals place.Id
 
+                             where place.CityId == cityId
                              where movieSession.MovieId == movie.Id
-                             orderby movieSession.Date ascending
-                             select new MovieSessionDto {
-                                 Id = movieSession.Id,
-                                 Date = movieSession.Date,
-                                 Name = movieSession.Name,
-                                 Theather = new TheatherSimpleDto
-                                 {
-                                     Id = theather.Id,
-                                     Name = theather.Name,
-                                     Place = new PlaceDto
-                                     {
-                                         Id = places.Id,
-                                         Name = places.Name,
-                                         CityId = places.CityId,
-                                     }
-                                 }
+                             where movieSession.Date.Year == dateTime.Year && movieSession.Date.Month == dateTime.Month && movieSession.Date.Day == dateTime.Day
+
+                             group place by new
+                             {
+                                 place.Id
+                             } into _place
+
+                             select new SessionPlaceDto
+                             {
+                                 Id = _place.Key.Id,
+                                 Name = (from place in context.Places where place.Id == _place.Key.Id select place).Single().Name,
+                                 CityId = (from place in context.Places where place.Id == _place.Key.Id select place).Single().CityId
                              };
-                return await result.Where(m => m.Date.Year == dateTime.Year && m.Date.Month == dateTime.Month && m.Date.Day == dateTime.Day).ToListAsync();
+
+                IList<SessionPlaceDto> places = await placesResult.ToListAsync();
+
+                foreach (var place in places)
+                {
+                    var theathersResult = from theather in context.Theathers
+                                        join movieSession in context.MovieSessions
+                                        on theather.Id equals movieSession.TheatherId
+                                        where movieSession.MovieId == movie.Id
+                                        where movieSession.Date.Year == dateTime.Year && movieSession.Date.Month == dateTime.Month && movieSession.Date.Day == dateTime.Day
+                                        where theather.PlaceId == place.Id
+
+                                        group theather by new { theather.Id } into _theather
+
+                                        select new SessionTheatherDto
+                                        {
+                                            Id = _theather.Key.Id,
+                                            Name = (from theather in context.Theathers where theather.Id == _theather.Key.Id select theather).Single().Name
+                                        };
+
+                    IList<SessionTheatherDto> theathers = await theathersResult.ToListAsync();
+
+                    foreach (var theather in theathers)
+                    {
+                        var sessionsResult = from movieSession in context.MovieSessions
+                                         where movieSession.TheatherId == theather.Id
+                                         where movieSession.MovieId == movie.Id
+                                         where movieSession.Date.Year == dateTime.Year && movieSession.Date.Month == dateTime.Month && movieSession.Date.Day == dateTime.Day
+                                         orderby movieSession.Date ascending
+
+                                         select new MovieSessionDto
+                                         {
+                                             Id = movieSession.Id,
+                                             Name = movieSession.Name,
+                                             Date = movieSession.Date
+                                         };
+
+                        IList<MovieSessionDto> sessions = await sessionsResult.ToListAsync();
+                        theather.Sessions = sessions;
+                    }
+
+                    place.Theathers = theathers;
+                }
+
+                return places;
             }
         }
     }

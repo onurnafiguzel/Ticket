@@ -131,19 +131,21 @@ namespace Ticket.Business.Concrete
             return new ErrorDataResult<IList<Movie>>("Bu search için veri blulnamadı");
         }
 
-        public async Task<IDataResult<IList<MovieSessionDto>>> GetMovieSessions(string slug, int cityId, DateTime dateTime)
+        public async Task<IDataResult<IList<SessionPlaceDto>>> GetMovieSessions(string slug, int cityId, DateTime dateTime)
         {
-            var film = await _repository.GetAsync(f => f.Slug == slug);
-            if (film != null)
+            var movie = await _repository.GetAsync(f => f.Slug == slug);
+            if (movie == null)
             {
-                var sessions = await _repository.GetSessionsByMovie(film, cityId,dateTime);
-                if (sessions.Count > 0)
-                {
-                    return new SuccessDataResult<IList<MovieSessionDto>>(sessions);
-                }
-                return new ErrorDataResult<IList<MovieSessionDto>>("Bu filme ait session bulunamadı");
+                return new ErrorDataResult<IList<SessionPlaceDto>>("Böyle bir film bulunamadı");
             }
-            return new ErrorDataResult<IList<MovieSessionDto>>("Böyle bir film bulunamadı");
+
+            var places = await _repository.GetSessionsByMovie(movie, cityId, dateTime);
+            if (places.Count == 0)
+            {
+                return new ErrorDataResult<IList<SessionPlaceDto>>("Bu filme ait session bulunamadı");
+            }
+
+            return new SuccessDataResult<IList<SessionPlaceDto>>(places);
         }
     }
 }

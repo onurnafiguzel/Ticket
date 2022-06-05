@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using Ticket.Business.Abstract;
 using Ticket.Domain.Dtos;
 using Ticket.Domain.Entities.Concrete;
@@ -81,9 +82,9 @@ namespace Ticket.WebApi.Controllers
         }
 
         [HttpGet("{slug}/sessions")]
-        public async Task<IActionResult> GetMovieSessions(string slug, [FromQuery] int cityId, DateTime dateTime)
+        public async Task<IActionResult> GetMovieSessions(string slug, [FromQuery] [Required] int city, [FromQuery] DateTime date)
         {
-            var result = await filmService.GetMovieSessions(slug,cityId,dateTime);
+            var result = await filmService.GetMovieSessions(slug, city, date);
             if (result.Success)
             {
                 return Ok(result);
