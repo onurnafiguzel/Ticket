@@ -8,7 +8,7 @@ namespace Ticket.Domain.Entities.Enums
 {
     public enum UserType
     {
-        Student,
-        Normal
+        Student = 2,
+        Normal = 1
     }
 }
