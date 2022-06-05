@@ -58,7 +58,22 @@ namespace Ticket.Data.Concrete.EntityFramework
 
                              where movieSession.MovieId == movie.Id
                              orderby movieSession.Date ascending
-                             select new MovieSessionDto { Id = movieSession.Id, Date = movieSession.Date, Name = movieSession.Name, Theather = theather };
+                             select new MovieSessionDto {
+                                 Id = movieSession.Id,
+                                 Date = movieSession.Date,
+                                 Name = movieSession.Name,
+                                 Theather = new TheatherSimpleDto
+                                 {
+                                     Id = theather.Id,
+                                     Name = theather.Name,
+                                     Place = new PlaceDto
+                                     {
+                                         Id = places.Id,
+                                         Name = places.Name,
+                                         CityId = places.CityId,
+                                     }
+                                 }
+                             };
                 return await result.Where(m => m.Date.Year == dateTime.Year && m.Date.Month == dateTime.Month && m.Date.Day == dateTime.Day).ToListAsync();
             }
         }
