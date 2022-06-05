@@ -305,6 +305,27 @@ namespace Ticket.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "TheatherPrices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    TheatherId = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TheatherPrices", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TheatherPrices_Theathers_TheatherId",
+                        column: x => x.TheatherId,
+                        principalTable: "Theathers",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "MovieSessionSeats",
                 columns: table => new
                 {
@@ -337,20 +358,6 @@ namespace Ticket.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.InsertData(
-                table: "Actors",
-                columns: new[] { "Id", "Gender", "Name", "ProfilePath", "TmdbId" },
-                values: new object[] { 1, 1, "Feyyaz Yiğit", "abc", 5 });
-
-            migrationBuilder.InsertData(
-                table: "Admins",
-                columns: new[] { "Id", "Email", "Name" },
-                values: new object[,]
-                {
-                    { 1, "enessolak.dev", "Enes Solak" },
-                    { 2, "ongguzel@gmail.com", "Onur Güzel" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Customers",
                 columns: new[] { "Id", "Email", "Name", "PasswordHash", "PasswordSalt", "Status" },
                 values: new object[,]
@@ -360,18 +367,13 @@ namespace Ticket.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Movies",
-                columns: new[] { "Id", "BackdropPath", "Description", "Director", "Duration", "ImdbId", "NowPlaying", "OriginalLanguage", "OriginalTitle", "PosterPath", "Rating", "ReleaseDate", "Slug", "Status", "Title", "TrailerUrl" },
-                values: new object[,]
-                {
-                    { 1, "backdroppath", "A drea film.", "Cristopher Nolan", 148, "imdbId", false, "English", "123", "posterpath", 8.8000000000000007, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "status", "Inception", null },
-                    { 2, "backdroppath", "Turkish philosophy movie", "Nuri Bilge Ceylan", 188, "imdbId", false, "Turkish", "123", "posterpath", 8.0999999999999996, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "status", "Ahlat Ağacı", null }
-                });
-
-            migrationBuilder.InsertData(
                 table: "OperationClaims",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { 1, "admin" });
+                values: new object[,]
+                {
+                    { 1, "admin" },
+                    { 2, "user" }
+                });
 
             migrationBuilder.InsertData(
                 table: "CustomerOperationClaims",
@@ -427,6 +429,11 @@ namespace Ticket.Data.Migrations
                 name: "IX_MovieSessionSeats_SessionId",
                 table: "MovieSessionSeats",
                 column: "SessionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TheatherPrices_TheatherId",
+                table: "TheatherPrices",
+                column: "TheatherId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -451,6 +458,9 @@ namespace Ticket.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Places");
+
+            migrationBuilder.DropTable(
+                name: "TheatherPrices");
 
             migrationBuilder.DropTable(
                 name: "Actors");

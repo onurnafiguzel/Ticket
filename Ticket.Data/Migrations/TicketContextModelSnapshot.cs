@@ -426,6 +426,28 @@ namespace Ticket.Data.Migrations
                     b.ToTable("Theathers");
                 });
 
+            modelBuilder.Entity("Ticket.Domain.Entities.Concrete.TheatherPrice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TheatherId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TheatherId");
+
+                    b.ToTable("TheatherPrices");
+                });
+
             modelBuilder.Entity("Ticket.Domain.Entities.Concrete.TheatherSeat", b =>
                 {
                     b.Property<int>("Id")
@@ -534,6 +556,17 @@ namespace Ticket.Data.Migrations
                     b.Navigation("TheatherSeat");
                 });
 
+            modelBuilder.Entity("Ticket.Domain.Entities.Concrete.TheatherPrice", b =>
+                {
+                    b.HasOne("Ticket.Domain.Entities.Concrete.Theather", "Theather")
+                        .WithMany("TheatherPrices")
+                        .HasForeignKey("TheatherId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Theather");
+                });
+
             modelBuilder.Entity("Ticket.Application.Entities.Concrete.Customer", b =>
                 {
                     b.Navigation("MovieSessionSeats");
@@ -571,6 +604,8 @@ namespace Ticket.Data.Migrations
             modelBuilder.Entity("Ticket.Domain.Entities.Concrete.Theather", b =>
                 {
                     b.Navigation("MovieSessions");
+
+                    b.Navigation("TheatherPrices");
                 });
 
             modelBuilder.Entity("Ticket.Domain.Entities.Concrete.TheatherSeat", b =>

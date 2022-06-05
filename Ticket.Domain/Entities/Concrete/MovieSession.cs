@@ -18,7 +18,7 @@ namespace Ticket.Domain.Entities.Concrete
         public Theather Theather { get; set; }
 
         public string Name { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; }        
 
         public ICollection<MovieSessionSeat> MovieSessionSeats { get; set; } = new HashSet<MovieSessionSeat>();
     }

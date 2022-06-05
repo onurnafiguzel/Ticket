@@ -26,6 +26,7 @@ namespace Ticket.Data
         public DbSet<MovieSessionSeat> MovieSessionSeats { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<Place> Places { get; set; }
+        public DbSet<TheatherPrice> TheatherPrices { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -125,6 +126,9 @@ namespace Ticket.Data
             modelBuilder.Entity<Place>().HasKey(p => p.Id);
             modelBuilder.Entity<Place>().Property(p => p.Id).ValueGeneratedOnAdd();
 
+            modelBuilder.Entity<TheatherPrice>().HasKey(p => p.Id);
+            modelBuilder.Entity<TheatherPrice>().Property(p => p.Id).ValueGeneratedOnAdd();
+
             // İlişkiler
 
             //Customer(M) - OperationClaim(M)
@@ -172,7 +176,13 @@ namespace Ticket.Data
             modelBuilder.Entity<TheatherSeat>().HasMany(m => m.MovieSessionSeats)
                                                .WithOne(m1 => m1.TheatherSeat)
                                                .HasForeignKey(m1 => m1.SeatId)
-                                               .OnDelete(DeleteBehavior.NoAction);            
+                                               .OnDelete(DeleteBehavior.NoAction);
+
+            // Theather(1) - TheatherPrice(M)
+            modelBuilder.Entity<Theather>().HasMany(m => m.TheatherPrices)
+                                                .WithOne(m1 => m1.Theather)
+                                                .HasForeignKey(m1 => m1.TheatherId)
+                                                .OnDelete(DeleteBehavior.NoAction);
 
             // İlk veriler          
 
@@ -180,7 +190,7 @@ namespace Ticket.Data
                 (
                     new Customer { Id = 1, Name = "İbrahim Ertan Yılmaz", Email = "ibrahim@gmail.com" },
                     new Customer { Id = 2, Name = "Orhan İnaç", Email = "inac.orhan@outlook.com" }
-                );           
+                );
 
             modelBuilder.Entity<OperationClaim>().HasData
                 (
@@ -191,7 +201,7 @@ namespace Ticket.Data
             modelBuilder.Entity<CustomerOperationClaim>().HasData
                 (
                     new CustomerOperationClaim { Id = 1, CustomerId = 1, OperationClaimId = 1 }
-                );         
+                );
         }
     }
 }
