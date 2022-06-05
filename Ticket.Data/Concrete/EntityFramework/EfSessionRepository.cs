@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Ticket.Application.DataAccess.EntityFramework;
 using Ticket.Data.Abstract;
 using Ticket.Domain.Dtos;
+using Ticket.Domain.Entities.Concrete;
 
 namespace Ticket.Data.Concrete.EntityFramework
 {
@@ -23,7 +24,7 @@ namespace Ticket.Data.Concrete.EntityFramework
         {
             using (context)
             {
-                var result = from movieSession in context.MovieSessions
+                var session = from movieSession in context.MovieSessions
                              join theather in context.Theathers
                              on movieSession.TheatherId equals theather.Id
                              join movie in context.Movies
@@ -42,33 +43,50 @@ namespace Ticket.Data.Concrete.EntityFramework
                                      PosterPath = movie.PosterPath,
                                      Slug = movie.Slug
                                  },
-                                 Theather = theather
+                                 Theather = new TheatherDto
+                                 {
+                                     Id = theather.Id,
+                                     Name = theather.Name,
+                                     SeatPlan = theather.SeatPlan
+                                 }
                              };
 
-                SessionDto sessionDto = await result.FirstOrDefaultAsync();
+                SessionDto sessionDto = await session.FirstOrDefaultAsync();
 
                 if (sessionDto == null)
                 {
                     return sessionDto;
                 }
-                else
-                {
-                    var result2 = from movieSession in context.MovieSessions
-                                  join theatherSeats in context.TheatherSeats
-                                  on movieSession.TheatherId equals theatherSeats.TheatherId
-                                  where movieSession.Id == id
 
-                                  select new SeatDto
-                                  {
-                                      Id = theatherSeats.Id,
-                                      Name = theatherSeats.Name,
-                                      Available = (from movieTheatherSeats in context.MovieSessionSeats where movieTheatherSeats.SeatId == theatherSeats.Id select true).Single() ? false : true
-                                  };
+                var theatherPrices = from movieSession in context.MovieSessions
+                                     join theatherPrice in context.TheatherPrices
+                                     on movieSession.TheatherId equals theatherPrice.TheatherId
+                                     where movieSession.Id == id
+                                     select new TheatherPriceDto
+                                     {
+                                         Id = theatherPrice.Id,
+                                         Type = theatherPrice.Type,
+                                         Price = theatherPrice.Price,
+                                     };
 
-                    IList<SeatDto> seatDtos = await result2.ToListAsync();
-                    sessionDto.Seats = seatDtos;
-                    return sessionDto;
-                }
+                IList<TheatherPriceDto> prices = await theatherPrices.ToListAsync();
+                sessionDto.Theather.Prices = prices;
+
+                var seats = from movieSession in context.MovieSessions
+                              join theatherSeats in context.TheatherSeats
+                              on movieSession.TheatherId equals theatherSeats.TheatherId
+                              where movieSession.Id == id
+
+                              select new SeatDto
+                              {
+                                  Id = theatherSeats.Id,
+                                  Name = theatherSeats.Name,
+                                  Available = (from movieTheatherSeats in context.MovieSessionSeats where movieTheatherSeats.SeatId == theatherSeats.Id select true).Single() ? false : true
+                              };
+
+                IList<SeatDto> seatDtos = await seats.ToListAsync();
+                sessionDto.Seats = seatDtos;
+                return sessionDto;
             }
         }
 

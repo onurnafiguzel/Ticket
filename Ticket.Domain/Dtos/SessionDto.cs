@@ -14,7 +14,7 @@ namespace Ticket.Domain.Dtos
         public string Name { get; set; }
         public DateTime Date { get; set; }
         public MovieSimpleDto Movie { get; set; }
-        public Theather Theather { get; set; }
+        public TheatherDto Theather { get; set; }
         public ICollection<SeatDto> Seats { get; set; }
     }
 }
