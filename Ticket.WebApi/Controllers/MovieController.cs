@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Ticket.Business.Abstract;
+using Ticket.Business.Models;
 using Ticket.Domain.Dtos;
 using Ticket.Domain.Entities.Concrete;
 
@@ -19,9 +20,9 @@ namespace Ticket.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] PaginationQuery paginationQuery)
         {
-            var result = await filmService.GetAll();
+            var result = await filmService.GetAll(paginationQuery);
             if (result.Success)
             {
                 return Ok(result);

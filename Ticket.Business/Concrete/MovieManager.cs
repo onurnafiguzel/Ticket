@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Ticket.Application.Aspects.Autofac.Caching;
 using Ticket.Application.Aspects.Autofac.Validation;
 using Ticket.Application.Utilities.Results;
@@ -6,6 +7,7 @@ using Ticket.Business.Abstract;
 using Ticket.Business.BusinessAspects.Autofac;
 using Ticket.Business.Constants;
 using Ticket.Business.Helpers;
+using Ticket.Business.Models;
 using Ticket.Business.ValidationRules.FluentValidation;
 using Ticket.Data.Abstract;
 using Ticket.Domain.Dtos;
@@ -81,10 +83,16 @@ namespace Ticket.Business.Concrete
         }
 
         [CacheAspect] //key,value
-        public async Task<IDataResult<IList<Movie>>> GetAll()
+        public async Task<IResult> GetAll(PaginationQuery paginationQuery)
         {
-            var entities = await _repository.GetAllAsync();
-            return new SuccessDataResult<IList<Movie>>(entities);
+            var data = await _repository.GetAllPaged(paginationQuery.PageNumber, paginationQuery.PageSize);
+            if (data == null)
+            {
+                return new ErrorDataResult<IList<Movie>>();
+            }
+
+            var count = await _repository.CountAsync();
+            return PaginationExtensions.CreatePaginationResult(data, true, paginationQuery, count);
         }
 
         [ValidationAspect(typeof(FilmValidator))]

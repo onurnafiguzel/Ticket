@@ -16,6 +16,18 @@ namespace Ticket.Data.Concrete.EntityFramework
             this.context = (TicketContext?)context;
         }
 
+        public async Task<IReadOnlyList<Movie>> GetAllPaged(int pageNumber, int pageSize)
+        {
+            return await context.Movies
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+        public Task<int> CountAsync()
+        {
+            return context.Movies.CountAsync();
+        }
+
         public async Task<IList<Cast>> GetCastByMovie(Movie movie)
         {
             using (context)
