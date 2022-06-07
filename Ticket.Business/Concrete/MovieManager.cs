@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Ticket.Application.Aspects.Autofac.Caching;
 using Ticket.Application.Aspects.Autofac.Validation;
 using Ticket.Application.Utilities.Results;
