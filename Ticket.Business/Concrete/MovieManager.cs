@@ -66,7 +66,7 @@ namespace Ticket.Business.Concrete
             if (entity != null)
             {
                 var entityDto = mapper.Map<MovieDto>(entity);
-                entityDto.Genres = await _repository.GetGenreByMovie(entity);
+                entityDto.Genres = await _repository.GetGenresByMovieId(entity.Id);
                 return new SuccessDataResult<MovieDto>(entityDto);
             }
             return new ErrorDataResult<MovieDto>(Messages.FilmNotFound);
@@ -82,13 +82,19 @@ namespace Ticket.Business.Concrete
             return new ErrorDataResult<Movie>(Messages.FilmNotFound);
         }
 
-        [CacheAspect] //key,value
+        // TODO: CacheAspect paginationQuery objesinin değerlerine göre çalışmalıdır, şuan için obje ne olursa olsun sürekli cache hit oluyor.
+        // [CacheAspect] //key,value
         public async Task<IResult> GetAll(PaginationQuery paginationQuery)
         {
             var data = await _repository.GetAllPaged(paginationQuery.PageNumber, paginationQuery.PageSize);
             if (data == null)
             {
                 return new ErrorDataResult<IList<Movie>>();
+            }
+
+            foreach (var movie in data)
+            {
+                movie.Genres = await _repository.GetGenresByMovieId(movie.Id);
             }
 
             var count = await _repository.CountAsync();

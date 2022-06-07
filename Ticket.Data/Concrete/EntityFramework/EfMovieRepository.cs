@@ -16,11 +16,30 @@ namespace Ticket.Data.Concrete.EntityFramework
             this.context = (TicketContext?)context;
         }
 
-        public async Task<IReadOnlyList<Movie>> GetAllPaged(int pageNumber, int pageSize)
+        public async Task<IReadOnlyList<MovieDto>> GetAllPaged(int pageNumber, int pageSize)
         {
             return await context.Movies
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
+                .Select(movie => new MovieDto
+                {
+                    Id = movie.Id,
+                    Title = movie.Title,
+                    OriginalTitle = movie.OriginalTitle,
+                    Description = movie.Description,
+                    Duration = movie.Duration,
+                    PosterPath = movie.PosterPath,
+                    BackdropPath = movie.BackdropPath,
+                    ReleaseDate = movie.ReleaseDate,
+                    OriginalLanguage = movie.OriginalLanguage,
+                    ImdbId = movie.ImdbId,
+                    Status = movie.Status,
+                    NowPlaying = movie.NowPlaying,
+                    TrailerUrl = movie.TrailerUrl,
+                    Rating = movie.Rating,
+                    Director = movie.Director,
+                    Slug = movie.Slug,
+                })
                 .ToListAsync();
         }
         public Task<int> CountAsync()
@@ -43,17 +62,16 @@ namespace Ticket.Data.Concrete.EntityFramework
             }
         }
 
-        public async Task<IList<GenreDto>> GetGenreByMovie(Movie movie)
+        public async Task<IList<GenreDto>> GetGenresByMovieId(int id)
         {
-            using (context)
-            {
-                var result = from genre in context.Genres
-                             join movieGenre in context.MovieGenres
-                             on genre.Id equals movieGenre.GenreId
-                             where movieGenre.MovieId == movie.Id
-                             select new GenreDto { Id = genre.Id, Name = genre.Name };
-                return await result.ToListAsync();
-            }
+            return await (from genre in context.Genres
+                        join movieGenre in context.MovieGenres
+                        on genre.Id equals movieGenre.GenreId
+                        where movieGenre.MovieId == id
+                        select new GenreDto { 
+                            Id = genre.Id,
+                            Name = genre.Name
+                        }).ToListAsync();
         }
 
         public async Task<IList<SessionPlaceDto>> GetSessionsByMovie(Movie movie, int cityId, DateTime dateTime)
