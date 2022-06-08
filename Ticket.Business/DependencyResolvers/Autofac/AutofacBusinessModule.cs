@@ -34,6 +34,10 @@ namespace Ticket.Business.DependencyResolvers.Autofac
             builder.RegisterType<EfSessionRepository>().As<ISessionRepository>().InstancePerDependency();
             builder.RegisterType<CityManager>().As<ICityService>().InstancePerDependency();
             builder.RegisterType<EfCityRepository>().As<ICityRepository>().InstancePerDependency();
+            builder.RegisterType<EfTheatherRepository>().As<ITheatherRepository>().InstancePerDependency();
+            builder.RegisterType<EfTheatherPriceRepository>().As<ITheatherPriceRepository>().InstancePerDependency();
+            builder.RegisterType<EfTheatherSeatRepository>().As<ITheatherSeatRepository>().InstancePerDependency();
+            builder.RegisterType<EfMovieSessionSeatRepository>().As<IMovieSessionSeatRepository>().InstancePerDependency();
 
             builder.RegisterType<AuthManager>().As<IAuthService>().InstancePerDependency();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().InstancePerDependency();
