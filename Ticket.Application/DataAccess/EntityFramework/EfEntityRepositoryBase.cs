@@ -20,25 +20,40 @@ namespace Ticket.Application.DataAccess.EntityFramework
             return entity;
         }
 
-        public async Task DeleteAsync(TEntity entity)
+        public async Task<int> CountAsync(Expression<Func<TEntity, bool>> filter = null)
         {
-            await Task.Run(() => { _context.Set<TEntity>().Remove(entity); });
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task<IList<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null)
-        {
-            //return filter==null
-            //    ? await _context.Set<TEntity>().ToListAsync()
-            //    : await _context.Set<TEntity>().Where(filter).ToListAsync();
-
-
             IQueryable<TEntity> query = _context.Set<TEntity>().AsNoTracking();
 
             if (filter != null)
             {
                 query = query.Where(filter);
             }
+
+            return await query.CountAsync();
+        }
+
+        public async Task DeleteAsync(TEntity entity)
+        {
+            await Task.Run(() => { _context.Set<TEntity>().Remove(entity); });
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IList<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null, int pageNumber = 0, int pageSize = 0)
+        {
+            IQueryable<TEntity> query = _context.Set<TEntity>().AsNoTracking();
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            if (pageNumber > 0 && pageSize > 0)
+            {
+                query = query
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize);
+            }
+
             return await query.ToListAsync();
         }
 
