@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System.Linq.Expressions;
 using Ticket.Application.Aspects.Autofac.Caching;
 using Ticket.Application.Aspects.Autofac.Validation;
 using Ticket.Application.Utilities.Results;
@@ -138,14 +139,26 @@ namespace Ticket.Business.Concrete
             return new ErrorDataResult<IList<Movie>>();
         }
 
-        public async Task<IDataResult<IList<Movie>>> GetMoviesBySearch(string search)
+        public async Task<IResult> GetMoviesBySearch(string search, PaginationQuery paginationQuery)
         {
-            var result = await _repository.GetAllAsync(m => m.Description.Contains(search) || m.Title.Contains(search) || m.OriginalTitle.Contains(search) || m.ImdbId.Contains(search));
-            if (result != null)
+            Expression<Func<Movie, bool>> filter = m => m.Description.Contains(search) || m.Title.Contains(search) || m.OriginalTitle.Contains(search) || m.ImdbId.Contains(search);
+            var data = await _repository.GetAllAsync(filter, paginationQuery.PageNumber, paginationQuery.PageSize);
+            if (data == null)
             {
-                return new SuccessDataResult<IList<Movie>>(result);
+                return new ErrorDataResult<IList<Movie>>("Bu search için veri blulnamadı");
             }
-            return new ErrorDataResult<IList<Movie>>("Bu search için veri blulnamadı");
+
+            List<MovieDto> movies = new List<MovieDto>();
+            foreach (var movie in data)
+            {
+                var entity = mapper.Map<MovieDto>(movie);
+                entity.Genres = await _repository.GetGenresByMovieId(movie.Id);
+                movies.Add(entity);
+            }
+
+            var list = movies.AsReadOnly();
+            var count = await _repository.CountAsync(filter);
+            return PaginationExtensions.CreatePaginationResult(list, true, paginationQuery, count);
         }
 
         public async Task<IDataResult<IList<SessionPlaceDto>>> GetMovieSessions(string slug, int cityId, DateTime dateTime)
