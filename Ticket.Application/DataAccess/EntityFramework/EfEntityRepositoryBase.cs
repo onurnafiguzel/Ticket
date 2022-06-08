@@ -38,7 +38,7 @@ namespace Ticket.Application.DataAccess.EntityFramework
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IList<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null, int pageNumber = 0, int pageSize = 0)
+        public async Task<IList<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null, Expression<Func<TEntity, bool>> orderBy = null, int pageNumber = 0, int pageSize = 0)
         {
             IQueryable<TEntity> query = _context.Set<TEntity>().AsNoTracking();
 
@@ -46,6 +46,11 @@ namespace Ticket.Application.DataAccess.EntityFramework
             {
                 query = query.Where(filter);
             }
+
+            if (orderBy != null)
+            {
+                query = query.OrderBy(orderBy);
+            } 
 
             if (pageNumber > 0 && pageSize > 0)
             {
