@@ -86,7 +86,7 @@ namespace Ticket.Business.Concrete
         // [CacheAspect] //key,value
         public async Task<IResult> GetAll(PaginationQuery paginationQuery)
         {
-            var data = await _repository.GetAllAsync(null, paginationQuery.PageNumber, paginationQuery.PageSize);
+            var data = await _repository.GetAllAsync(pageNumber: paginationQuery.PageNumber, pageSize: paginationQuery.PageSize);
             if (data == null)
             {
                 return new ErrorDataResult<IList<Movie>>();
@@ -142,7 +142,7 @@ namespace Ticket.Business.Concrete
         public async Task<IResult> GetMoviesBySearch(string search, PaginationQuery paginationQuery)
         {
             Expression<Func<Movie, bool>> filter = m => m.Description.Contains(search) || m.Title.Contains(search) || m.OriginalTitle.Contains(search) || m.ImdbId.Contains(search);
-            var data = await _repository.GetAllAsync(filter, paginationQuery.PageNumber, paginationQuery.PageSize);
+            var data = await _repository.GetAllAsync(filter, pageNumber: paginationQuery.PageNumber, pageSize: paginationQuery.PageSize);
             if (data == null)
             {
                 return new ErrorDataResult<IList<Movie>>("Bu search için veri bulunamadı");
