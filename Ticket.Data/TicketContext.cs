@@ -27,6 +27,7 @@ namespace Ticket.Data
         public DbSet<City> Cities { get; set; }
         public DbSet<Place> Places { get; set; }
         public DbSet<TheatherPrice> TheatherPrices { get; set; }
+        public DbSet<Domain.Entities.Concrete.Ticket> Tickets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -128,6 +129,9 @@ namespace Ticket.Data
 
             modelBuilder.Entity<TheatherPrice>().HasKey(p => p.Id);
             modelBuilder.Entity<TheatherPrice>().Property(p => p.Id).ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Domain.Entities.Concrete.Ticket>().HasKey(p => p.Id);
+            modelBuilder.Entity<Domain.Entities.Concrete.Ticket>().Property(p => p.Id).ValueGeneratedOnAdd();
 
             // İlişkiler
 
