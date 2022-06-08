@@ -85,19 +85,23 @@ namespace Ticket.Business.Concrete
         // [CacheAspect] //key,value
         public async Task<IResult> GetAll(PaginationQuery paginationQuery)
         {
-            var data = await _repository.GetAllPaged(paginationQuery.PageNumber, paginationQuery.PageSize);
+            var data = await _repository.GetAllAsync(null, paginationQuery.PageNumber, paginationQuery.PageSize);
             if (data == null)
             {
                 return new ErrorDataResult<IList<Movie>>();
             }
 
+            List<MovieDto> movies = new List<MovieDto>();
             foreach (var movie in data)
             {
-                movie.Genres = await _repository.GetGenresByMovieId(movie.Id);
+                var entity = mapper.Map<MovieDto>(movie);
+                entity.Genres = await _repository.GetGenresByMovieId(movie.Id);
+                movies.Add(entity);
             }
 
+            var list = movies.AsReadOnly();
             var count = await _repository.CountAsync();
-            return PaginationExtensions.CreatePaginationResult(data, true, paginationQuery, count);
+            return PaginationExtensions.CreatePaginationResult(list, true, paginationQuery, count);
         }
 
         [ValidationAspect(typeof(FilmValidator))]
