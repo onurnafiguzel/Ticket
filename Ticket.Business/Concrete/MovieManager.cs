@@ -131,7 +131,28 @@ namespace Ticket.Business.Concrete
 
         public async Task<IDataResult<IList<Movie>>> GetSimiliarMovies()
         {
-            var result = await _repository.GetAllRandomAsync();
+            var limit = 6;
+            var count = await _repository.CountAsync();
+
+            // randomly select ids
+            var ids = new List<int>();
+            var r = new Random();
+            while (ids.Count < limit)
+            {
+                var rand = r.Next(1, count);
+                if (!ids.Contains(rand))
+                {
+                    ids.Add(rand);
+                }
+
+                // prevent infinite loop
+                if (ids.Count == count)
+                {
+                    break;
+                }
+            }
+
+            var result = await _repository.GetAllAsync(r => ids.Contains(r.Id), limit: limit);
             if (result != null)
             {
                 return new SuccessDataResult<IList<Movie>>(result);
