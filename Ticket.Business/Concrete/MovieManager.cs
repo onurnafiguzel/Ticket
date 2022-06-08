@@ -145,7 +145,7 @@ namespace Ticket.Business.Concrete
             var data = await _repository.GetAllAsync(filter, paginationQuery.PageNumber, paginationQuery.PageSize);
             if (data == null)
             {
-                return new ErrorDataResult<IList<Movie>>("Bu search için veri blulnamadı");
+                return new ErrorDataResult<IList<Movie>>("Bu search için veri bulunamadı");
             }
 
             List<MovieDto> movies = new List<MovieDto>();
