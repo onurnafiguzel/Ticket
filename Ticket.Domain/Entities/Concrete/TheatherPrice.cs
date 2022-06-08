@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ticket.Domain.Entities.Abstract;
 using Ticket.Domain.Entities.Enums;
 
 namespace Ticket.Domain.Entities.Concrete
 {
-    public class TheatherPrice
+    public class TheatherPrice : IEntity
     {
         public int Id { get; set; }
         public int TheatherId { get; set; }
