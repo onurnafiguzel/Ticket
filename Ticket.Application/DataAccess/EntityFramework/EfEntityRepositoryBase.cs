@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System.Linq.Expressions;
 using Ticket.Domain.Entities.Abstract;
 
@@ -18,6 +19,11 @@ namespace Ticket.Application.DataAccess.EntityFramework
             await _context.Set<TEntity>().AddAsync(entity);
             await _context.SaveChangesAsync();
             return entity;
+        }
+
+        public async Task<IDbContextTransaction> BeginTransactionAsync()
+        {
+            return await _context.Database.BeginTransactionAsync();
         }
 
         public async Task<int> CountAsync(Expression<Func<TEntity, bool>> filter = null)
