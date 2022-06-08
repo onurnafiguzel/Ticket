@@ -12,5 +12,6 @@ namespace Ticket.Business.Abstract
     {
         public Task<IDataResult<SessionDto>> GetSession(int id);
         public Task<IDataResult<IList<SeatDto>>> GetSessionSeats(int id);
+        public Task<IResult> TryBuy(int sessionId, int userId, SessionBuyDto buyDto);
     }
 }
