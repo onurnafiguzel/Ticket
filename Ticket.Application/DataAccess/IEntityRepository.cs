@@ -11,6 +11,5 @@ namespace Ticket.Application.DataAccess
         Task<T> AddAsync(T entity);
         Task<T> UpdateAsync(T entity);
         Task DeleteAsync(T entity);
-        Task<IList<T>> GetAllRandomAsync(Expression<Func<T, bool>> filter = null);
     }
 }
