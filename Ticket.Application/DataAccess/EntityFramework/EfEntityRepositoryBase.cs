@@ -78,6 +78,11 @@ namespace Ticket.Application.DataAccess.EntityFramework
             return await _context.Set<TEntity>().AsNoTracking().SingleOrDefaultAsync(filter);
         }
 
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
+
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {
             _context.Set<TEntity>().Update(entity);
