@@ -68,8 +68,8 @@ namespace Ticket.Business.Concrete
             // check if seat is exists and belongs to this session's theather
             foreach (var seat in seats)
             {
-                var _seat = await theatherSeatRepository.GetAsync(r => r.Id == seat.Id);
-                if (_seat == null || _seat.TheatherId != theatherId)
+                var _seat = await theatherSeatRepository.GetAsync(r => r.Id == seat.Id && r.TheatherId == theatherId);
+                if (_seat == null)
                 {
                     return new ErrorResult("One of the seats is corrupted");
                 }
@@ -87,7 +87,7 @@ namespace Ticket.Business.Concrete
             // check seats are available
             foreach (var seat in seats)
             {
-                var _seat = await movieSessionSeatRepository.GetAsync(r => r.Id == seat.Id);
+                var _seat = await movieSessionSeatRepository.GetAsync(r => r.SeatId == seat.Id && r.SessionId == sessionId);
                 if (_seat != null)
                 {
                     return new ErrorResult("One of the seats is unavailable");
@@ -135,7 +135,7 @@ namespace Ticket.Business.Concrete
                     UserId = userId,
                     Seats = seatIds,
                     TotalPrice = totalPrice,
-                    Created = new DateTime()
+                    Created = DateTime.Today
                 };
 
                 // insert to database
