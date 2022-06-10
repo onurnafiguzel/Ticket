@@ -25,6 +25,7 @@ namespace Ticket.WebApi.Controllers
 
         public async Task<IActionResult> Me()
         {
+            // TODO: user id helperi yapılacak
             var userId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
             var result = await userService.Get(userId);
