@@ -44,7 +44,7 @@ namespace Ticket.Application.DataAccess.EntityFramework
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IList<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null, Expression<Func<TEntity, object>> orderBy = null, int pageNumber = 0, int pageSize = 0, int limit = 0)
+        public async Task<IList<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null, Expression<Func<TEntity, object>> orderBy = null, Expression<Func<TEntity, object>> orderByDescending = null, int pageNumber = 0, int pageSize = 0, int limit = 0)
         {
             IQueryable<TEntity> query = _context.Set<TEntity>().AsNoTracking();
 
@@ -56,6 +56,11 @@ namespace Ticket.Application.DataAccess.EntityFramework
             if (orderBy != null)
             {
                 query = query.OrderBy(orderBy);
+            }
+            
+            if (orderByDescending != null)
+            {
+                query = query.OrderByDescending(orderByDescending);
             }
 
             if (limit > 0)
