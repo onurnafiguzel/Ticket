@@ -11,7 +11,7 @@ using Ticket.Domain.Entities.Concrete;
 
 namespace Ticket.Data.Concrete.EntityFramework
 {
-    public class EfSessionRepository : EfEntityRepositoryBase<SessionDto>, ISessionRepository
+    public class EfSessionRepository : EfEntityRepositoryBase<MovieSession>, ISessionRepository
     {
         private TicketContext context;
 
