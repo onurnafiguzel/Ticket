@@ -24,7 +24,7 @@ namespace Ticket.WebApi.Controllers
             this.customerService = customerService;
         }
 
-        [HttpPost]
+        [HttpPost("Login")]
         public async Task<IActionResult> Login(CustomerForLoginDto customerForLoginDto)
         {
             var userToLogin = await authService.Login(customerForLoginDto);
