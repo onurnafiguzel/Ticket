@@ -24,19 +24,6 @@ namespace Ticket.WebApi.Controllers
             this.customerService = customerService;
         }
 
-        [Authorize]
-        [HttpGet("me")]
-        public async Task<IActionResult> Me()
-        {
-            var id = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var result = await customerService.Get(Convert.ToInt32(id));
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
         [HttpPost]
         public async Task<IActionResult> Login(CustomerForLoginDto customerForLoginDto)
         {
