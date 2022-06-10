@@ -83,7 +83,7 @@ namespace Ticket.Business.Concrete
         }
 
         // TODO: CacheAspect paginationQuery objesinin değerlerine göre çalışmalıdır, şuan için obje ne olursa olsun sürekli cache hit oluyor.
-        // [CacheAspect] //key,value
+        [CacheAspect] //key,value
         public async Task<IResult> GetAll(PaginationQuery paginationQuery)
         {
             var data = await _repository.GetAllAsync(pageNumber: paginationQuery.PageNumber, pageSize: paginationQuery.PageSize);

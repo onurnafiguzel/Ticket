@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ticket.Business.Models
 {
-    public class PaginationQuery: IPaginationQuery
+    public class PaginationQuery : IPaginationQuery
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
@@ -21,6 +21,11 @@ namespace Ticket.Business.Models
         {
             this.PageNumber = pageNumber < 1 ? 1 : pageNumber;
             this.PageSize = pageSize < 10 ? 10 : pageSize;
+        }
+
+        public override string ToString()
+        {
+            return $"{PageNumber},{PageSize}";
         }
     }
 }

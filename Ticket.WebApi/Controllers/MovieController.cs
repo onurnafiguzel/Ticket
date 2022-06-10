@@ -45,16 +45,9 @@ namespace Ticket.WebApi.Controllers
         [HttpGet("{slug}")]
         public async Task<IActionResult> GetMovieBySlug(string slug)
         {
-            //TODO CONTEXT DISPOSE HATASI, TEK METOT ÇALIŞIYOR
             var result = await filmService.GetBySlug(slug);
             if (result.Success)
-            {
-                // MovieWithSimiliars movieWithSimiliars = new MovieWithSimiliars();
-                //movieWithSimiliars.Movie = result.Data;
-                //var similiarMovies = await filmService.GetSimiliarMovies();
-                //movieWithSimiliars.SimiliarMovies = similiarMovies.Data;
-                //return Ok(movieWithSimiliars);
-
+            {             
                 return Ok(result);
             }
             return NotFound(result);
