@@ -16,6 +16,9 @@ namespace Ticket.Business.MapperProfile
         {
             CreateMap<Movie, MovieDto>().ReverseMap();
             CreateMap<Customer, UserDto>().ReverseMap();
+            CreateMap<Domain.Entities.Concrete.Ticket, TicketDto>().ForMember(dest => dest.Seats, opt => opt.Ignore()).ReverseMap();
+            CreateMap<MovieSession, SessionDto>().ReverseMap();
+            CreateMap<TheatherSeat, SeatDto>().ReverseMap();
         }
     }
 }
