@@ -15,6 +15,7 @@ using Castle.DynamicProxy;
 using Ticket.Application.Utilities.Interceptors;
 using Ticket.Application.Utilities.Security.JWT;
 using Microsoft.AspNetCore.Http;
+using Ticket.Business.MapperProfile;
 
 namespace Ticket.Business.DependencyResolvers.Autofac
 {
@@ -43,7 +44,7 @@ namespace Ticket.Business.DependencyResolvers.Autofac
 
             builder.RegisterType<AuthManager>().As<IAuthService>().InstancePerDependency();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().InstancePerDependency();
-
+            builder.RegisterInstance(AutoMapperConfig.Initialize()).SingleInstance();
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()

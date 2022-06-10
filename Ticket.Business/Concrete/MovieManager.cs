@@ -81,8 +81,7 @@ namespace Ticket.Business.Concrete
             }
             return new ErrorDataResult<Movie>(Messages.FilmNotFound);
         }
-
-        // TODO: CacheAspect paginationQuery objesinin değerlerine göre çalışmalıdır, şuan için obje ne olursa olsun sürekli cache hit oluyor.
+      
         [CacheAspect] //key,value
         public async Task<IResult> GetAll(PaginationQuery paginationQuery)
         {
