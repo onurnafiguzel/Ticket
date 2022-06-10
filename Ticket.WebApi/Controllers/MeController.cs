@@ -9,6 +9,7 @@ namespace Ticket.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MeController : ControllerBase
     {
         private readonly ICustomerService userService;
@@ -22,8 +23,6 @@ namespace Ticket.WebApi.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        [Authorize]
-        [HttpGet]
         public async Task<IActionResult> Me()
         {
             var userId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
@@ -36,7 +35,6 @@ namespace Ticket.WebApi.Controllers
             return BadRequest(result);
         }
 
-        [Authorize]
         [HttpGet("tickets")]
         public async Task<IActionResult> Tickets([FromQuery] PaginationQuery paginationQuery)
         {
