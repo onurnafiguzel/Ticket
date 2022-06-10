@@ -34,7 +34,7 @@ namespace Ticket.Business.Concrete
         public async Task<IResult> GetAll(PaginationQuery paginationQuery, int userId = 0)
         {
             Expression<Func<Domain.Entities.Concrete.Ticket, bool>> filter = r => r.UserId == userId;
-            var _tickets = await _repository.GetAllAsync(pageNumber: paginationQuery.PageNumber, pageSize: paginationQuery.PageSize, filter: userId > 0 ? filter : null);
+            var _tickets = await _repository.GetAllAsync(pageNumber: paginationQuery.PageNumber, pageSize: paginationQuery.PageSize, filter: userId > 0 ? filter : null, orderByDescending: r => r.Created);
             if (_tickets == null)
             {
                 return new ErrorResult("Not found");
