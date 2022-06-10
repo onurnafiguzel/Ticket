@@ -15,10 +15,14 @@ namespace Ticket.Business.MapperProfile
         public MapProfile()
         {
             CreateMap<Movie, MovieDto>().ReverseMap();
+            CreateMap<Movie, MovieSimpleDto>().ReverseMap();
             CreateMap<Customer, UserDto>().ReverseMap();
             CreateMap<Domain.Entities.Concrete.Ticket, TicketDto>().ForMember(dest => dest.Seats, opt => opt.Ignore()).ReverseMap();
             CreateMap<MovieSession, SessionDto>().ReverseMap();
+            CreateMap<Theather, TheatherSimpleDto>().ReverseMap();
+            CreateMap<Theather, TheatherDto>().ReverseMap();
             CreateMap<TheatherSeat, SeatDto>().ReverseMap();
+            CreateMap<Place, PlaceDto>().ReverseMap();
         }
     }
 }
