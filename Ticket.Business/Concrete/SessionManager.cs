@@ -135,7 +135,7 @@ namespace Ticket.Business.Concrete
                     UserId = userId,
                     Seats = seatIds,
                     TotalPrice = totalPrice,
-                    Created = DateTime.Today
+                    Created = DateTime.Now
                 };
 
                 // insert to database
