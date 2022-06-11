@@ -43,6 +43,8 @@ namespace Ticket.Business.DependencyResolvers.Autofac
             builder.RegisterType<EfTicketRepository>().As<ITicketRepository>().InstancePerDependency();
             builder.RegisterType<EfPlaceRepository>().As<IPlaceRepository>().InstancePerDependency();
             builder.RegisterType<EfCustomerOperaionClaimRepository>().As<ICustomerOperationClaimRepository>().InstancePerDependency();
+            builder.RegisterType<EfOperationClaimRepository>().As<IOperationClaimRepository>().InstancePerDependency();
+            builder.RegisterType<OperationClaimManager>().As<IOperationClaimService>().InstancePerDependency();
 
             builder.RegisterType<AuthManager>().As<IAuthService>().InstancePerDependency();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().InstancePerDependency();
