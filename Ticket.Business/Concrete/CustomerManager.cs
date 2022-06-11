@@ -3,6 +3,7 @@ using Ticket.Application.Aspects.Autofac.Validation;
 using Ticket.Application.Entities.Concrete;
 using Ticket.Application.Utilities.Results;
 using Ticket.Business.Abstract;
+using Ticket.Business.BusinessAspects.Autofac;
 using Ticket.Business.Constants;
 using Ticket.Business.ValidationRules.FluentValidation;
 using Ticket.Data.Abstract;
@@ -13,12 +14,14 @@ namespace Ticket.Business.Concrete
     public class CustomerManager : ICustomerService
     {
         private readonly ICustomerRepository _repository;
+        private readonly ICustomerOperationClaimRepository customerOperationClaimRepository;
         private IMapper mapper;
 
-        public CustomerManager(ICustomerRepository repository, IMapper mapper)
+        public CustomerManager(ICustomerRepository repository, IMapper mapper, ICustomerOperationClaimRepository customerOperationClaimRepository)
         {
             _repository = repository;
             this.mapper = mapper;
+            this.customerOperationClaimRepository = customerOperationClaimRepository;
         }
 
         [ValidationAspect(typeof(CustomerValidator))]
@@ -43,7 +46,7 @@ namespace Ticket.Business.Concrete
         {
             var entity = await _repository.GetAsync(c => c.Id == customerId);
             if (entity != null)
-            {                
+            {
                 var entityDto = mapper.Map<UserDto>(entity);
                 entityDto.Roles = await _repository.GetRoles(entity);
                 return new SuccessDataResult<UserDto>(entityDto);
@@ -69,6 +72,19 @@ namespace Ticket.Business.Concrete
         public async Task<List<OperationClaim>> GetClaims(Customer customer)
         {
             return await _repository.GetClaims(customer);
+        }
+
+        [SecuredOperation("God")]
+        public async Task<IDataResult<Customer>> ChangeCustomerRole(int customerId, int roleId)
+        {
+            var customer = await _repository.GetAsync(c => c.Id == customerId);
+            if (customer == null)
+            {
+                return new ErrorDataResult<Customer>(Messages.CustomerNotFound);
+            }
+            var result = await customerOperationClaimRepository.AddAsync(new CustomerOperationClaim { CustomerId = customer.Id, OperationClaimId = roleId });
+            customer.OperationClaims.Add(result);
+            return new SuccessDataResult<Customer>(customer);
         }
 
         [ValidationAspect(typeof(CustomerValidator))]

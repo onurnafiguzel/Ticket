@@ -13,5 +13,6 @@ namespace Ticket.Business.Abstract
         Task<IResult> Delete(int customerId);
         Task<List<OperationClaim>> GetClaims(Customer customer);
         Task<Customer> GetByMail(string email);
+        Task<IDataResult<Customer>> ChangeCustomerRole(int customerId, int roleId);
     }
 }

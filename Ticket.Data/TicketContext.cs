@@ -199,7 +199,8 @@ namespace Ticket.Data
             modelBuilder.Entity<OperationClaim>().HasData
                 (
                 new OperationClaim { Id = 1, Name = "admin" },
-                new OperationClaim { Id = 2, Name = "user" }
+                new OperationClaim { Id = 2, Name = "user" },
+                new OperationClaim { Id = 3, Name = "god" }
                 );
 
             modelBuilder.Entity<CustomerOperationClaim>().HasData

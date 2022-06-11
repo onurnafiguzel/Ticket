@@ -40,5 +40,16 @@ namespace Ticket.Data.Concrete.EntityFramework
                 return await result.ToListAsync();
             }
         }
+
+        public async Task<Customer> MakeCustomerAdmin(Customer customer)
+        {
+            customer.OperationClaims.Add(new CustomerOperationClaim
+            {
+                CustomerId = customer.Id,
+                OperationClaimId = 1
+            });
+            context.Update(customer);
+            return customer;
+        }
     }
 }

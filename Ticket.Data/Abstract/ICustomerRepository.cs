@@ -8,5 +8,6 @@ namespace Ticket.Data.Abstract
     {
         public Task<List<OperationClaim>> GetClaims(Customer customer);
         public Task<IList<string>> GetRoles(Customer customer);
+        public Task<Customer> MakeCustomerAdmin(Customer customer);
     }
 }

@@ -49,6 +49,17 @@ namespace Ticket.WebApi.Controllers
             return BadRequest(result);
         }
 
+        [HttpPost("ChangeCustomerRole")]
+        public async Task<IActionResult> ChangeCustomerRole(int customerId, int roleId)
+        {
+            var result = await customerService.ChangeCustomerRole(customerId, roleId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
+        }
+
         [HttpPut]
         public async Task<IActionResult> Update(Customer customer)
         {

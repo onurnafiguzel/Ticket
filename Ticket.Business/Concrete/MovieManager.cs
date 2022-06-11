@@ -28,7 +28,7 @@ namespace Ticket.Business.Concrete
        
         [SecuredOperation("admin,editor")]
         [ValidationAspect(typeof(FilmValidator))]
-        [CacheRemoveAspect("IFilmService.Get")]
+        [CacheRemoveAspect("IFilmService.Get")] // todo burası getall mu olması gerek
         public async Task<IResult> Add(Movie film)
         {
             film.Slug = UrlExtension.FriendlyUrl(film.Title);
@@ -36,6 +36,7 @@ namespace Ticket.Business.Concrete
             return new SuccessResult(Messages.FilmAdded);
         }
 
+        [SecuredOperation("admin,god")]
         public async Task<IResult> Delete(int filmId)
         {
             var entity = await _repository.GetAsync(f => f.Id == filmId);
@@ -103,6 +104,7 @@ namespace Ticket.Business.Concrete
             return PaginationExtensions.CreatePaginationResult(list, true, paginationQuery, count);
         }
 
+        [SecuredOperation("admin,god")]
         [ValidationAspect(typeof(FilmValidator))]
         [CacheRemoveAspect("IFilmService.Get")]
         public async Task<IResult> Update(Movie film)

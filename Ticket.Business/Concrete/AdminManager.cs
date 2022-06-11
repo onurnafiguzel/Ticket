@@ -1,6 +1,7 @@
 ﻿using Ticket.Application.Aspects.Autofac.Validation;
 using Ticket.Application.Utilities.Results;
 using Ticket.Business.Abstract;
+using Ticket.Business.BusinessAspects.Autofac;
 using Ticket.Business.Constants;
 using Ticket.Business.ValidationRules.FluentValidation;
 using Ticket.Data.Abstract;
@@ -8,6 +9,7 @@ using Ticket.Domain.Entities.Concrete;
 
 namespace Ticket.Business.Concrete
 {
+    [SecuredOperation("god")]
     public class AdminManager : IAdminService
     {
         private readonly IAdminRepository _repository;
