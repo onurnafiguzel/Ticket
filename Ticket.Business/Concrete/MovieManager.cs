@@ -25,8 +25,7 @@ namespace Ticket.Business.Concrete
             _repository = repository;
             this.mapper = mapper;
         }
-
-        //TODO ÖNCELİKLİ : Hatalar için bir middleware yazılacak.
+       
         [SecuredOperation("admin,editor")]
         [ValidationAspect(typeof(FilmValidator))]
         [CacheRemoveAspect("IFilmService.Get")]

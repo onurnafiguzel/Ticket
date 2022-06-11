@@ -68,7 +68,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.ConfigureCustomExceptionMiddleware();
+if (!app.Environment.IsDevelopment())
+{
+    app.ConfigureCustomExceptionMiddleware();
+}
 
 app.UseCors(MyAllowSpecificOrigins);
 
