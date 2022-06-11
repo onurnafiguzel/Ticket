@@ -24,6 +24,7 @@ namespace Ticket.Business.Constants
         public static string SuccesfullLogin = "Giriş başarılı.";
         public static string UserExist = "Kullanıcı mevcut.";
         public static string UserRegistered = "Kullanıcı kaydedildi.";
+        public static string UserUpdated = "Kullanıcı değiştirildi.";
         public static string AccessTokenCreated = "AccessToken oluşturuldu.";
 
         public static string AuthorizationDenied = "Yetkiniz yok.";

@@ -28,8 +28,8 @@ namespace Ticket.Business.Concrete
         {
             var claims = await _customerService.GetClaims(customer);
             var accessToken = _tokenHelper.CreateToken(customer, claims);
-            return new SuccessDataResult<AccessToken>(accessToken,Messages.AccessTokenCreated);
-            
+            return new SuccessDataResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
+
         }
 
         public async Task<IDataResult<Customer>> Login(CustomerForLoginDto customerForLoginDto)
@@ -62,7 +62,23 @@ namespace Ticket.Business.Concrete
             };
             await _customerService.Add(customer);
             return new SuccessDataResult<Customer>(customer, Messages.UserRegistered);
+        }
 
+        public async Task<IDataResult<Customer>> Update(CustomerUpdateDto customerUpdateDto, int userId)
+        {
+            byte[] passwodHash, passwordSalt;
+            HashingHelper.CreatePasswordHash(customerUpdateDto.Password, out passwodHash, out passwordSalt);
+            var customer = new Customer
+            {
+                Id = userId,
+                Email = customerUpdateDto.Email,
+                Name = customerUpdateDto.Name,
+                PasswordHash = passwodHash,
+                PasswordSalt = passwordSalt,
+                Status = true
+            };
+            await _customerService.Update(customer);
+            return new SuccessDataResult<Customer>(customer, Messages.UserUpdated);
         }
 
         public async Task<IResult> UserExists(string email)

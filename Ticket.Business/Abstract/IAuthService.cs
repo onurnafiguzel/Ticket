@@ -16,5 +16,6 @@ namespace Ticket.Business.Abstract
         Task<IDataResult<Customer>> Login(CustomerForLoginDto customerForLoginDto);
         Task<IResult> UserExists(string email);
         Task<IDataResult<AccessToken>> CreateAccessToken(Customer customer);
+        Task<IDataResult<Customer>> Update(CustomerUpdateDto customerUpdateDto,int userId);
     }
 }

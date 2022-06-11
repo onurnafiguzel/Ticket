@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Ticket.Business.Abstract;
 using Ticket.Business.Models;
+using Ticket.Domain.Dtos;
 
 namespace Ticket.WebApi.Controllers
 {
@@ -14,13 +15,15 @@ namespace Ticket.WebApi.Controllers
     {
         private readonly ICustomerService userService;
         private readonly ITicketService ticketService;
+        private readonly IAuthService authService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public MeController(ICustomerService userService, ITicketService ticketService, IHttpContextAccessor httpContextAccessor)
+        public MeController(ICustomerService userService, ITicketService ticketService, IHttpContextAccessor httpContextAccessor, IAuthService authService)
         {
             this.userService = userService;
             this.ticketService = ticketService;
             _httpContextAccessor = httpContextAccessor;
+            this.authService = authService;
         }
 
         [HttpGet]
@@ -48,6 +51,36 @@ namespace Ticket.WebApi.Controllers
             }
 
             return Ok(tickets);
+        }
+
+        [HttpGet("details")]
+        public async Task<IActionResult> Details()
+        {
+            var userId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var result = await userService.Get(userId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [Authorize]
+        [HttpPut("details")]
+        public async Task<IActionResult> UpdateMe([FromBody] CustomerUpdateDto customerUpdateDto)
+        {
+            var userId = Convert.ToInt32(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            var result = await userService.Get(userId);
+            if (result.Success)
+            {
+                var newResult = await authService.Update(customerUpdateDto, userId);
+                if (newResult.Success)
+                {
+                    return Ok(newResult);
+                }
+                return BadRequest(newResult);
+            }
+            return BadRequest(result);
         }
     }
 }
