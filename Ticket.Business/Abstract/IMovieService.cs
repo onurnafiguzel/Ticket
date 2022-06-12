@@ -7,7 +7,7 @@ namespace Ticket.Business.Abstract
 {
     public interface IMovieService
     {
-        Task<IResult> GetAll(PaginationQuery paginationQuery);
+        Task<IResult> GetAll(PaginationQuery paginationQuery, string q);
         Task<IDataResult<Movie>> Get(int filmId);
         Task<IDataResult<MovieDto>> GetBySlug(string slug);
         Task<IResult> Add(Movie film);

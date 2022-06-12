@@ -20,9 +20,9 @@ namespace Ticket.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] PaginationQuery paginationQuery)
+        public async Task<IActionResult> GetAll([FromQuery] PaginationQuery paginationQuery, [FromQuery] string? q)
         {
-            var result = await filmService.GetAll(paginationQuery);
+            var result = await filmService.GetAll(paginationQuery, q);
             if (result.Success)
             {
                 return Ok(result);

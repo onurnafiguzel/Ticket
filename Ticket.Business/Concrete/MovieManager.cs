@@ -25,7 +25,7 @@ namespace Ticket.Business.Concrete
             _repository = repository;
             this.mapper = mapper;
         }
-       
+
         [SecuredOperation("admin,editor")]
         [ValidationAspect(typeof(FilmValidator))]
         [CacheRemoveAspect("IFilmService.Get")] // todo burası getall mu olması gerek
@@ -81,11 +81,12 @@ namespace Ticket.Business.Concrete
             }
             return new ErrorDataResult<Movie>(Messages.FilmNotFound);
         }
-      
+
         [CacheAspect] //key,value
-        public async Task<IResult> GetAll(PaginationQuery paginationQuery)
+        public async Task<IResult> GetAll(PaginationQuery paginationQuery, string q = "")
         {
-            var data = await _repository.GetAllAsync(pageNumber: paginationQuery.PageNumber, pageSize: paginationQuery.PageSize);
+            Expression<Func<Movie, bool>> filter = c => c.Title.Contains(q) | c.OriginalTitle.Contains(q);
+            var data = await _repository.GetAllAsync(pageNumber: paginationQuery.PageNumber, pageSize: paginationQuery.PageSize, filter: q != null ? filter : null);
             if (data == null)
             {
                 return new ErrorDataResult<IList<Movie>>();
@@ -100,7 +101,7 @@ namespace Ticket.Business.Concrete
             }
 
             var list = movies.AsReadOnly();
-            var count = await _repository.CountAsync();
+            var count = await _repository.CountAsync(filter: q != null ? filter : null);
             return PaginationExtensions.CreatePaginationResult(list, true, paginationQuery, count);
         }
 
