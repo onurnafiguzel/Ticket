@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Ticket.Application.Entities.Concrete;
 using Ticket.Business.Abstract;
 using Ticket.Business.BusinessAspects.Autofac;
+using Ticket.Business.Models;
 
 namespace Ticket.WebApi.Controllers
 {
@@ -19,9 +20,9 @@ namespace Ticket.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] PaginationQuery paginationQuery)
         {
-            var result = await customerService.GetAll();
+            var result = await customerService.GetAll(paginationQuery);
             if (result.Success)
             {
                 return Ok(result);

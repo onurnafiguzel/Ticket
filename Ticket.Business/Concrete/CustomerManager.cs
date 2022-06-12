@@ -5,6 +5,8 @@ using Ticket.Application.Utilities.Results;
 using Ticket.Business.Abstract;
 using Ticket.Business.BusinessAspects.Autofac;
 using Ticket.Business.Constants;
+using Ticket.Business.Helpers;
+using Ticket.Business.Models;
 using Ticket.Business.ValidationRules.FluentValidation;
 using Ticket.Data.Abstract;
 using Ticket.Domain.Dtos;
@@ -54,9 +56,9 @@ namespace Ticket.Business.Concrete
             return new ErrorDataResult<UserDto>(Messages.CustomerNotFound);
         }
 
-        public async Task<IDataResult<IList<UserDto>>> GetAll()
+        public async Task<IResult> GetAll(PaginationQuery paginationQuery)
         {
-            var entities = await _repository.GetAllAsync();
+            var entities = await _repository.GetAllAsync(pageNumber: paginationQuery.PageNumber, pageSize: paginationQuery.PageSize);
             if (entities != null)
             {
                 var users = new List<UserDto>();
@@ -66,9 +68,11 @@ namespace Ticket.Business.Concrete
                     user.Roles = await _repository.GetRoles(entity);
                     users.Add(user);
                 }
-                return new SuccessDataResult<IList<UserDto>>(users);
+                var list = users.AsReadOnly();
+                var count = await _repository.CountAsync();
+                return PaginationExtensions.CreatePaginationResult(list, true, paginationQuery, count);
             }
-            return new ErrorDataResult<IList<UserDto>>(Messages.CustomerNotFound);
+            return new ErrorResult(Messages.CustomerNotFound);
         }
 
         public async Task<Customer> GetByMail(string email)
