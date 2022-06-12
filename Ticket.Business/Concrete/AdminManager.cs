@@ -5,6 +5,7 @@ using Ticket.Business.BusinessAspects.Autofac;
 using Ticket.Business.Constants;
 using Ticket.Business.ValidationRules.FluentValidation;
 using Ticket.Data.Abstract;
+using Ticket.Domain.Dtos;
 using Ticket.Domain.Entities.Concrete;
 
 namespace Ticket.Business.Concrete
@@ -13,10 +14,12 @@ namespace Ticket.Business.Concrete
     public class AdminManager : IAdminService
     {
         private readonly IAdminRepository _repository;
+        private readonly ICustomerOperationClaimRepository customerOperationClaimRepository;
 
-        public AdminManager(IAdminRepository repository)
+        public AdminManager(IAdminRepository repository, ICustomerOperationClaimRepository customerOperationClaimRepository)
         {
             _repository = repository;
+            this.customerOperationClaimRepository = customerOperationClaimRepository;
         }
 
         [ValidationAspect(typeof(AdminValidator))]
@@ -44,10 +47,10 @@ namespace Ticket.Business.Concrete
             return new SuccessDataResult<Admin>(entity);
         }
 
-        public async Task<IDataResult<IList<Admin>>> GetAll()
+        public async Task<IDataResult<IList<UserDto>>> GetAll()
         {
-            var entities = await _repository.GetAllAsync();
-            return new SuccessDataResult<IList<Admin>>(entities);
+            var entities = await customerOperationClaimRepository.GetAdmins();
+            return new SuccessDataResult<IList<UserDto>>(entities);
         }
 
         [ValidationAspect(typeof(AdminValidator))]
