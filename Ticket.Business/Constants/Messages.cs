@@ -30,5 +30,7 @@ namespace Ticket.Business.Constants
         public static string AuthorizationDenied = "Yetkiniz yok.";
         public static string CastsShowed = "Castlar gösterildi.";
         public static string CastsNotFound = "Cast bulunamadı.";
+
+        public static string PlaceNotFound = "Place bulunamadı.";
     }
 }
