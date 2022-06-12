@@ -7,7 +7,7 @@ namespace Ticket.Business.Abstract
 {
     public interface ICustomerService
     {
-        Task<IResult> GetAll(PaginationQuery paginationQuery);
+        Task<IResult> GetAll(PaginationQuery paginationQuery, string q);
         Task<IDataResult<UserDto>> Get(int customerId);
         Task<IResult> Add(Customer customer);
         Task<IResult> Update(Customer customer);

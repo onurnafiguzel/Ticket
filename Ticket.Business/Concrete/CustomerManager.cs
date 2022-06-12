@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System.Linq.Expressions;
 using Ticket.Application.Aspects.Autofac.Validation;
 using Ticket.Application.Entities.Concrete;
 using Ticket.Application.Utilities.Results;
@@ -56,9 +57,10 @@ namespace Ticket.Business.Concrete
             return new ErrorDataResult<UserDto>(Messages.CustomerNotFound);
         }
 
-        public async Task<IResult> GetAll(PaginationQuery paginationQuery)
+        public async Task<IResult> GetAll(PaginationQuery paginationQuery, string q = "")
         {
-            var entities = await _repository.GetAllAsync(pageNumber: paginationQuery.PageNumber, pageSize: paginationQuery.PageSize);
+            Expression<Func<Customer, bool>> filter = c => c.Email.Contains(q) | c.Name.Contains(q);
+            var entities = await _repository.GetAllAsync(pageNumber: paginationQuery.PageNumber, pageSize: paginationQuery.PageSize, filter: q != null ? filter : null);
             if (entities != null)
             {
                 var users = new List<UserDto>();
@@ -69,7 +71,7 @@ namespace Ticket.Business.Concrete
                     users.Add(user);
                 }
                 var list = users.AsReadOnly();
-                var count = await _repository.CountAsync();
+                var count = await _repository.CountAsync(filter: q != null ? filter : null);
                 return PaginationExtensions.CreatePaginationResult(list, true, paginationQuery, count);
             }
             return new ErrorResult(Messages.CustomerNotFound);

@@ -20,9 +20,9 @@ namespace Ticket.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] PaginationQuery paginationQuery)
+        public async Task<IActionResult> GetAll([FromQuery] PaginationQuery paginationQuery, [FromQuery] string? q)
         {
-            var result = await customerService.GetAll(paginationQuery);
+            var result = await customerService.GetAll(paginationQuery, q);
             if (result.Success)
             {
                 return Ok(result);
@@ -74,7 +74,7 @@ namespace Ticket.WebApi.Controllers
             return BadRequest(result);
         }
 
-        [HttpDelete]
+        [HttpDelete("{customerId}")]
         public async Task<IActionResult> Delete(int customerId)
         {
             var result = await customerService.Delete(customerId);
