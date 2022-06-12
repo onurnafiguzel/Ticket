@@ -30,15 +30,12 @@ namespace Ticket.Data.Concrete.EntityFramework
 
         public async Task<IList<string>> GetRoles(Customer customer)
         {
-            using (context)
-            {
-                var result = from operationClaim in context.OperationClaims
-                             join userOperationClaim in context.CustomerOperationClaims
-                                 on operationClaim.Id equals userOperationClaim.OperationClaimId
-                             where userOperationClaim.CustomerId == customer.Id
-                             select operationClaim.Name;
-                return await result.ToListAsync();
-            }
+            var result = from operationClaim in context.OperationClaims
+                         join userOperationClaim in context.CustomerOperationClaims
+                             on operationClaim.Id equals userOperationClaim.OperationClaimId
+                         where userOperationClaim.CustomerId == customer.Id
+                         select operationClaim.Name;
+            return await result.ToListAsync();
         }
 
         public async Task<Customer> MakeCustomerAdmin(Customer customer)

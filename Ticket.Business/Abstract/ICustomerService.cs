@@ -6,7 +6,7 @@ namespace Ticket.Business.Abstract
 {
     public interface ICustomerService
     {
-        Task<IDataResult<IList<Customer>>> GetAll();
+        Task<IDataResult<IList<UserDto>>> GetAll();
         Task<IDataResult<UserDto>> Get(int customerId);
         Task<IResult> Add(Customer customer);
         Task<IResult> Update(Customer customer);

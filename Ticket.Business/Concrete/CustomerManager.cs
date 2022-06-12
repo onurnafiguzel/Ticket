@@ -11,7 +11,6 @@ using Ticket.Domain.Dtos;
 
 namespace Ticket.Business.Concrete
 {
-    [SecuredOperation("god,admin")]
     public class CustomerManager : ICustomerService
     {
         private readonly ICustomerRepository _repository;
@@ -55,14 +54,21 @@ namespace Ticket.Business.Concrete
             return new ErrorDataResult<UserDto>(Messages.CustomerNotFound);
         }
 
-        public async Task<IDataResult<IList<Customer>>> GetAll()
+        public async Task<IDataResult<IList<UserDto>>> GetAll()
         {
             var entities = await _repository.GetAllAsync();
             if (entities != null)
             {
-                return new SuccessDataResult<IList<Customer>>(entities);
+                var users = new List<UserDto>();
+                foreach (var entity in entities)
+                {
+                    var user = mapper.Map<UserDto>(entity);
+                    user.Roles = await _repository.GetRoles(entity);
+                    users.Add(user);
+                }
+                return new SuccessDataResult<IList<UserDto>>(users);
             }
-            return new ErrorDataResult<IList<Customer>>(Messages.CustomerNotFound);
+            return new ErrorDataResult<IList<UserDto>>(Messages.CustomerNotFound);
         }
 
         public async Task<Customer> GetByMail(string email)

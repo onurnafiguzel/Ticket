@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Ticket.Application.Entities.Concrete;
 using Ticket.Business.Abstract;
+using Ticket.Business.BusinessAspects.Autofac;
 
 namespace Ticket.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [SecuredOperation("god,admin")]
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerService customerService;
@@ -38,7 +40,7 @@ namespace Ticket.WebApi.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost]
+        [HttpPost] // TODO BAK LAN BURAYA
         public async Task<IActionResult> Add(Customer customer)
         {
             var result = await customerService.Add(customer);
