@@ -11,6 +11,7 @@ using Ticket.Domain.Dtos;
 
 namespace Ticket.Business.Concrete
 {
+    [SecuredOperation("god,admin")]
     public class CustomerManager : ICustomerService
     {
         private readonly ICustomerRepository _repository;
