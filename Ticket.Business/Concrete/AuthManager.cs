@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ticket.Application.Aspects.Autofac.Validation;
 using Ticket.Application.Entities.Concrete;
 using Ticket.Application.Utilities.Results;
 using Ticket.Application.Utilities.Security.Hashing;
 using Ticket.Application.Utilities.Security.JWT;
 using Ticket.Business.Abstract;
 using Ticket.Business.Constants;
+using Ticket.Business.ValidationRules.FluentValidation;
+using Ticket.Data.Abstract;
 using Ticket.Domain.Dtos;
 
 namespace Ticket.Business.Concrete
@@ -17,11 +20,13 @@ namespace Ticket.Business.Concrete
     {
         private readonly ICustomerService _customerService;
         private ITokenHelper _tokenHelper;
+        private readonly ICustomerRepository customerRepository;
 
-        public AuthManager(ITokenHelper tokenHelper, ICustomerService customerService)
+        public AuthManager(ITokenHelper tokenHelper, ICustomerService customerService, ICustomerRepository customerRepository)
         {
             _tokenHelper = tokenHelper;
             _customerService = customerService;
+            this.customerRepository = customerRepository;
         }
 
         public async Task<IDataResult<AccessToken>> CreateAccessToken(Customer customer)
@@ -63,10 +68,25 @@ namespace Ticket.Business.Concrete
             await _customerService.Add(customer);
             return new SuccessDataResult<Customer>(customer, Messages.UserRegistered);
         }
-
+        
         public async Task<IDataResult<Customer>> Update(CustomerUpdateDto customerUpdateDto, int userId)
         {
+            Customer currentCustomer = await customerRepository.GetAsync(c => c.Id == userId);
             byte[] passwodHash, passwordSalt;
+            if (customerUpdateDto.Password == null || customerUpdateDto.Password.Length == 0)
+            {
+                Customer customer2 = new Customer
+                {
+                    Id = userId,
+                    Email = customerUpdateDto.Email,
+                    Name = customerUpdateDto.Name,
+                    PasswordHash = currentCustomer.PasswordHash,
+                    PasswordSalt = currentCustomer.PasswordSalt,
+                    Status = true
+                };
+                await _customerService.Update(customer2);
+                return new SuccessDataResult<Customer>(customer2, Messages.UserUpdated);
+            }
             HashingHelper.CreatePasswordHash(customerUpdateDto.Password, out passwodHash, out passwordSalt);
             var customer = new Customer
             {
