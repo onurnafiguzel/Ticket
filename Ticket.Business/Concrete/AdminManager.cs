@@ -1,4 +1,5 @@
-﻿using Ticket.Application.Aspects.Autofac.Validation;
+﻿using System.Linq.Expressions;
+using Ticket.Application.Aspects.Autofac.Validation;
 using Ticket.Application.Utilities.Results;
 using Ticket.Business.Abstract;
 using Ticket.Business.BusinessAspects.Autofac;
@@ -47,9 +48,10 @@ namespace Ticket.Business.Concrete
             return new SuccessDataResult<Admin>(entity);
         }
 
-        public async Task<IDataResult<IList<UserDto>>> GetAll()
+        public async Task<IDataResult<IList<UserDto>>> GetAll(string q = "")
         {
-            var entities = await customerOperationClaimRepository.GetAdmins();
+            Expression<Func<UserDto, bool>> filter = c => c.Email.Contains(q) | c.Name.Contains(q);
+            var entities = await _repository.GetAdmins(filter: q != null ? filter : null);
             return new SuccessDataResult<IList<UserDto>>(entities);
         }
 

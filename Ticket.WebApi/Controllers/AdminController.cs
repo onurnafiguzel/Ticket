@@ -16,9 +16,9 @@ namespace Ticket.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] string? q)
         {
-            var result = await adminService.GetAll();
+            var result = await adminService.GetAll(q);
             if (result.Success)
             {
                 return Ok(result);

@@ -10,7 +10,6 @@ using Ticket.Domain.Dtos;
 namespace Ticket.Data.Abstract
 {
     public interface ICustomerOperationClaimRepository : IEntityRepository<CustomerOperationClaim>
-    {
-        public Task<IList<UserDto>> GetAdmins();
+    {        
     }
 }
