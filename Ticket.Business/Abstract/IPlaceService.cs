@@ -12,5 +12,6 @@ namespace Ticket.Business.Abstract
     public interface IPlaceService
     {
         public Task<IResult> GetAll(PaginationQuery paginationQuery, string q, int cityId);
+        public Task<IDataResult<Place>> Get(int id);
     }
 }

@@ -28,6 +28,16 @@ namespace Ticket.Business.Concrete
             this.mapper = mapper;
         }
 
+        public async Task<IDataResult<Place>> Get(int id)
+        {
+            var result = await placeRepository.GetAsync(p => p.Id == id);
+            if (result != null)
+            {
+                return new SuccessDataResult<Place>(result);
+            }
+            return new ErrorDataResult<Place>("Place bulunamadı.");
+        }
+
         [SecuredOperation("god,admin")]
         public async Task<IResult> GetAll(PaginationQuery paginationQuery, string q = "", int cityId = 0)
         {
