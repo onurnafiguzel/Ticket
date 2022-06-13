@@ -12,6 +12,7 @@ using Ticket.Business.Constants;
 using Ticket.Business.Helpers;
 using Ticket.Business.Models;
 using Ticket.Data.Abstract;
+using Ticket.Domain.Dtos;
 using Ticket.Domain.Entities.Concrete;
 
 namespace Ticket.Business.Concrete
@@ -34,10 +35,11 @@ namespace Ticket.Business.Concrete
             var entities = await actorRepository.GetAllAsync(pageNumber: paginationQuery.PageNumber, pageSize: paginationQuery.PageSize, filter: q != null ? filter : null);
             if (entities != null)
             {
-                var actors = new List<Actor>();
+                var actors = new List<ActorDto>();
                 foreach (var entity in entities)
                 {
-                    actors.Add(entity);
+                    var actorDto = mapper.Map<ActorDto>(entity);
+                    actors.Add(actorDto);
                 }
                 var list = actors.AsReadOnly();
                 var count = await actorRepository.CountAsync(filter: q != null ? filter : null);
