@@ -27,6 +27,18 @@ namespace Ticket.Business.Concrete
             this.actorRepository = actorRepository;
             this.mapper = mapper;
         }
+        
+        //[SecuredOperation("god,admin")]
+        public async Task<IDataResult<ActorDto>> Get(int actorId)
+        {
+            var result = await actorRepository.GetAsync(a => a.Id == actorId);
+            if (result != null)
+            {
+                var actorDto = mapper.Map<ActorDto>(result);
+                return new SuccessDataResult<ActorDto>(actorDto);
+            }
+            return new ErrorDataResult<ActorDto>($"{actorId} numaralı aktör bulunamadı.");
+        }
 
         [SecuredOperation("god,admin")]
         public async Task<IResult> GetAll(PaginationQuery paginationQuery, string q = "")
