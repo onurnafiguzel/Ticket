@@ -33,5 +33,6 @@ namespace Ticket.Business.Constants
 
         public static string PlaceNotFound = "Place bulunamadı.";
         public static string TheatherNotFound = "Theather bulunamadı.";
+        public static string SessionNotFound = "Session bulunamadı.";
     }
 }

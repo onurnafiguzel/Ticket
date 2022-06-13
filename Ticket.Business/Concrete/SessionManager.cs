@@ -1,11 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using AutoMapper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Ticket.Application.Utilities.Results;
 using Ticket.Business.Abstract;
+using Ticket.Business.Constants;
+using Ticket.Business.Helpers;
+using Ticket.Business.Models;
 using Ticket.Data.Abstract;
 using Ticket.Domain.Dtos;
 using Ticket.Domain.Entities.Concrete;
@@ -20,8 +25,9 @@ namespace Ticket.Business.Concrete
         private ITheatherSeatRepository theatherSeatRepository;
         private IMovieSessionSeatRepository movieSessionSeatRepository;
         private ITicketRepository ticketRepository;
+        private IMapper mapper;
 
-        public SessionManager(ISessionRepository repository, ITheatherRepository theatherRepository, ITheatherPriceRepository theatherPriceRepository, ITheatherSeatRepository theatherSeatRepository, IMovieSessionSeatRepository movieSessionSeatRepository, ITicketRepository ticketRepository)
+        public SessionManager(ISessionRepository repository, ITheatherRepository theatherRepository, ITheatherPriceRepository theatherPriceRepository, ITheatherSeatRepository theatherSeatRepository, IMovieSessionSeatRepository movieSessionSeatRepository, ITicketRepository ticketRepository, IMapper mapper)
         {
             this.repository = repository;
             this.theatherRepository = theatherRepository;
@@ -29,13 +35,33 @@ namespace Ticket.Business.Concrete
             this.theatherSeatRepository = theatherSeatRepository;
             this.movieSessionSeatRepository = movieSessionSeatRepository;
             this.ticketRepository = ticketRepository;
+            this.mapper = mapper;
+        }
+
+        public async Task<IResult> GetAll(PaginationQuery paginationQuery, int theatherId = 0)
+        {
+            Expression<Func<MovieSession, bool>> filter = null;
+            if (theatherId > 0)
+            {
+                filter = m => m.TheatherId == theatherId;
+            }
+
+            var entities = await repository.GetAllAsync(pageNumber: paginationQuery.PageNumber, pageSize: paginationQuery.PageSize, filter: filter != null ? filter : null);
+            if (entities != null)
+            {
+                List<MovieSession> result = entities.ToList();
+                var list = result.AsReadOnly();
+                var count = await repository.CountAsync(filter: theatherId > 0 ? filter : null);
+                return PaginationExtensions.CreatePaginationResult(list, true, paginationQuery, count);
+            }
+            return new ErrorResult(Messages.SessionNotFound);
         }
 
         public async Task<IDataResult<SessionDto>> GetSession(int id)
         {
             var result = await repository.GetSession(id);
-            if (result!=null)
-            {               
+            if (result != null)
+            {
                 return new SuccessDataResult<SessionDto>(result);
             }
             return new ErrorDataResult<SessionDto>("olmadı be ustam");
@@ -147,7 +173,7 @@ namespace Ticket.Business.Concrete
 
                 return new SuccessDataResult<Domain.Entities.Concrete.Ticket>(ticket, "Ticket created successfuly");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 await transaction.RollbackAsync();
 

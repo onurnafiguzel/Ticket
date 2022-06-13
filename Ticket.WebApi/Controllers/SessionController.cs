@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Ticket.Application.Utilities.IoC;
 using Ticket.Business.Abstract;
+using Ticket.Business.Models;
 using Ticket.Data.Abstract;
 using Ticket.Domain.Dtos;
 
@@ -26,6 +27,17 @@ namespace Ticket.WebApi.Controllers
         public async Task<IActionResult> Get(int id)
         {
             var result = await service.GetSession(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] PaginationQuery paginationQuery, [FromQuery] int theatherId)
+        {
+            var result = await service.GetAll(paginationQuery, theatherId);
             if (result.Success)
             {
                 return Ok(result);
