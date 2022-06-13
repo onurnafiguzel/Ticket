@@ -27,6 +27,18 @@ namespace Ticket.Business.Concrete
         }
 
         [SecuredOperation("god,admin")]
+        public async Task<IDataResult<GenreDto>> Get(int genreId)
+        {
+            var result = await genreRepository.GetAsync(g => g.Id == genreId);
+            if (result != null)
+            {
+                var genreDto = mapper.Map<GenreDto>(result);
+                return new SuccessDataResult<GenreDto>(genreDto);
+            }
+            return new ErrorDataResult<GenreDto>($"{genreId} numaralı genre bulunamadı");
+        }
+
+        [SecuredOperation("god,admin")]
         public async Task<IResult> GetAll(PaginationQuery paginationQuery)
         {
             var result = await genreRepository.GetAllAsync(pageNumber: paginationQuery.PageNumber, pageSize: paginationQuery.PageSize);

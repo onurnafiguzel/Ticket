@@ -12,5 +12,6 @@ namespace Ticket.Business.Abstract
     public interface IGenreService
     {
         public Task<IResult> GetAll(PaginationQuery paginationQuery);
+        public Task<IDataResult<GenreDto>> Get(int genreId);
     }
 }

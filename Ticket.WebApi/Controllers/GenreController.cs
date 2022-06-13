@@ -26,5 +26,16 @@ namespace Ticket.WebApi.Controllers
             }
             return BadRequest(result);
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var result = await genreService.Get(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }
