@@ -29,6 +29,19 @@ namespace Ticket.Business.Concrete
             this.actorRepository = actorRepository;
         }
 
+        public async Task<IDataResult<CastDto>> Get(int castId)
+        {
+            var result = await castRepository.GetAsync(c => c.Id == castId);
+            if (result != null)
+            {
+                var entity = await actorRepository.GetAsync(c => c.Id == result.ActorId);
+                var castDto = mapper.Map<CastDto>(result);
+                castDto.Actor = entity;
+                return new SuccessDataResult<CastDto>(castDto);
+            }
+            return new ErrorDataResult<CastDto>($"{castId} numaralı cast bulunamadı");
+        }
+
         public async Task<IResult> GetAll(PaginationQuery paginationQuery, string q)
         {
             Expression<Func<Cast, bool>> filter = c => c.Character.Contains(q);
@@ -37,12 +50,12 @@ namespace Ticket.Business.Concrete
             {
                 var castDtos = new List<CastDto>();
                 foreach (var entity in entities)
-                { 
+                {
                     var actor = await actorRepository.GetAsync(a => a.Id == entity.ActorId);
                     var castDto = mapper.Map<CastDto>(entity);
                     castDto.Actor = actor;
                     castDtos.Add(castDto);
-                }              
+                }
                 var list = castDtos.AsReadOnly();
                 var count = await castRepository.CountAsync(filter: q != null ? filter : null);
                 return PaginationExtensions.CreatePaginationResult(list, true, paginationQuery, count);
