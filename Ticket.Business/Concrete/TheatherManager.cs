@@ -27,6 +27,16 @@ namespace Ticket.Business.Concrete
             this.mapper = mapper;
         }
 
+        public async Task<IDataResult<Theather>> Get(int id)
+        {
+            var result = await theatherRepository.GetAsync(t => t.Id == id);
+            if (result != null)
+            {
+                return new SuccessDataResult<Theather>(result);
+            }
+            return new ErrorDataResult<Theather>($"{id} numaralı Theather bulunamadı.");
+        }
+
         [SecuredOperation("god,admin")]
         public async Task<IResult> GetAll(PaginationQuery paginationQuery, string q = "", int placeId = 0)
         {
