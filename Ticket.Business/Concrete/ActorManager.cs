@@ -28,7 +28,7 @@ namespace Ticket.Business.Concrete
             this.mapper = mapper;
         }
         
-        //[SecuredOperation("god,admin")]
+        [SecuredOperation("god,admin")]
         public async Task<IDataResult<ActorDto>> Get(int actorId)
         {
             var result = await actorRepository.GetAsync(a => a.Id == actorId);

@@ -17,6 +17,6 @@ namespace Ticket.Data.Concrete.EntityFramework
         public EfCastRepository(DbContext context) : base(context)
         {
             this.context = (TicketContext?)context;
-        }       
+        }
     }
 }
