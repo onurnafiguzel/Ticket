@@ -13,5 +13,6 @@ namespace Ticket.Business.Abstract
     {
         public Task<IResult> GetAll(PaginationQuery paginationQuery, string q, int placeId);
         public Task<IDataResult<Theather>> Get(int id);
+        public Task<string> GetSeatsById(int id);
     }
 }

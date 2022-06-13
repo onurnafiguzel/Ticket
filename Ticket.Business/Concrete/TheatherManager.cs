@@ -66,5 +66,16 @@ namespace Ticket.Business.Concrete
             }
             return new ErrorResult(Messages.TheatherNotFound);
         }
+
+        public async Task<string> GetSeatsById(int id)
+        {
+            var result = await theatherRepository.GetAsync(t => t.Id == id);
+            if (result != null)
+            {
+                var seats = result.SeatPlan;
+                return seats;
+            }
+            return $"{id} numaralı Theather bulunamadı.";
+        }
     }
 }
