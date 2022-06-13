@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Ticket.Application.Utilities.Results;
 using Ticket.Business.Abstract;
+using Ticket.Business.BusinessAspects.Autofac;
 using Ticket.Business.Constants;
 using Ticket.Business.Helpers;
 using Ticket.Business.Models;
@@ -26,6 +27,7 @@ namespace Ticket.Business.Concrete
             this.mapper = mapper;
         }
 
+        [SecuredOperation("god,admin")]
         public async Task<IResult> GetAll(PaginationQuery paginationQuery, string q = "", int placeId = 0)
         {
             Expression<Func<Theather, bool>> filter = null;
