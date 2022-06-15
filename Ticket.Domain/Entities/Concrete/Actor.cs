@@ -18,6 +18,7 @@ namespace Ticket.Domain.Entities.Concrete
         public DateTime? Birthday { get; set; }
         public string? PlaceOfBirth { get; set; }
         public string ImdbId { get; set; }
+        public string Slug { get; set; }
 
         public ICollection<Cast>? Casts { get; set; } = new HashSet<Cast>();
     }
