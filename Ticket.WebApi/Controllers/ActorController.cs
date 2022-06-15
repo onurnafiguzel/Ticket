@@ -28,7 +28,7 @@ namespace Ticket.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAll(int id)
+        public async Task<IActionResult> Get(int id)
         {
             var result = await actorService.Get(id);
             if (result.Success)
