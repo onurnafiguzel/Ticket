@@ -24,17 +24,21 @@ namespace Ticket.Business.Concrete
         private ITheatherPriceRepository theatherPriceRepository;
         private ITheatherSeatRepository theatherSeatRepository;
         private IMovieSessionSeatRepository movieSessionSeatRepository;
+        private IFilmRepository movieRepository;
         private ITicketRepository ticketRepository;
+        private IPlaceRepository placeRepository;
         private IMapper mapper;
 
-        public SessionManager(ISessionRepository repository, ITheatherRepository theatherRepository, ITheatherPriceRepository theatherPriceRepository, ITheatherSeatRepository theatherSeatRepository, IMovieSessionSeatRepository movieSessionSeatRepository, ITicketRepository ticketRepository, IMapper mapper)
+        public SessionManager(ISessionRepository repository, ITheatherRepository theatherRepository, ITheatherPriceRepository theatherPriceRepository, ITheatherSeatRepository theatherSeatRepository, IMovieSessionSeatRepository movieSessionSeatRepository, ITicketRepository ticketRepository, IFilmRepository movieRepository, IPlaceRepository placeRepository, IMapper mapper)
         {
             this.repository = repository;
             this.theatherRepository = theatherRepository;
             this.theatherPriceRepository = theatherPriceRepository;
             this.theatherSeatRepository = theatherSeatRepository;
             this.movieSessionSeatRepository = movieSessionSeatRepository;
+            this.movieRepository = movieRepository;
             this.ticketRepository = ticketRepository;
+            this.placeRepository = placeRepository;
             this.mapper = mapper;
         }
 
@@ -50,7 +54,21 @@ namespace Ticket.Business.Concrete
             if (entities != null)
             {
                 List<MovieSession> result = entities.ToList();
-                var list = result.AsReadOnly();
+
+                foreach (var entity in result)
+                {
+                    entity.Movie = await movieRepository.GetAsync(r => r.Id == entity.MovieId);
+                    entity.Theather = await theatherRepository.GetAsync(r => r.Id == entity.TheatherId);
+                    entity.Theather.Place = await placeRepository.GetAsync(r => r.Id == entity.Theather.PlaceId);
+                }
+
+                List<SessionDto> sessions = mapper.Map<List<SessionDto>>(result)
+                    .Select(i => {
+                        i.Theather.SeatPlan = null;
+                        return i;
+                    }).ToList();
+
+                var list = sessions.AsReadOnly();
                 var count = await repository.CountAsync(filter: theatherId > 0 ? filter : null);
                 return PaginationExtensions.CreatePaginationResult(list, true, paginationQuery, count);
             }
