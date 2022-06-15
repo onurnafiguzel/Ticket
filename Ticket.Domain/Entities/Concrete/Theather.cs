@@ -13,6 +13,7 @@ namespace Ticket.Domain.Entities.Concrete
         public string Name { get; set; }
         public string SeatPlan { get; set; }
         public int PlaceId { get; set; }
+        public Place Place { get; set; }
 
         public ICollection<MovieSession> MovieSessions { get; set; }  = new HashSet<MovieSession>();
         public ICollection<TheatherPrice> TheatherPrices { get; set; }  = new HashSet<TheatherPrice>();
