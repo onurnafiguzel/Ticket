@@ -89,6 +89,10 @@ namespace Ticket.Data
                                         .HasMaxLength(200);
             modelBuilder.Entity<Actor>().Property(a => a.ProfilePath)
                                         .HasMaxLength(200);
+            modelBuilder.Entity<Actor>().Property(f => f.PlaceOfBirth)
+                                       .HasMaxLength(100);
+            modelBuilder.Entity<Actor>().Property(f => f.ImdbId)
+                                       .HasMaxLength(50);
 
             modelBuilder.Entity<Cast>().HasKey(a => a.Id);
             modelBuilder.Entity<Cast>().Property(a => a.Id).ValueGeneratedOnAdd();
