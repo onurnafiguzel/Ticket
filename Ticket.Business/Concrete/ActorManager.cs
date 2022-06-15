@@ -29,15 +29,15 @@ namespace Ticket.Business.Concrete
         }
         
         [SecuredOperation("god,admin")]
-        public async Task<IDataResult<ActorDto>> Get(int actorId)
+        public async Task<IDataResult<ActorDetailDto>> Get(int actorId)
         {
             var result = await actorRepository.GetAsync(a => a.Id == actorId);
             if (result != null)
             {
-                var actorDto = mapper.Map<ActorDto>(result);
-                return new SuccessDataResult<ActorDto>(actorDto);
+                var actorDto = mapper.Map<ActorDetailDto>(result);
+                return new SuccessDataResult<ActorDetailDto>(actorDto);
             }
-            return new ErrorDataResult<ActorDto>($"{actorId} numaralı aktör bulunamadı.");
+            return new ErrorDataResult<ActorDetailDto>($"{actorId} numaralı aktör bulunamadı.");
         }
 
         [SecuredOperation("god,admin")]

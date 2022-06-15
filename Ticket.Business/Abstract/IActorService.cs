@@ -12,6 +12,6 @@ namespace Ticket.Business.Abstract
     public interface IActorService
     {
         public Task<IResult> GetAll(PaginationQuery paginationQuery, string q);
-        public Task<IDataResult<ActorDto>> Get(int actorId);
+        public Task<IDataResult<ActorDetailDto>> Get(int actorId);
     }
 }
