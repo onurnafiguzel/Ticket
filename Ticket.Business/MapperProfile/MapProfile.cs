@@ -25,6 +25,7 @@ namespace Ticket.Business.MapperProfile
             CreateMap<Place, PlaceDto>().ReverseMap();
             CreateMap<Genre, GenreDto>().ReverseMap();
             CreateMap<Actor, ActorDto>().ReverseMap();
+            CreateMap<Actor, ActorDetailDto>().ReverseMap();
             CreateMap<Cast, CastDto>().ReverseMap();
         }
     }
