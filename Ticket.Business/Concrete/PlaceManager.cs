@@ -20,11 +20,13 @@ namespace Ticket.Business.Concrete
     public class PlaceManager : IPlaceService
     {
         public readonly IPlaceRepository placeRepository;
+        public readonly ITheatherRepository theatherRepository;
         public IMapper mapper;
 
-        public PlaceManager(IPlaceRepository placeRepository, IMapper mapper)
+        public PlaceManager(IPlaceRepository placeRepository, ITheatherRepository theatherRepository, IMapper mapper)
         {
             this.placeRepository = placeRepository;
+            this.theatherRepository = theatherRepository;
             this.mapper = mapper;
         }
 
@@ -66,6 +68,18 @@ namespace Ticket.Business.Concrete
                 return PaginationExtensions.CreatePaginationResult(list, true, paginationQuery, count);
             }
             return new ErrorResult(Messages.PlaceNotFound);
+        }
+
+        public async Task<IDataResult<IList<TheatherSimpleDto>>> GetTheathers(int id)
+        {
+            var result = await theatherRepository.GetAllAsync(r => r.PlaceId == id);
+            if (result == null)
+            {
+                return new ErrorDataResult<IList<TheatherSimpleDto>>(Messages.TheatherNotFound);
+            }
+
+            var theathers = mapper.Map<List<TheatherSimpleDto>>(result);
+            return new SuccessDataResult<IList<TheatherSimpleDto>>(theathers);
         }
     }
 }

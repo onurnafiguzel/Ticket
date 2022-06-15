@@ -37,5 +37,16 @@ namespace Ticket.WebApi.Controllers
             }
             return BadRequest(result);
         }
+
+        [HttpGet("{id}/theathers")]
+        public async Task<IActionResult> Theathers(int id)
+        {
+            var result = await placeService.GetTheathers(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }
