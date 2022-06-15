@@ -20,12 +20,14 @@ namespace Ticket.Business.Concrete
     public class TheatherManager : ITheatherService
     {
         public readonly ITheatherRepository theatherRepository;
+        public readonly ITheatherSeatRepository theatherSeatRepository;
         public readonly IPlaceRepository placeRepository;
         public IMapper mapper;
 
-        public TheatherManager(ITheatherRepository theatherRepository, IPlaceRepository placeRepository, IMapper mapper)
+        public TheatherManager(ITheatherRepository theatherRepository, IPlaceRepository placeRepository, ITheatherSeatRepository theatherSeatRepository, IMapper mapper)
         {
             this.theatherRepository = theatherRepository;
+            this.theatherSeatRepository = theatherSeatRepository;
             this.placeRepository = placeRepository;
             this.mapper = mapper;
         }
@@ -72,15 +74,18 @@ namespace Ticket.Business.Concrete
             return new ErrorResult(Messages.TheatherNotFound);
         }
 
-        public async Task<string> GetSeatsById(int id)
+        public async Task<IResult> GetSeatsById(PaginationQuery paginationQuery, int id)
         {
-            var result = await theatherRepository.GetAsync(t => t.Id == id);
-            if (result != null)
+            Expression<Func<TheatherSeat, bool>> filter = r => r.TheatherId == id;
+            var seats = await theatherSeatRepository.GetAllAsync(filter: filter, pageNumber: paginationQuery.PageNumber, pageSize: paginationQuery.PageSize);
+            if (seats == null)
             {
-                var seats = result.SeatPlan;
-                return seats;
+                return new ErrorResult("No seats found");
             }
-            return $"{id} numaralı Theather bulunamadı.";
+
+            var list = seats.ToList().AsReadOnly();
+            var count = await theatherSeatRepository.CountAsync(filter: filter);
+            return PaginationExtensions.CreatePaginationResult(list, true, paginationQuery, count);
         }
     }
 }

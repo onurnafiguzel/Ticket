@@ -39,9 +39,9 @@ namespace Ticket.WebApi.Controllers
         }
 
         [HttpGet("{id}/seats")]
-        public async Task<IActionResult> GetSeatsById(int id)
+        public async Task<IActionResult> GetSeatsById([FromQuery] PaginationQuery paginationQuery, int id)
         {
-            var result = await theatherService.GetSeatsById(id);
+            var result = await theatherService.GetSeatsById(paginationQuery, id);
             if (result != null)
             {
                 return Ok(result);
