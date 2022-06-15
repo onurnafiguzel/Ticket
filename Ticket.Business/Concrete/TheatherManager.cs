@@ -12,6 +12,7 @@ using Ticket.Business.Constants;
 using Ticket.Business.Helpers;
 using Ticket.Business.Models;
 using Ticket.Data.Abstract;
+using Ticket.Domain.Dtos;
 using Ticket.Domain.Entities.Concrete;
 
 namespace Ticket.Business.Concrete
@@ -19,22 +20,26 @@ namespace Ticket.Business.Concrete
     public class TheatherManager : ITheatherService
     {
         public readonly ITheatherRepository theatherRepository;
+        public readonly IPlaceRepository placeRepository;
         public IMapper mapper;
 
-        public TheatherManager(ITheatherRepository theatherRepository, IMapper mapper)
+        public TheatherManager(ITheatherRepository theatherRepository, IPlaceRepository placeRepository, IMapper mapper)
         {
             this.theatherRepository = theatherRepository;
+            this.placeRepository = placeRepository;
             this.mapper = mapper;
         }
 
-        public async Task<IDataResult<Theather>> Get(int id)
+        public async Task<IDataResult<TheatherDto>> Get(int id)
         {
             var result = await theatherRepository.GetAsync(t => t.Id == id);
             if (result != null)
             {
-                return new SuccessDataResult<Theather>(result);
+                result.Place = await placeRepository.GetAsync(r => r.Id == result.PlaceId);
+                var theather = mapper.Map<TheatherDto>(result);
+                return new SuccessDataResult<TheatherDto>(theather);
             }
-            return new ErrorDataResult<Theather>($"{id} numaralı Theather bulunamadı.");
+            return new ErrorDataResult<TheatherDto>($"{id} numaralı Theather bulunamadı.");
         }
 
         [SecuredOperation("god,admin")]
