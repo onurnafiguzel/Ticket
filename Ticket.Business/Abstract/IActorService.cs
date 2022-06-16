@@ -13,5 +13,6 @@ namespace Ticket.Business.Abstract
     {
         public Task<IResult> GetAll(PaginationQuery paginationQuery, string q);
         public Task<IDataResult<ActorDetailDto>> Get(int actorId);
+        public Task<IDataResult<ActorDetailDto>> GetBySlug(string slug);
     }
 }
