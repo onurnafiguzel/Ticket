@@ -107,7 +107,7 @@ namespace Ticket.Business.Concrete
 
             int theatherId = session.Theather.Id;
             IList<SessionBuySeatDto> seats = buyDto.Seats;
-            IList<TheatherPrice> prices = await theatherPriceRepository.GetAllAsync();
+            IList<TheatherPrice> prices = await theatherPriceRepository.GetAllAsync(r => r.TheatherId == theatherId);
 
             // check if seat is exists and belongs to this session's theather
             foreach (var seat in seats)
