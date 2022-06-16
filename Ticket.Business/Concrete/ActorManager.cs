@@ -20,14 +20,18 @@ namespace Ticket.Business.Concrete
     public class ActorManager : IActorService
     {
         private readonly IActorRepository actorRepository;
+        private readonly ICastRepository castRepository;
+        private readonly IFilmRepository movieRepository;
         private IMapper mapper;
 
-        public ActorManager(IActorRepository actorRepository, IMapper mapper)
+        public ActorManager(IActorRepository actorRepository, ICastRepository castRepository, IFilmRepository movieRepository, IMapper mapper)
         {
             this.actorRepository = actorRepository;
+            this.castRepository = castRepository;
+            this.movieRepository = movieRepository;
             this.mapper = mapper;
         }
-        
+
         public async Task<IDataResult<ActorDetailDto>> Get(int actorId)
         {
             var result = await actorRepository.GetAsync(a => a.Id == actorId);
@@ -68,6 +72,22 @@ namespace Ticket.Business.Concrete
                 return PaginationExtensions.CreatePaginationResult(list, true, paginationQuery, count);
             }
             return new ErrorResult(Messages.ActorsNotFound);
+        }
+
+        public async Task<IDataResult<IList<MovieSimpleDto>>> GetMoviesBySlug(string slug)
+        {
+            var actor = await actorRepository.GetAsync(r => r.Slug == slug);
+            var casts = await castRepository.GetAllAsync(r => r.ActorId == actor.Id);
+            List<int> movieIds = casts.Select(x => x.MovieId).ToList();
+
+            var movies = await movieRepository.GetAllAsync(r => movieIds.Contains(r.Id));
+            if (movies == null)
+            {
+                return new ErrorDataResult<IList<MovieSimpleDto>>("No movie found");
+            }
+
+            List<MovieSimpleDto> _movies = mapper.Map<List<MovieSimpleDto>>(movies);
+            return new SuccessDataResult<IList<MovieSimpleDto>>(_movies);
         }
     }
 }

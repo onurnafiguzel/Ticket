@@ -48,5 +48,16 @@ namespace Ticket.WebApi.Controllers
             }
             return BadRequest(result);
         }
+
+        [HttpGet("{slug}/movies")]
+        public async Task<IActionResult> GetMoviesBySlug(string slug)
+        {
+            var result = await actorService.GetMoviesBySlug(slug);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }
