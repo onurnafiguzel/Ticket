@@ -13,5 +13,6 @@ namespace Ticket.Domain.Dtos
         public string Name { get; set; }
         public int Gender { get; set; }
         public string ProfilePath { get; set; }
+        public string Slug { get; set; }
     }
 }
