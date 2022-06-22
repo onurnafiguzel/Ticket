@@ -48,5 +48,16 @@ namespace Ticket.WebApi.Controllers
             }
             return BadRequest(result);
         }
+        
+        [HttpGet("{id}/sessions")]
+        public async Task<IActionResult> Sessions(int id, [FromQuery] DateTime date)
+        {
+            var result = await placeService.GetSessions(id, date);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }

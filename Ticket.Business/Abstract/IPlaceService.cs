@@ -15,5 +15,6 @@ namespace Ticket.Business.Abstract
         public Task<IResult> GetAll(PaginationQuery paginationQuery, string q, int cityId);
         public Task<IDataResult<Place>> Get(int id);
         public Task<IDataResult<IList<TheatherSimpleDto>>> GetTheathers(int id);
+        public Task<IDataResult<IList<MovieWithTheathers>>> GetSessions(int id, DateTime dateTime);
     }
 }

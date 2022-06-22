@@ -70,6 +70,23 @@ namespace Ticket.Business.Concrete
             return new ErrorResult(Messages.PlaceNotFound);
         }
 
+        public async Task<IDataResult<IList<MovieWithTheathers>>> GetSessions(int id, DateTime dateTime)
+        {
+            var place = await placeRepository.GetAsync(f => f.Id == id);
+            if (place == null)
+            {
+                return new ErrorDataResult<IList<MovieWithTheathers>>("Böyle bir mekan bulunamadı");
+            }
+
+            var movies = await placeRepository.GetSessions(place, dateTime);
+            if (movies.Count == 0)
+            {
+                return new ErrorDataResult<IList<MovieWithTheathers>>("Bu mekana ait session bulunamadı");
+            }
+
+            return new SuccessDataResult<IList<MovieWithTheathers>>(movies);
+        }
+
         public async Task<IDataResult<IList<TheatherSimpleDto>>> GetTheathers(int id)
         {
             var result = await theatherRepository.GetAllAsync(r => r.PlaceId == id);
