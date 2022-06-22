@@ -132,6 +132,12 @@ namespace Ticket.Data
 
             modelBuilder.Entity<Place>().HasKey(p => p.Id);
             modelBuilder.Entity<Place>().Property(p => p.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<Place>().Property(p => p.Address)
+                                    .HasMaxLength(1000);
+            modelBuilder.Entity<Place>().Property(p => p.Latitude)
+                                    .HasColumnType("decimal(8, 6)");
+            modelBuilder.Entity<Place>().Property(p => p.Longitude)
+                                    .HasColumnType("decimal(9, 6)");
 
             modelBuilder.Entity<TheatherPrice>().HasKey(p => p.Id);
             modelBuilder.Entity<TheatherPrice>().Property(p => p.Id).ValueGeneratedOnAdd();
